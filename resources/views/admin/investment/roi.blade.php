@@ -26,7 +26,7 @@
                             $current_month = date('m-Y');
                             $attr = ($date_of_return_month != $current_month) ? 'disabled' : '';
                         ?>
-                        <?php $btn = '<button data-id="'.encrypt($item->id).'" class="btn btn-primary btn-sm payBtn" data-toggle="modal" data-target="#Medium-modal" type="button" '.$attr.'>Pay</button>'; ?>
+                        <?php $btn = '<button data-id="'.encrypt($item->id).'" class="btn btn-primary btn-sm payBtn" data-toggle="modal" data-target="#Medium-modal" type="button" >Pay</button>'; ?>
                         <?=($item->status == '0') ? $btn : '<button type="button" class="btn btn-dark btn-sm">Paid</button>' ?>
                     </td>
                 </tr>

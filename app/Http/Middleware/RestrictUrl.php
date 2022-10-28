@@ -16,13 +16,15 @@ class RestrictUrl
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
+    // only users role allow
     public function handle(Request $request, Closure $next)
     {
+        
         if(!Session::has('admin_login')){
             return Redirect::to(URL::to('/'));
         }
         $data = Session::get('admin_login');
-        if($data['role'] =='0'){
+        if(($data['role'] =='0') || ($data['role'] =='3') ){
             return Redirect:: back()->with('Mymessage', flashMessage('danger','You are not autherised to access this route'));
         }
         return $next($request);

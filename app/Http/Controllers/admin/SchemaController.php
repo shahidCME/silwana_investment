@@ -133,7 +133,7 @@ class SchemaController extends Controller
             ]);
 
 
-            echo $filename = (isset($req->old_image) && $req->old_image != NULL) ? $req->old_image : '';
+            $filename = (isset($req->old_image) && $req->old_image != NULL) ? $req->old_image : '';
             if($req->hasfile('editimage')){
                 if($filename != null && file_exists(public_path('uploads/schema/'.$filename)) ){
                     unlink(public_path('uploads/schema/'.$filename));

@@ -20,6 +20,13 @@ class Login extends Controller
         if(Session::has('admin_login')){
             return Redirect::to(URL::to('/'));
         }
+        $req->validate([
+            'email' => 'required|email',
+            'password' =>'required',
+        ], [
+            'name.required' => 'Email is required',
+            'password.required' => 'password is required',
+        ]);
         $Admin_model = new Admin;
         $data = $Admin_model->checkLogin($req->all());
         // dd($data);/
@@ -32,7 +39,7 @@ class Login extends Controller
                 'fname'=>$data[0]->fname,
                 'lname'=>$data[0]->lname,
                 'super_admin'=>$data[0]->role,
-                'role'=>$data[0]->role, // 1=>super_admin // 0=>sales person
+                'role'=>$data[0]->role, // 1=>super_admin // 0=>sales person; 3=>finance person
             ];
                 $req->session()->put(['admin_login'=> $sessionArray]);
                 // $insertData = ['title'=>'Login','description'=>'Sales person Login','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
@@ -41,21 +48,26 @@ class Login extends Controller
             }
         }else{
             $email = $req->email;
-            $user = User::where('email',$email)->get();
+            
+            $user = User::where(['email'=>$email])->get();
             if(count($user) > 0){
-                if(Hash::check($req['password'], $user[0]->password)){
-                    $sessionArray = [
-                        'id'=>$user[0]->id,
-                        "email"=>$user[0]->email,
-                        'fname'=>$user[0]->fname,
-                        'lname'=>$user[0]->lname,
-                        'user'=>true,
-                        'role'=>'2', // 1=>super_admin // 0=>sales person // 2=>customer/users
-                    ];
-                    $req->session()->put(['admin_login'=> $sessionArray]);
-                    // $insertData = ['title'=>'Login','description'=>'Customer login','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    // $this->insertNotification($insertData);
-                    return Redirect::to(URL::to('/userDashboard'));
+                    if($user[0]->status == '1'){
+                        if(Hash::check($req['password'], $user[0]->password)){
+                            $sessionArray = [
+                            'id'=>$user[0]->id,
+                            "email"=>$user[0]->email,
+                            'fname'=>$user[0]->fname,
+                            'lname'=>$user[0]->lname,
+                            'user'=>true,
+                            'role'=>'2', // 1=>super_admin // 0=>sales person // 2=>customer/users
+                        ];
+                        $req->session()->put(['admin_login'=> $sessionArray]);
+                        // $insertData = ['title'=>'Login','description'=>'Customer login','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                        // $this->insertNotification($insertData);
+                        return Redirect::to(URL::to('/userDashboard'));
+                    }
+                }else{
+                    return Redirect::to(URL::to('/'))->with('Mymessage', flashMessage('danger','Your account is inactive..! contact to admin'));
                 }
             }
         }

@@ -24,7 +24,7 @@ class ChangeController extends Controller
             if($updateStatus){
                 $d = session()->get('admin_login');
                 session()->put('admin_login.fname',$req['fname']);
-                return redirect('profile')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
+                return redirect('profile')->with('Mymessage', flashMessage('success','Profile Updated Successfully'));
             }else{
                 return redirect('profile')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
             }

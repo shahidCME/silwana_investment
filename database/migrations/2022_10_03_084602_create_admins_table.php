@@ -13,6 +13,7 @@ class CreateAdminsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('admins');
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
@@ -20,8 +21,9 @@ class CreateAdminsTable extends Migration
             $table->string('fname')->nullable();
             $table->string('lname')->nullable();
             $table->bigInteger('mobile')->nullable();
-            $table->enum('role', ['0', '1'])->default('1');
+            $table->enum('role', ['0', '1','3'])->default('1')->comment('0=>salesPerson;1=>admin;3=>finencePerson');
             $table->enum('status',['1','0'])->default('1');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

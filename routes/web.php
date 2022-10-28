@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\SchemaController;
 use App\Http\Controllers\admin\InvestmentController;
 use App\Http\Controllers\admin\ChangeController;
+use App\Http\Controllers\admin\FinancePersonController;
 use App\Http\Controllers\MyinvestmentController;
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\CheckUserRole;
@@ -38,6 +39,16 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::post('/salesPersonEdit', [SalesPerson::class, 'edit']);
     Route::get('/salesPersonDelete/{id}', [SalesPerson::class, 'delete']);
     // End Sales Module
+
+    // Start FinancePerson Module
+    Route::get('/financePerson', [FinancePersonController::class, 'index']);
+    Route::get('/addFinancePerson', [FinancePersonController::class, 'add']);
+    Route::post('/addFinancePerson', [FinancePersonController::class, 'add']);
+    Route::post('/getFinancePersonDataTable', [FinancePersonController::class, 'getFinancePersonDataTable']);
+    Route::get('/financePersonEdit/{id}', [FinancePersonController::class, 'edit']);
+    Route::post('/financePersonEdit', [FinancePersonController::class, 'edit']);
+    Route::get('/financePersonDelete/{id}', [FinancePersonController::class, 'delete']);
+    // End FinancePerson Module
     
     // Start Customer Module
     Route::get('/customer', [UserController::class, 'index']);
@@ -100,9 +111,7 @@ Route::get('/', function () {
     if(Session::has('admin_login')){
         return Redirect::to(URL::to('/dashboard'));
     }
-    // if(Session::has('user_login')){
-        //     return Redirect::to(URL::to('/user_dashboard'));
-        // }
+    
         $data['action'] = URL::to('login_check');
         $data['js'] = array('login');
         return view('admin.login',$data);

@@ -3,8 +3,10 @@ $("#schemaForm").validate({
         name: { required: true },
         type: { required: true },
         start_date :  { required : true },
-        image : { required: true, accept: "jpg,png,jpeg,gif" },
-        editimage: { accept: "jpg,png,jpeg,gif" },
+        image : { required: true,
+                    accept: "jpg,png,jpeg,gif" 
+                },
+        editimage: { accept: "jpg,png,jpeg,gif"},
         schema_document : {
             required : true,
             extension: "docx|rtf|doc|pdf"
@@ -24,6 +26,9 @@ $("#schemaForm").validate({
         country: { required: "Please select country" },
         userprofile: {
             required: "Please select userprofile",
+            accept: "Only image type jpg/png/jpeg/gif is allowed",
+        },
+        image: {
             accept: "Only image type jpg/png/jpeg/gif is allowed",
         },
         editimage: {

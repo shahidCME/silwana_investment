@@ -31,4 +31,5 @@ class Schema extends Model
         Schema::where('id', $id)->update($updateData);
         return true;
     }
+
 }

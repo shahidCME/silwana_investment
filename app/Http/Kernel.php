@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'adminAuth' => \App\Http\Middleware\AdminAuth::class,
         'CheckUserRole' => \App\Http\Middleware\CheckUserRole::class,
         'RestrictUrl' => \App\Http\Middleware\RestrictUrl::class,
+        'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
+        'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
     ];
 }

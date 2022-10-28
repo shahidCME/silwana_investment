@@ -8,25 +8,26 @@ use Illuminate\Http\Request;
 use App\Models\admin\Admin;
 use DB;
 use DataTables;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SalesPerson extends Controller
+class FinancePersonController extends Controller
 {
-    public function __construct(){
-        $this->middleware('RestrictUrl');
-    }
+    // public function __construct(){
+    //     $this->middleware('RestrictUrl');
+    // }
 
      function index(){
-     
-        $data['page'] = 'admin.salesPerson.list';
-        $data['js'] = array('salesPerson');
-        $data['title'] = "Sales Person List";
+        $data['page'] = 'admin.financePerson.list';
+        $data['js'] = array('financePerson');
+        $data['title'] = "Finance Person List";
+        $data['addBtn'] = url('addFinancePerson');
         return view('admin/main_layout',$data);
     }
 
-    function getSalesPersonDataTable(Request $request){
+    function getFinancePersonDataTable(Request $request){
         if ($request->ajax()) {
             $Session = Session::get('admin_login');
-            $where = array(['id','!=',$Session['id']], ['role','=','0']);
+            $where = array(['id','!=',$Session['id']], ['role','=','3']);
             // dd($where);
             // dd($request->all());
             $data = Admin::where($where)->get();
@@ -34,8 +35,8 @@ class SalesPerson extends Controller
                 ->addColumn('action', function($row){
                     $row->name = $row->fname.' '.$row->lname;
                     $encryptedId = encrypt($row->id);
-                    $editurl = "salesPersonEdit/".$encryptedId;
-                    $deleteurl = "salesPersonDelete/".$encryptedId;
+                    $editurl = "financePersonEdit/".$encryptedId;
+                    $deleteurl = "financePersonDelete/".$encryptedId;
                    $btn = '<div class="dropdown">
                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                        <i class="dw dw-more"></i>
@@ -66,16 +67,16 @@ class SalesPerson extends Controller
     
     function add(Request $req){
         
-        $data['page'] =  'admin.salesPerson.add';
-        $data['action'] = url('add_sales_person');
+        $data['page'] =  'admin.financePerson.add';
+        $data['action'] = url('addFinancePerson');
         $data['js'] = array('validateFile');
-        $data['title'] = 'Add Sales Person';
+        $data['title'] = 'Add Finance Person';
         if($req->all()){
-            $res = Admin::insertRecords($req->all());
+            $res = Admin::addFinancePerson($req->all());
             if($res){
-                return redirect('salesPerson')->with('Mymessage', flashMessage('success','Record Inserted Successfully'));
+                return redirect('financePerson')->with('Mymessage', flashMessage('success','Record Inserted Successfully'));
             }else{
-                return redirect('salesPerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+                return redirect('financePerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
             }
         }
         return view('admin/main_layout',$data);
@@ -89,15 +90,15 @@ class SalesPerson extends Controller
             $data['editData'] = $res;
             $data['update_id'] = $eid;
         }
-        $data['page'] = 'admin.salesPerson.edit';
-        $data['title'] = 'Eidt Sales Person';
-        $data['action'] = url('salesPersonEdit');
+        $data['page'] = 'admin.financePerson.edit';
+        $data['title'] = 'Eidt Finance Person';
+        $data['action'] = url('financePersonEdit');
         if($req->all()){
-            $res = Admin :: updateRecords($req->all());
+            $res = Admin :: updateFinanceRecords($req->all());
             if($res){
-                return redirect('salesPerson')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
+                return redirect('financePerson')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
             }else{
-                return redirect('salesPerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+                return redirect('financePerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
             }
         }
         return view('admin/main_layout',$data);
@@ -109,9 +110,9 @@ class SalesPerson extends Controller
         $res= Admin :: deleteRecord($id);
         $error = '<div class="alert alert-success">Record Deleted Successfully</div>';
         if($res){
-            return redirect('salesPerson')->with('Mymessage', flashMessage('success','Record Deleted Successfully'));
+            return redirect('financePerson')->with('Mymessage', flashMessage('success','Record Deleted Successfully'));
         }else{
-            return redirect('salesPerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+            return redirect('financePerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
         }
     }
 

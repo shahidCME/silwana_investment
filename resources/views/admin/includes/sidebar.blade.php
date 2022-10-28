@@ -27,14 +27,22 @@
 								><span class="mtext">Sales Person</span>
 							</a>
 						</li>
+						<li>
+							<a href="{{ url('financePerson') }}" class="dropdown-toggle no-arrow">
+								<span class="micon bi bi-bank"></span
+								><span class="mtext">Finance Person</span>
+							</a>
+						</li>
 						@endif
-						@if(admin_login()['role'] == '1')
+						@if(admin_login()['role'] == '1' || admin_login()['role'] == '0')
 						<li>
 							<a href="{{ url('customer') }}" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-person-square"></span
 								><span class="mtext">Customers</span>
 							</a>
 						</li>
+						@endif
+						@if(admin_login()['role'] == '1')
 						<li>
 							<a href="{{ url('Schema') }}" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-person-square"></span

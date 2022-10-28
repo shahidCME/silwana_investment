@@ -16,7 +16,7 @@ class UserController extends Controller
    
     public function index()
     {
-        // dd(Session::get('admin_login'));
+        
         $data['page'] = "admin.users.list";
         $data['js'] = ['users'];
         $data['addCustomer'] = url('addCustomer');
@@ -114,6 +114,8 @@ class UserController extends Controller
                     'national_id'=> $req->national_id,
                     'address'=>$req->address,
                     'nationalIdImage'=>$filename,
+                    'created_at' => dbDateFormat(),
+                    'updated_at' => dbDateFormat()
                 ]);
             }
             if($res){
@@ -161,7 +163,7 @@ class UserController extends Controller
                 'lname.required' => 'Please enter last name',
                 'mobile.required'=>'Mobile is required'
             ]);
-            $res = User :: updateRecords($req->all());
+            $res = User::updateRecords($req->all());
             $filename = (isset($req->old_image) && $req->old_image != NULL) ? $req->old_image : '';
             
             if(isset($req->is_kyc)){
@@ -208,6 +210,7 @@ class UserController extends Controller
         }
         return view('admin/main_layout',$data);
     }
+    
 
     function delete($eid) {
     

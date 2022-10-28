@@ -13,18 +13,18 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {   
-        // Schema::dropIfExists('users');
+        Schema::dropIfExists('users');
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->string('fname');
             $table->string('lname');
             $table->string('email')->unique();
-            $table->enum('gender',['0','1','2'])->comments('0=>male;1=>female;2=>others');
+            $table->enum('gender',['0','1','2'])->comment('0=>male;1=>female;2=>others');
             $table->string('password');
             $table->date('dob');
             $table->bigInteger('mobile');
-            $table->enum('status',['0','1'])->default('1')->comments('0=>Inactive;1=>active');
+            $table->enum('status',['0','1'])->default('1')->comment('0=>Inactive;1=>active');
             $table->softDeletes();
             $table->timestamps();
         });

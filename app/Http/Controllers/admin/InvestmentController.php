@@ -6,6 +6,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule; 
 use Illuminate\Support\Facades\File;
 use App\Models\admin\Investment;
@@ -29,6 +30,7 @@ class InvestmentController extends Controller
     public function getInvestmentDataTable(Request $request){
         if ($request->ajax()) {
             $Session = Session::get('admin_login');
+            
             $query = DB:: table('investments as i');
               $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
@@ -56,7 +58,8 @@ class InvestmentController extends Controller
             ->addColumn('return type',function($row){
                 return ($row->return_type =='0') ? "Monthly" : "Yearly";
             })
-             ->addColumn('action', function($row){
+             ->addColumn('action', function($row){      
+                    $role = (admin_login()['role'] == "3") ? 'd-none' : '';              
                     $encryptedId = encrypt($row->id);
                     $editurl = "InvestmentEdit/".$encryptedId;
                     $deleteurl = "InvestmentDelete/".$encryptedId;
@@ -69,8 +72,8 @@ class InvestmentController extends Controller
                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                        <a class="dropdown-item" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
                        <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
-                       <a class="dropdown-item" href="'.url($editurl).'"><i class="dw dw-edit2"></i> Edit</a>
-                       <a class="dropdown-item deleteRecord" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
+                       <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
+                       <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
                      
                      
                    </div>
@@ -101,7 +104,11 @@ class InvestmentController extends Controller
 
 
     public function add(Request $req)
-    {
+    {   
+        $sess = Session::get('admin_login');
+        if($sess['role'] =='3'){
+            return Redirect:: to('Investment')->with('Mymessage', flashMessage('danger','You are not autherised to access this route'));
+        }
         $data['page'] =  'admin.investment.add';
         $data['action'] = url('addInvestment');
         $data['js'] = array('validateFile','investment');

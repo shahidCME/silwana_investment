@@ -13,11 +13,12 @@ class CreateSchemaTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('schemas');
         Schema::create('schemas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('details');
-            $table->enum('status', ['0', '1'])->default('1');
+            $table->enum('status', ['0', '1'])->default('1')->comment('0=>Inactive;1=>active');
             $table->string('type');
             $table->date('start_date');
             $table->string('image');
