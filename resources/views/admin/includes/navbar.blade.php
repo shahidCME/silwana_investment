@@ -77,7 +77,7 @@
 					</div> --}}
 				</div>
 				<div class="user-notification">
-					<div class="dropdown">
+					<div class="dropdown" style="display:{{ (admin_login()['role'] !='2') ? 'none' : '' }}">
 						<a
 							class="dropdown-toggle no-arrow"
 							href="#"
@@ -94,9 +94,9 @@
 									<li>
 										<a href="#">
 											{{-- <img src="{{ asset('assets/admin/') }}/vendors/images/img.jpg" alt="" /> --}}
-											<h3>{{ $item->title }}</h3>
+											<h3>{{ $item->title  }}</h3>
 											<p>
-												{{ $item->description }}
+												{{ $item->description }} On {{ date('d-F-Y',strtotime($item->created_at)) }}
 											</p>
 										</a>
 									</li>

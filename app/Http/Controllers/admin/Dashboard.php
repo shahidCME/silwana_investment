@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\admin\Investment;
 use App\Models\admin\Admin;
 use App\Models\admin\User;
+use DB;
 class Dashboard extends Controller
 {
     
@@ -22,8 +23,14 @@ class Dashboard extends Controller
     }
 
     function user_dashboard(){
-        $data['page'] = 'admin/user_dashboard';
-        
+        $user_id = admin_login()['id']; 
+        $data['totalInvestment'] = Investment::where('user_id',$user_id)->sum('amount');
+        $data['page'] = 'admin/user_dashboard'; 
+        $data['numberOfInvestment'] = Investment::where('user_id',$user_id)->count();
+        $data['totalReturn'] = DB::table('investments as i')
+            ->join('roi as r', 'i.id', '=', 'r.investment_id')
+            ->where(['i.user_id'=>$user_id,'r.status'=>'1'])->sum('r.return_amount');
+        // dd($data['totalReturn']);
         return view('admin/main_layout',$data);
     }
 

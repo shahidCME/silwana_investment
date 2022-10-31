@@ -368,6 +368,7 @@ class InvestmentController extends Controller
             $data['js'] = ['investment','validateFile'];
         }
         if($req->all()){
+           
             if (!file_exists(public_path('uploads/payment_trasfer_reciept'))) {
                 mkdir(public_path('uploads/payment_trasfer_reciept'), 0777, true);
             }
@@ -380,6 +381,15 @@ class InvestmentController extends Controller
             $uid = decrypt($req->roi_id);
             $result = DB::table('roi')->where('id',$uid)->update(['payment_trasfer_reciept'=>$fileName,'status'=>'1','updated_at'=>dbDateFormat()]);
             if($result){
+                $investment_id = decrypt($req->investment_id);
+                $investment = DB::table('investments')->where('id',$investment_id)->get();
+                // dd($investment);
+                $returnType = ($investment[0]->return_type == '0') ? 'Monthly' : 'Yearly';
+                $schema = schema::where('id',$investment[0]->schema_id)->get();
+                // dd($schema->all());
+                $insertData = ['user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                // dd($insertData);
+                $this->insertNotification($insertData);
                 return redirect('roi/'.$req->investment_id)->with('Mymessage', flashMessage('success','File Submitted Successfully'));
             }else{
                 return redirect('roi/'.$req->investment_id)->with('Mymessage', flashMessage('danger','Something Went Wrong'));

@@ -90,7 +90,7 @@
 
         <div class="form-group">
             <label>Contract Reciept</label>
-            <input type="file" name="contract_reciept" class="form-control-file form-control height-auto file-upload-input" onchange="readURL(this);" accept="contract_reciept/*" />
+            <input type="file" name="contract_reciept" class="form-control-file form-control height-auto file-upload-input" onchange="readURL(this);" accept="/*" />
             <div class="file-upload-content " style="display: none">
                 <img class="file-upload-image" src="" alt="your contract_reciept" />
             </div>

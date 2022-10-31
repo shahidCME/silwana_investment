@@ -214,7 +214,7 @@ $("#investmentForm").validate({
         },
         contract_reciept: { 
             required: true, 
-            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
         },
         edit_contract_reciept: { 
             accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 

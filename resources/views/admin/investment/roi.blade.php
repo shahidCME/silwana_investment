@@ -25,7 +25,7 @@
                             $date_of_return_month = date('m-Y',strtotime($item->date_of_return));
                             $current_month = date('m-Y');
                             // $attr = ($date_of_return_month != $current_month) ? 'disabled' : '';
-                            $downloadBtn = ($item->payment_trasfer_reciept == 'null') ? 'd-none' : '';
+                            $downloadBtn = ($item->payment_trasfer_reciept == NULL) ? 'd-none' : '';
                         ?>
                         <?php $btn = '<button data-id="'.encrypt($item->id).'" class="btn btn-primary btn-sm payBtn" data-toggle="modal" data-target="#Medium-modal" type="button" >Pay</button>'; ?>
                         <?=($item->status == '0') ? $btn : '<button type="button" class="btn btn-dark btn-sm">Paid</button>' ?>
