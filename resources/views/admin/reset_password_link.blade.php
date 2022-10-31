@@ -85,12 +85,12 @@
     >
         <div class="brand-logo">
             <a href="{{ url('/')}}">
-                <img src="{{ asset('assets/admin')}}/vendors/images/deskapp-logo.svg" alt="" />
+                <img src="{{ asset('assets/admin/') }}/vendors/images/logo1.png" alt="" />
             </a>
         </div>
         <div class="login-menu">
             <ul>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="{{ url('/')}}">Login</a></li>
             </ul>
         </div>
     </div>
