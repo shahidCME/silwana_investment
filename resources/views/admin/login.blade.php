@@ -85,7 +85,7 @@
 			>
 				<div class="brand-logo">
 					<a href="{{ url('/')}}">
-						<img src="{{ asset('assets/admin/') }}/vendors/images/logo1.png" alt="" />
+						<img src="{{ asset('assets/admin/') }}/vendors/images/logo2.svg" alt="" />
 					</a>
 				</div>
 				{{-- <div class="login-menu">
@@ -101,7 +101,7 @@
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-md-6 col-lg-7">
-						<img src="{{ asset('assets/admin/') }}/vendors/images/login-img.svg" alt="" />
+						<img src="{{ asset('assets/admin/') }}/vendors/images/login-img1.svg" alt="" />
 					</div>
 					<div class="col-md-6 col-lg-5">
 						<div class="login-box bg-white box-shadow border-radius-10">

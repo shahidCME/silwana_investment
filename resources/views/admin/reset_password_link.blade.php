@@ -85,7 +85,7 @@
     >
         <div class="brand-logo">
             <a href="{{ url('/')}}">
-                <img src="{{ asset('assets/admin/') }}/vendors/images/logo1.png" alt="" />
+                <img src="{{ asset('assets/admin/') }}/vendors/images/logo2.svg" alt="" />
             </a>
         </div>
         <div class="login-menu">
