@@ -4,15 +4,17 @@ $("#schemaForm").validate({
         type: { required: true },
         start_date :  { required : true },
         image : { required: true,
-                    accept: "jpg,png,jpeg,gif" 
+                    accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
                 },
-        editimage: { accept: "jpg,png,jpeg,gif"},
+        editimage: { 
+            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+            },
         schema_document : {
             required : true,
-            extension: "docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
         },
         edit_schema_document : {
-            extension: "docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
          }
     },
     messages: {
@@ -26,20 +28,20 @@ $("#schemaForm").validate({
         country: { required: "Please select country" },
         userprofile: {
             required: "Please select userprofile",
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         image: {
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         editimage: {
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         schema_document : {
             required : "Please select schema document",
-            extension: "Only type docx|rtf|doc|pdf is allowed"
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"
         },
         edit_schema_document : {
-            extension: "Only type docx|rtf|doc|pdf is allowed"
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"
         },
         
 
@@ -72,10 +74,10 @@ $("#userForm").validate({
         // country: { required: true },
         nationalIdImage: { 
             required: true, 
-            accept: "jpg,png,jpeg,gif" 
+            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
         },
         editnationalIdImage: { 
-            accept: "jpg,png,jpeg,gif"
+            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
          }
     },
     messages: {
@@ -106,10 +108,10 @@ $("#userForm").validate({
         // country: { required: "Please select country" },
         nationalIdImage: {
             required: "Please select national id image",
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         editnationalIdImage: {
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
     },
     submitHandler: function (form) {
@@ -210,17 +212,26 @@ $("#investmentForm").validate({
         status : {
             required : true
         },
-        contract_reciept: { required: true, accept: "jpg,png,jpeg,gif" },
-        edit_contract_reciept: { accept: "jpg,png,jpeg,gif" },
+        contract_reciept: { 
+            required: true, 
+            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
+        },
+        edit_contract_reciept: { 
+            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
+        },
         
-        other_document: { extension: "docx|rtf|doc|pdf"},
-        edit_other_document: { extension: "docx|rtf|doc|pdf"},
+        other_document: { 
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+        },
+        edit_other_document: { 
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+        },
         invest_document : {
             required : true,
-            extension: "docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
         },
         edit_invest_document : {
-            extension: "docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
         }
     },
     messages: {
@@ -244,24 +255,25 @@ $("#investmentForm").validate({
         },
         contract_reciept: {
             required: "Please select contract reciept",
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         edit_contract_reciept: {
             required: "Please select contract reciept",
-            accept: "Only image type jpg/png/jpeg/gif is allowed",
+            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         invest_document : {
             required : "Please select investment document",
-            extension: "Only type docx|rtf|doc|pdf is allowed"
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"
         },
         edit_invest_document : {
-            extension: "Only type docx|rtf|doc|pdf is allowed"
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"
         },
-        other_document: { extension: "Only type docx|rtf|doc|pdf is allowed"},
-        edit_other_document: { extension: "Only type docx|rtf|doc|pdf is allowed"},
-        // edituserprofile: {
-        //     accept: "Only image type jpg/png/jpeg/gif is allowed",
-        // },
+        other_document: { 
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"
+        },
+        edit_other_document: { 
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"
+        },
     },
     submitHandler: function (form) {
 
@@ -403,13 +415,13 @@ $("#Roiform").validate({
     rules: {
         payment_trasfer_reciept : {
             required : true,
-            extension: "jpg|png|jpeg|docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
         },
     },
     messages: {
         payment_trasfer_reciept: {
             required: "Please enter file",
-            extension : ' extension: "Only type jpg|png|jpeg|docx|rtf|doc|pdf is allowed"'
+            extension : ' extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"'
         },
     },
     submitHandler: function (form) {

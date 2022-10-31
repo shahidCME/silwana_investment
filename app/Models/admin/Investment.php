@@ -43,12 +43,13 @@ class Investment extends Model
             'amount' => $postData['amount'],
             'return_type' => $postData['return_type'],
             'return_percentage' => $postData['return_percentage'],
-            'status' => (isset($postData['status'])) ? $postData['status'] : '2',
+            'status' => (isset($postData['status'])) ? $postData['status'] : '1',
             'contract_reciept' => $filename,
             'investment_doc' => $invest_document,
             'other_doc' => $other_document,
             'updated_at' => dbDateFormat(), 
         ];
+        // dd($updateData);
         Investment::where('id', $id)->update($updateData);
         DB::table('roi')->where(['investment_id' =>$id,'status'=>'0'])->delete(); 
 
