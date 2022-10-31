@@ -293,7 +293,7 @@ class InvestmentController extends Controller
 
               // $filename = $req->old_image;
             if($res){
-                $this->notification($req->all());
+                // $this->notification($req->all());
                 return redirect('Investment')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
             }else{
                 return redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
