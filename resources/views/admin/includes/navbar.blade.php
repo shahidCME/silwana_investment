@@ -187,7 +187,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="github-link">
+				<div class="github-link" style="display:none">
 					<a href="https://github.com/dropways/deskapp" target="_blank"
 						><img src="{{ asset('assets/admin/') }}/vendors/images/github.svg" alt=""
 					/></a>

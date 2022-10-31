@@ -96,7 +96,7 @@
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-md-6">
-						<img src="{{ asset('assets/admin/') }}/vendors/images/forgot-password.png" alt="" />
+						<img src="{{ asset('assets/admin/') }}/vendors/images/forgot_pass.png" alt="" />
 					</div>
 					<div class="col-md-6">
 						<div class="login-box bg-white box-shadow border-radius-10">

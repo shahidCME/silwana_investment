@@ -19,15 +19,18 @@
                     <td class="table-plus datatable-nosort">{{ $i+1 }}</td>
                     <td>{{ date('d F Y',strtotime($item->date_of_return) )}}</td>
                     <td>{{ $item->return_amount }}</td>
-                    <td><?=($item->status == '0') ? '<button type="button" class="badge badge-warning">Pending</button>' : '<button type="button" class="badge badge-success">Paid</button>' ?></td>
+                    <td><?=($item->status == '0') ? '<button type="button" class="btn btn-warning btn-sm">Pending</button>' : '<button type="button" class="btn btn-success btn-sm">Paid</button>' ?></td>
                     <td class="datatable-nosort">
                         <?php 
                             $date_of_return_month = date('m-Y',strtotime($item->date_of_return));
                             $current_month = date('m-Y');
-                            $attr = ($date_of_return_month != $current_month) ? 'disabled' : '';
+                            // $attr = ($date_of_return_month != $current_month) ? 'disabled' : '';
+                            $downloadBtn = ($item->payment_trasfer_reciept == 'null') ? 'd-none' : '';
                         ?>
                         <?php $btn = '<button data-id="'.encrypt($item->id).'" class="btn btn-primary btn-sm payBtn" data-toggle="modal" data-target="#Medium-modal" type="button" >Pay</button>'; ?>
                         <?=($item->status == '0') ? $btn : '<button type="button" class="btn btn-dark btn-sm">Paid</button>' ?>
+                        <?php $btn = '<a target="_blank"  href="'.url('uploads/payment_trasfer_reciept/'.$item->payment_trasfer_reciept).'" class="btn btn-success btn-sm '.$downloadBtn.'" ><i class="fa fa-eye"></i></button>'; ?>
+                        <?=$btn?>
                     </td>
                 </tr>
                     @endforeach

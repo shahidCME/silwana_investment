@@ -99,7 +99,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <img src="{{ asset('assets/admin')}}/vendors/images/forgot-password.png" alt="" />
+                <img src="{{ asset('assets/admin')}}/vendors/images/forgot_pass.png" alt="" />
             </div>
 			@foreach ($errors->all() as $error)
 			<div class="alert alert-warning alert-dismissible fade show" role="alert">

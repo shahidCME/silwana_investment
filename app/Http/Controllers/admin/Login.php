@@ -166,7 +166,7 @@ class Login extends Controller
                 return redirect('/')->with('Mymessage', flashMessage('danger','Something Went wrong'));
             }
         }else{
-            return redirect('/')->with('Mymessage', flashMessage('danger','Invalid email or token'));
+            return redirect('/reset-password/'.$request->token)->with('Mymessage', flashMessage('danger','Invalid email or token'));
         }
      }
 

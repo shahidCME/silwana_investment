@@ -27,7 +27,7 @@
                             $current_month = date('m-Y');
                             $attr = (($date_of_return_month != $current_month) && $item->status == '0' ) ? 'd-none' : '';
                         ?>
-                        <?php $btn = '<a href="'.url('uploads/payment_trasfer_reciept/'.$item->payment_trasfer_reciept).'" class="btn btn-success btn-sm '.$attr.'" download><i class="fa fa-download"></i></button>'; ?>
+                        <?php  $btn = '<a  href="'.url('uploads/payment_trasfer_reciept/'.$item->payment_trasfer_reciept).'" class="badge badge-success '.$attr.'" download><i class="fa fa-download"></i></button>'; ?>
                         <?=$btn?>
                     </td> 
                 </tr>
