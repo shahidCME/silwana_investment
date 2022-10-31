@@ -101,7 +101,7 @@
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-md-6 col-lg-7">
-						<img src="{{ asset('assets/admin/') }}/vendors/images/login-img1.svg" alt="" />
+						<img src="{{ asset('assets/admin/') }}/vendors/images/login-img1.png" alt="" />
 					</div>
 					<div class="col-md-6 col-lg-5">
 						<div class="login-box bg-white box-shadow border-radius-10">
