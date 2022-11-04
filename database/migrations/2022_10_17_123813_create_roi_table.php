@@ -20,7 +20,7 @@ class CreateRoiTable extends Migration
             $table->float('return_amount',15,2)->nullable();
             $table->date('date_of_return');
             $table->enum('status', ['0', '1'])->default('0')->comment('0=>pending;1=>completed');
-            $table->string('payment_trasfer_reciept',1000)->nullable()->default('null');
+            $table->string('payment_trasfer_reciept',1000)->nullable();
             $table->float('return_percentage');
             $table->float('investment_amount',15,2);
             $table->softDeletes();
