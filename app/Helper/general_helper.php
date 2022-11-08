@@ -33,6 +33,7 @@ function Plq(){
     dd(\DB::getQueryLog());
 } 
 function getNotification($isLimit=''){
+    
     $query = DB::table('notifications');
     if(admin_login()['role'] == '2'){
         $query->where(['user_id'=>admin_login()['id'],'for_role'=>'2']);
