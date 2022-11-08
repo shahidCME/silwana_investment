@@ -16,12 +16,6 @@ class Controller extends BaseController
     }
 
     function insertNotification($insertData){
-        if(admin_login()['role'] == '0'){
-            $insertData['admin_id'] = admin_login()['id'];
-        }
-        if(admin_login()['role'] == '2'){
-            $insertData['user_id'] = admin_login()['id'];
-        }
         DB::table('notifications')->insert($insertData);
         return true;
     }

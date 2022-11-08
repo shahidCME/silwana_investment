@@ -13,7 +13,10 @@ use DataTables;
 use SoftDeletes;
 class UserController extends Controller
 {
-   
+    public function __construct(){
+        $this->middleware('adminAndSales');
+    }
+
     public function index()
     {
         
@@ -27,8 +30,12 @@ class UserController extends Controller
     public function getCustomerDataTable(Request $request){
         if ($request->ajax()) {
             $Session = Session::get('admin_login');
-            $where = array(['admin_id','=',$Session['id']]);
-            $data = User::where($where)->get();
+            $query = User::select('*');
+            if($Session['role'] == '0'){
+                $where = array(['admin_id','=',$Session['id']]);
+                $query->where($where);
+            }
+            $data = $query->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('first name', function($row){
                     return $row->fname;
@@ -45,7 +52,6 @@ class UserController extends Controller
                        <i class="dw dw-more"></i>
                    </a>
                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                       <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
                        <a class="dropdown-item" href="'.url($editurl).'"><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
                      
