@@ -6,7 +6,6 @@
     </div>
     <form id="salesPerson" action="{{ $action }}" method="POST">
         @csrf
-        <input type="hidden" name="role" value="0">
         <div class="form-group">
             <label>First Name</label>
             <input class="form-control" name="fname" type="text" placeholder="Enter first name">
@@ -29,7 +28,7 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <!-- <div class="col-md-4 ">
+                <div class="col-md-4 ">
                     <label class="weight-600">Role</label>
                     <div class="custom-control custom-radio mb-5">
                         <input type="radio" id="role1" name="role" value="1" class="custom-control-input" >
@@ -39,11 +38,7 @@
                         <input type="radio" id="role2" name="role" value="0" class="custom-control-input" checked>
                         <label class="custom-control-label" for="role2">SalesPerson</label>
                     </div>
-                    <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="role2" name="role" value="3" class="custom-control-input" checked>
-                        <label class="custom-control-label" for="role2">FinancePerson</label>
-                    </div>
-                </div> -->
+                </div>
                 <div class="col-md-4 ">
                     <label class="weight-600">Status</label>
                     <div class="custom-control custom-radio mb-5">

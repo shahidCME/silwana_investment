@@ -69,9 +69,9 @@
                 <label class="custom-control-label" for="returnType2">yearly</label>
             </div>
         </div>
-        @if(admin_login()['role'] == '1' || admin_login()['role'] == '4')
+        @if(admin_login()['role'] == '1')
         <div class="col-md-6">
-            <label class="weight-600">Status</label>
+            <label class="weight-600">Return type</label>
             <div class="custom-control custom-radio mb-5">
                 <input type="radio" id="status1" name="status" value="0" class="custom-control-input"  >
                 <label class="custom-control-label" for="status1">Rejecte</label>
@@ -87,23 +87,22 @@
         </div>
         @endif
     </div>
-    @if(admin_login()['role'] == '4' || admin_login()['role'] == '1')
-        <div class="form-group" style="display:none">
+
+        <div class="form-group">
             <label>Contract Reciept</label>
             <input type="file" name="contract_reciept" class="form-control-file form-control height-auto file-upload-input" onchange="readURL(this);" accept="/*" />
             <div class="file-upload-content " style="display: none">
                 <img class="file-upload-image" src="" alt="your contract_reciept" />
             </div>
         </div>
-        <div class="form-group" style="display:none">
+        <div class="form-group">
             <label>Investment document</label>
             <input type="file" name="invest_document" class="form-control-file form-control height-auto " />
         </div>
-        <div class="form-group" style="display:none">
+        <div class="form-group">
             <label>Other document</label>
             <input type="file" name="other_document" class="form-control-file form-control height-auto " />
         </div>
-    @endif
         {{-- <div class="form-group" >
             <div class="row">
                 <div class="col-md-4 ">

@@ -19,7 +19,7 @@ class SalesPerson extends Controller
      
         $data['page'] = 'admin.salesPerson.list';
         $data['js'] = array('salesPerson');
-        $data['title'] = "Sales Person list";
+        $data['title'] = "Sales Person List";
         return view('admin/main_layout',$data);
     }
 

@@ -70,7 +70,7 @@
                 <label class="custom-control-label" for="returnType2">yearly</label>
             </div>
         </div>
-        @if(admin_login()['role'] == '1' || admin_login()['role'] == '4')
+        @if(admin_login()['role'] == '1')
         <div class="col-md-6">
             <label class="weight-600">Return type</label>
             <div class="custom-control custom-radio mb-5">
@@ -88,8 +88,8 @@
         </div>
         @endif
     </div>
-    @if(admin_login()['role'] == '4' || admin_login()['role'] == '1')
-        <div class="form-group"  style="display:none">
+
+        <div class="form-group">
             <label>Contract Reciept</label>
             <input type="hidden" name="old_contract_reciept" value="{{ $editData[0]->contract_reciept }}">
             <input type="file" name="edit_contract_reciept" class="form-control-file form-control height-auto file-upload-input" onchange="readURL(this);" accept="contract_reciept/*" />
@@ -97,17 +97,17 @@
                 <img class="file-upload-image" src="{{ url('uploads/contract_reciept/'.$editData[0]->contract_reciept) }}" alt="your contract_reciept" />
             </div>
         </div>
-        <div class="form-group" style="display:none">
+        <div class="form-group">
             <label>Investment document</label>
             <input type="hidden" name="old_invest_document" value="{{ $editData[0]->investment_doc }}">
             <input type="file" name="edit_invest_document" class="form-control-file form-control height-auto " />
         </div>
-        <div class="form-group" style="display:none">
+        <div class="form-group">
             <label>Other document</label>
             <input type="hidden" name="old_other_document" value="{{ ($editData[0]->other_doc != '') ? $editData[0]->other_doc : '' }}">
             <input type="file" name="edit_other_document" class="form-control-file form-control height-auto " />
         </div>
-    @endif
+        
         <div class="form-group ">
             <div class="btn-list">
                 <button type="submit" id="btnSubmit" class="btn btn-success">Add</button>
