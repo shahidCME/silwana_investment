@@ -18,8 +18,8 @@ class CreateNotificationTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->integer('user_id')->nullable();
-            $table->integer('admin_id')->nullable();
+            $table->integer('for_role')->nullable();
+            $table->integer('user_id')->comment('user_id is for both user and admin	');
             $table->timestamps();
         });
     }
