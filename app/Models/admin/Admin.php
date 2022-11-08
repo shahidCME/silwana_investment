@@ -71,7 +71,6 @@ class Admin extends Authenticatable
     }
 
     public function  addFinancePerson($postData){
-        dd($postData);
         $insertData = [
             'fname' => $postData['fname'],
             'lname' => $postData['lname'],
@@ -100,7 +99,5 @@ class Admin extends Authenticatable
         ->update($updateData);
         return true;
     }
-
-    
 }
 

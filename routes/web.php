@@ -12,7 +12,6 @@ use App\Http\Controllers\admin\SchemaController;
 use App\Http\Controllers\admin\InvestmentController;
 use App\Http\Controllers\admin\ChangeController;
 use App\Http\Controllers\admin\FinancePersonController;
-use App\Http\Controllers\admin\ApproverController;
 use App\Http\Controllers\MyinvestmentController;
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\CheckUserRole;
@@ -51,16 +50,6 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/financePersonDelete/{id}', [FinancePersonController::class, 'delete']);
     // End FinancePerson Module
     
-    // Start Approver Module
-    Route::get('/approver', [ApproverController::class, 'index']);
-    Route::get('/addApprover', [ApproverController::class, 'add']);
-    Route::post('/addApprover', [ApproverController::class, 'add']);
-    Route::post('/getApproverDataTable', [ApproverController::class, 'getApproverDataTable']);
-    Route::get('/approverEdit/{id}', [ApproverController::class, 'edit']);
-    Route::post('/approverEdit', [ApproverController::class, 'edit']);
-    Route::get('/approverDelete/{id}', [ApproverController::class, 'delete']);
-    // End Approver Module
-
     // Start Customer Module
     Route::get('/customer', [UserController::class, 'index']);
     Route::get('/addCustomer', [UserController::class, 'add']);

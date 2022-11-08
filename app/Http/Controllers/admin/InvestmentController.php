@@ -14,7 +14,6 @@ use App\Models\admin\Schema;
 use App\Models\admin\User;
 use DB;
 use DataTables;
-use PDF;
 
 class InvestmentController extends Controller
 {
@@ -66,7 +65,7 @@ class InvestmentController extends Controller
                     $deleteurl = "InvestmentDelete/".$encryptedId;
                     $view = "InvestmentDocument/".$encryptedId;
                     $roi = "roi/".$encryptedId;
-                   $btn = '<div class="dropdown" style="display:inline">
+                   $btn = '<div class="dropdown">
                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                        <i class="dw dw-more"></i>
                    </a>
@@ -75,13 +74,11 @@ class InvestmentController extends Controller
                        <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
+                     
+                     
                    </div>
                </div>'; 
-               if($row->contract_pdf != ''){
-                    $d_url = url('uploads/contract_pdf/'.$row->contract_pdf);
-                    $btn .='<a href="'.$d_url.'" class="badge badge-success" download=""><i class="fa fa-download"></i></a>';
-                 }
-                    return $btn;
+                         return $btn;
                 })
                 ->addColumn('status', function($row){
                     if($row->status == '0') {
@@ -90,9 +87,12 @@ class InvestmentController extends Controller
                     }elseif($row->status == '1'){
                         $sttus ='<button type="button" class="badge badge-success">Approved</button>';
                     }else{
+
+                    //     $sttus ='<select class="form_group">
+                    //     <option><button type="button" class="badge badge-danger">Rejected</button></option>
+                    // </select>';
                         $sttus ='<button type="button" class="badge badge-warning">Pending</button>';
                     } 
-                   
                     return $sttus;
                 })
                 ->rawColumns(['return type','start date','sales person','customer name','status','action'])
@@ -136,9 +136,9 @@ class InvestmentController extends Controller
                 'start_date.required' => 'Please select start date',
             ]);
       
-            $image1 ='';
-            $investDoc ='';
-            $otherDoc ='';
+            // $image1 ='';
+            // $investDoc ='';
+            // $otherDoc ='';
             if($req->hasfile('contract_reciept')){
                 if (!file_exists(public_path('uploads/contract_reciept'))) {
                     mkdir(public_path('uploads/contract_reciept'), 0777, true);
@@ -208,7 +208,7 @@ class InvestmentController extends Controller
                 ];
                 DB::table('roi')->insert($willInsert);
             }
-            
+
             if($res){
                 return redirect('Investment')->with('Mymessage', flashMessage('success','Record Inserted Successfully'));
             }else{
@@ -290,26 +290,7 @@ class InvestmentController extends Controller
             }
 
             $res = Investment :: updateRecords($req->all(),$filename,$invest_document,$other_document);
-            if(	$req->status=='1'){
-                if (!file_exists(public_path('uploads/contract_pdf'))) {
-                    mkdir(public_path('uploads/contract_pdf'), 0777, true);
-                }
-                $id = decrypt($req->update_id);
-                $query=DB:: table('investments as i');
-                $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
-                    ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
-                    ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.details');
-                    $query->where('i.id',$id);
-                    $query->where('i.deleted_at',null);
-                    $viewData = $query->get();
-                    $data['viewData'] = $viewData;
-                    $pdf = PDF::loadView('admin.contractTemplate.contract_1', $data);
-                //    return  $pdf->download('invoice.pdf');
-                    $filename = 'contract_one'.time().'.pdf';
-                    $pdf->save(public_path('uploads/contract_pdf/').$filename);
-                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename]);
-            }
+
               // $filename = $req->old_image;
             if($res){
                 // $this->notification($req->all());
@@ -405,13 +386,10 @@ class InvestmentController extends Controller
                 // dd($investment);
                 $returnType = ($investment[0]->return_type == '0') ? 'Monthly' : 'Yearly';
                 $schema = schema::where('id',$investment[0]->schema_id)->get();
-                    $user = USER::where('id',$investment[0]->user_id)->get();
-                    $fname = $user[0]->fname;  
-                    $insertData = ['for_role'=>'1','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    $this->insertNotification($insertData);
-                $insertData = ['for_role'=>'2','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                // dd($schema->all());
+                $insertData = ['user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                // dd($insertData);
                 $this->insertNotification($insertData);
-                
                 return redirect('roi/'.$req->investment_id)->with('Mymessage', flashMessage('success','File Submitted Successfully'));
             }else{
                 return redirect('roi/'.$req->investment_id)->with('Mymessage', flashMessage('danger','Something Went Wrong'));

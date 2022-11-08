@@ -77,7 +77,7 @@
 					</div> --}}
 				</div>
 				<div class="user-notification">
-					<div class="dropdown" style="display:{{ (admin_login()['role'] =='0') ? 'none' : '' }}">
+					<div class="dropdown" style="display:{{ (admin_login()['role'] !='2') ? 'none' : '' }}">
 						<a
 							class="dropdown-toggle no-arrow"
 							href="#"

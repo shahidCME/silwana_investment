@@ -24,9 +24,7 @@ class RestrictUrl
             return Redirect::to(URL::to('/'));
         }
         $data = Session::get('admin_login');
-        $param = \Request::segment(1);
-        if(($data['role'] =='3') || ($data['role'] =='4') ){
-            abort(403);
+        if(($data['role'] =='0') || ($data['role'] =='3') ){
             return Redirect:: back()->with('Mymessage', flashMessage('danger','You are not autherised to access this route'));
         }
         return $next($request);
