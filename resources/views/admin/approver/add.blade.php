@@ -6,7 +6,7 @@
     </div>
     <form id="salesPerson" action="{{ $action }}" method="POST">
         @csrf
-        <input type="hidden" name="role" value="0">
+        <input type="hidden" value="4" name="role">
         <div class="form-group">
             <label>First Name</label>
             <input class="form-control" name="fname" type="text" placeholder="Enter first name">
@@ -38,10 +38,6 @@
                     <div class="custom-control custom-radio mb-5">
                         <input type="radio" id="role2" name="role" value="0" class="custom-control-input" checked>
                         <label class="custom-control-label" for="role2">SalesPerson</label>
-                    </div>
-                    <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="role2" name="role" value="3" class="custom-control-input" checked>
-                        <label class="custom-control-label" for="role2">FinancePerson</label>
                     </div>
                 </div> -->
                 <div class="col-md-4 ">
@@ -75,7 +71,7 @@
         <div class="form-group ">
             <div class="btn-list">
                 <button type="submit" id="btnSubmit" class="btn btn-success">Add</button>
-                <a class="btn btn-danger" href="{{ url('salesPerson') }}" role="button">Cancel</a>
+                <a class="btn btn-danger" href="{{ url('financePerson') }}" role="button">Cancel</a>
             </div>
         </div>
     </form>

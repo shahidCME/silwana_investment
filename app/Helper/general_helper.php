@@ -34,11 +34,11 @@ function Plq(){
 } 
 function getNotification($isLimit=''){
     $query = DB::table('notifications');
-    if(admin_login()['role'] == '0'){
-        $query->where('admin_id',admin_login()['id']);
-    }
     if(admin_login()['role'] == '2'){
-        $query->where('user_id',admin_login()['id']);
+        $query->where(['user_id'=>admin_login()['id'],'for_role'=>'2']);
+    }
+    if(admin_login()['role'] != '2'){
+        $query->where('for_role','1');
     }
     if($isLimit){
         $query->limit(10);

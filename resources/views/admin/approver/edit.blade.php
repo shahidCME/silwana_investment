@@ -6,52 +6,49 @@
     </div>
     <form id="salesPerson" action="{{ $action }}" method="POST">
         @csrf
-        <input type="hidden" name="role" value="0">
+        <input type="hidden" value="{{ $update_id }}" name="update_id">
+        <input type="hidden" value="4" name="role">
         <div class="form-group">
             <label>First Name</label>
-            <input class="form-control" name="fname" type="text" placeholder="Enter first name">
+            <input class="form-control" name="fname" type="text" value="{{ $editData[0]->fname }}" placeholder="Enter first name">
         </div>
         <div class="form-group">
             <label>Last Name</label>
-            <input class="form-control" name="lname" type="text" placeholder="Enter last name">
+            <input class="form-control" name="lname" type="text" value="{{ $editData[0]->lname }}" placeholder="Enter last name">
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input class="form-control" name="email"  type="email" placeholder="Enter email">
+            <input class="form-control" name="email"  type="email" value="{{ $editData[0]->email }}" placeholder="Enter email">
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input class="form-control" name="password" value="123456" type="password">
+            <input class="form-control" name="password" value="123456" type="password" disabled>
         </div>
         <div class="form-group">
             <label>Mobile</label>
-            <input class="form-control" name="mobile" value="" type="text" placeholder="Enter mobile">
+            <input class="form-control" name="mobile" value="{{ $editData[0]->mobile }}" type="text" placeholder="Enter mobile">
         </div>
         <div class="form-group">
             <div class="row">
                 <!-- <div class="col-md-4 ">
                     <label class="weight-600">Role</label>
                     <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="role1" name="role" value="1" class="custom-control-input" >
+                        <input type="radio" id="role1" name="role" value="1" class="custom-control-input" {{ ($editData[0]->role ==1)?"checked" :"" }}>
                         <label class="custom-control-label" for="role1">Admin</label>
                     </div>
                     <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="role2" name="role" value="0" class="custom-control-input" checked>
+                        <input type="radio" id="role2" name="role" value="0" class="custom-control-input" {{ ($editData[0]->role ==0)?"checked" :"" }}>
                         <label class="custom-control-label" for="role2">SalesPerson</label>
-                    </div>
-                    <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="role2" name="role" value="3" class="custom-control-input" checked>
-                        <label class="custom-control-label" for="role2">FinancePerson</label>
                     </div>
                 </div> -->
                 <div class="col-md-4 ">
                     <label class="weight-600">Status</label>
                     <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="status1" name="status" value="1" class="custom-control-input" checked>
+                        <input type="radio" id="status1" name="status" value="1" class="custom-control-input" {{ ($editData[0]->status == 1)? "checked" :"" }}>
                         <label class="custom-control-label" for="status1">Active</label>
                     </div>
                     <div class="custom-control custom-radio mb-5">
-                        <input type="radio" id="status2" name="status" value="0" class="custom-control-input" >
+                        <input type="radio" id="status2" name="status" value="0" class="custom-control-input" {{ ($editData[0]->status == 0)? "checked" :"" }}>
                         <label class="custom-control-label" for="status2">Inactive</label>
                     </div>
                 </div>
@@ -74,8 +71,8 @@
         </div> --}}
         <div class="form-group ">
             <div class="btn-list">
-                <button type="submit" id="btnSubmit" class="btn btn-success">Add</button>
-                <a class="btn btn-danger" href="{{ url('salesPerson') }}" role="button">Cancel</a>
+                <button type="submit" id="btnSubmit" class="btn btn-success">Update</button>
+                <a class="btn btn-danger" href="{{ url('financePerson') }}" role="button">Cancel</a>
             </div>
         </div>
     </form>

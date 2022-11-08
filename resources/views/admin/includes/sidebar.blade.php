@@ -33,6 +33,12 @@
 								><span class="mtext">Finance Person</span>
 							</a>
 						</li>
+						<li>
+							<a href="{{ url('approver') }}" class="dropdown-toggle no-arrow">
+								<span class="micon bi bi-files"></span
+								><span class="mtext">Approver</span>
+							</a>
+						</li>
 						@endif
 						@if(admin_login()['role'] == '1' || admin_login()['role'] == '0')
 						<li>

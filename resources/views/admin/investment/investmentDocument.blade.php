@@ -62,6 +62,7 @@
                     </dd>
                 </dl>
             </dd>
+            @if($viewData[0]->contract_reciept != '')
             <dt class="col-sm-3"> Contract Reciept</dt>
             <dd class="col-sm-9">
                 <dl class="row">
@@ -74,6 +75,8 @@
                     </dd>
                 </dl>
             </dd>
+            @endif
+            @if($viewData[0]->investment_doc != '')
             <dt class="col-sm-3"> Investment document</dt>
             <dd class="col-sm-9">
                 <dl class="row">
@@ -86,6 +89,7 @@
                     </dd>
                 </dl>
             </dd>
+            @endif
             @if($viewData[0]->other_doc != '')
             <dt class="col-sm-3"> Other document</dt>
             <dd class="col-sm-9">
