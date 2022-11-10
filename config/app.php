@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Barryvdh\DomPDF\ServiceProvider::class,
+        
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
 
 
