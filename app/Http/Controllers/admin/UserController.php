@@ -76,6 +76,7 @@ class UserController extends Controller
         $data['action'] = url('addCustomer');
         $data['js'] = array('validateFile','users');
         $data['title'] = 'Add Customer';
+        $data['countries'] = DB::table('countries')->get();
         if($req->all()){
             // dd($req->all());
             $validatedData = $req->validate([
@@ -95,8 +96,10 @@ class UserController extends Controller
             }
             $res = new User();
             $res->admin_id = $sessionValue['id'];
+            $res->country_id = $req->country;
             $res->fname = $req->fname; 
             $res->lname = $req->lname; 
+            $res->nationality = $req->nationality; 
             $res->email = $req->email; 
             $res->password = bcrypt($req->password); 
             $res->gender = $req->gender; 
@@ -120,6 +123,7 @@ class UserController extends Controller
                     'national_id'=> $req->national_id,
                     'address'=>$req->address,
                     'nationalIdImage'=>$filename,
+                    'date_of_expiry'=>dbDateFormat($req->date_of_expiry,true),
                     'created_at' => dbDateFormat(),
                     'updated_at' => dbDateFormat()
                 ]);
@@ -146,15 +150,15 @@ class UserController extends Controller
                     $value->kyc = false;
                 }
             }
-            // dd($res[0]->kyc);
             $data['editData'] = $res;
             $data['update_id'] = $eid;
         }
-        // dd($res);
+        // dd($data);
         $data['page'] = 'admin.users.edit';
         $data['title'] = 'Eidt Customer ';
         $data['js'] = array('validateFile','users');
         $data['action'] = url('customerEdit');
+        $data['countries'] = DB::table('countries')->get();
         if($req->all()){
             // dd($req->all());
             $validatedData = $req->validate([
@@ -189,6 +193,7 @@ class UserController extends Controller
                         'national_id'=>$req->national_id,
                         'address'=>$req->address,
                         'nationalIdImage'=>$filename,
+                        'date_of_expiry'=>dbDateFormat($req->date_of_expiry,true),
                         'updated_at' => dbDateFormat()
                     ];
                     DB::table('user_kyc')->where('user_id', decrypt($req->update_id))->update($updateData);
@@ -198,6 +203,7 @@ class UserController extends Controller
                     'national_id'=> $req->national_id,
                     'address'=>$req->address,
                     'nationalIdImage'=>$filename,
+                    'date_of_expiry'=>dbDateFormat($req->date_of_expiry,true),
                     'created_at'=>dbDateFormat(),
                     'updated_at'=>dbDateFormat()
                 ]);
@@ -227,6 +233,17 @@ class UserController extends Controller
         }else{
             return redirect('customer')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
         }
+    }
+
+    function gerNationality(Request $request){
+        $id = $request->country_id;
+        $data = DB::table('countries')->where('id',$id)->first();
+        if(!empty($data)){
+            $record = ['status'=>'1','nationality'=>$data->nationality];
+        }else{
+            $record = ['status'=>'0'];
+        }
+        echo json_encode($record);
     }
 
 }

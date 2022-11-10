@@ -27,6 +27,21 @@
             <input class="form-control" name="password" value="123456"  type="password" disabled>
         </div>
         <div class="form-group">
+            <label>Select Country</label>
+            <select class="custom-select2 form-control" id="country_id"  name="country"  style="width: 100%; height: 38px">
+                <option value="">Select country</option>
+                @foreach ($countries as $item)
+                <option value="{{ $item->id}}" {{ ($item->id == $editData[0]->country_id) ? 'selected': '' }}>{{ $item->name}}</option>
+                @endforeach
+            </select>
+            <label id="country_id-error" class="error" for="country_id">@error('country') {{ $message }} @enderror</label>
+        </div>
+        <div class="form-group">
+            <label>Nationality</label>
+            <input class="form-control" name="nationality" id="nationality" value="{{ $editData[0]->nationality }}" type="text" placeholder="Enter Nationality">
+            <label id="nationality-error" class="error" for="nationality">@error('nationality') {{ $message }} @enderror</label>
+        </div>
+        <div class="form-group">
             <label>Mobile</label>
             <input class="form-control" name="mobile"  value="{{ $editData[0]->mobile }}" type="text" placeholder="Enter mobile">
             <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }} @enderror</label>
@@ -91,6 +106,10 @@
                     </div> 
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-12 col-md-2 col-form-label">Date Of Expiry</label>
+                <input class="form-control date-picker" name="date_of_expiry" placeholder="Select Date" value="{{ (isset($editData[0]->kycData)) ? date('d F Y',strtotime($editData[0]->kycData[0]->date_of_expiry)) : '' }}" type="text">
         </div>
         <div class="form-group">
             <div class="col-md-8">

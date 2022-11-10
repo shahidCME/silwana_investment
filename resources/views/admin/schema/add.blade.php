@@ -18,7 +18,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-12 col-md-2 col-form-label">Start date</label>
-            <input class="form-control date-picker" name="start_date" placeholder="Select Date" type="text">
+            <input class="form-control date-picker" name="start_date" placeholder="Select Date" type="text" autocomplete="off">
         </div>
         <div class="form-group">
             <div class="col-md-8 ">

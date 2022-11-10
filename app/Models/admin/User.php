@@ -23,14 +23,18 @@ class User extends Authenticatable
         // dd($postData);
         $id = decrypt($postData['update_id']);
         $updateData = [
-            'name' => $postData['name'],
+            'fname' => $postData['fname'],
+            'lname' => $postData['lname'],
             'email'=> $postData['email'],
             'mobile'=> $postData['mobile'],
+            'country_id'=> $postData['country'],
+            'nationality'=> $postData['nationality'],
             'gender' => $postData['gender'],
-            'dob' => $postData['dob'],
+            'dob' => dbDateFormat($postData['dob'],true),
             'status'=>$postData['status'],
             'updated_at' => dbDateFormat(), 
         ];
+        // dd($updateData); 
         User::where('id', $id)->update($updateData);
         return true;
     }

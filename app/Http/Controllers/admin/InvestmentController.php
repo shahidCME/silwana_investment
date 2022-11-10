@@ -41,11 +41,9 @@ class InvestmentController extends Controller
                 $id = $Session['id'];
                 $query->where('i.admin_id',$id);
             }
-            // Elq();
             $query->where('i.deleted_at',null);
             $data = $query->get();
-            // Plq();
-            // dd($data);
+            
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('customer fullname',function($row){
                 return $row->customerFname .' '.$row->customerLname;
@@ -291,22 +289,27 @@ class InvestmentController extends Controller
 
             $res = Investment :: updateRecords($req->all(),$filename,$invest_document,$other_document);
             if(	$req->status=='1'){
+                // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
                 }
+                // if($req->edit_contract_pdf != ''){
+                //     unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
+                // }
                 $id = decrypt($req->update_id);
                 $query=DB:: table('investments as i');
                 $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
-                    ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
-                    ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.details');
+                    ->leftJoin('countries as c', 'c.id', '=', 'u.country_id')
+                    ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','k.date_of_expiry','k.national_id','c.nationality');
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->get();
+                    // dd($viewData);
                     $data['viewData'] = $viewData;
-                    $pdf = PDF::loadView('admin.contractTemplate.contract_1', $data);
-                //    return  $pdf->download('invoice.pdf');
-                    $filename = 'contract_one'.time().'.pdf';
+
+                    $pdf = PDF::loadView('admin.contractTemplate.'.$req->contract, $data);
+                    $filename = $req->contract.'.'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
                     DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename]);
             }

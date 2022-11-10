@@ -13,11 +13,12 @@ class CreateUserKycTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('user_kyc');
+        // Schema::dropIfExists('user_kyc');
         Schema::create('user_kyc', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('national_id',500);
+            $table->date('date_of_expiry');
             $table->string('address',500);
             $table->string('nationalIdImage',1000);
             $table->softDeletes();

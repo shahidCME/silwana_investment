@@ -1,3 +1,4 @@
+const base_url = $("#base_url").val();
 $(document).ready(function () {
 
     if($('#userTable').length){
@@ -7,7 +8,6 @@ $(document).ready(function () {
             }
         });
         // DataTable
-        const base_url = $("#base_url").val();
         $("#userTable").DataTable({
             processing: true,
             serverSide: true,
@@ -34,4 +34,19 @@ $(document).on('change','#customCheck1',function (){
     }else{
         $('#kycForm').css('display','none');
     }
+})
+
+$(document).on('change','#country_id',function () {
+   var country_id = $(this).val();
+   $.ajax({
+        url:base_url+'gerNationality',
+        data:{country_id:country_id},
+        dataType:"json",
+        success:function(output){
+            if(output.status == '1'){
+                $('#nationality').val(output.nationality);
+            }
+            console.log(output);
+        }
+   })
 })

@@ -26,6 +26,21 @@
             <input class="form-control" name="password" value="123456" type="password">
         </div>
         <div class="form-group">
+            <label>Select Country</label>
+            <select class="custom-select2 form-control" id="country_id"  name="country"  style="width: 100%; height: 38px">
+                <option value="">Select country</option>
+                @foreach ($countries as $item)
+                <option value="{{ $item->id}}">{{ $item->name}}</option>
+                @endforeach
+            </select>
+            <label id="country_id-error" class="error" for="country_id">@error('country') {{ $message }} @enderror</label>
+        </div>
+        <div class="form-group">
+            <label>Nationality</label>
+            <input class="form-control" name="nationality" id="nationality" value="" type="text" placeholder="Enter Nationality">
+            <label id="nationality-error" class="error" for="nationality">@error('nationality') {{ $message }} @enderror</label>
+        </div>
+        <div class="form-group">
             <label>Mobile</label>
             <input class="form-control" name="mobile" value="" type="text" placeholder="Enter mobile">
             <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }} @enderror</label>
@@ -61,7 +76,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-12 col-md-2 col-form-label">DOB</label>
+            <label>DOB</label>
             <input class="form-control date-picker" name="dob" placeholder="Select Date" type="text">
         </div>
         
@@ -93,7 +108,11 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Image Of Natinal Id</label>
+            <label>Date Of Expiry</label>
+                <input class="form-control date-picker" name="date_of_expiry" placeholder="Select Date of expiry"  type="text">
+        </div>
+        <div class="form-group">
+            <label>Upload Natinal Id</label>
             <input type="file" name="nationalIdImage" class="form-control-file form-control height-auto">
         </div>
 

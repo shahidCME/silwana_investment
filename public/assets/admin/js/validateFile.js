@@ -4,10 +4,10 @@ $("#schemaForm").validate({
         type: { required: true },
         start_date :  { required : true },
         image : { required: true,
-                    accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
                 },
         editimage: { 
-            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
             },
         schema_document : {
             required : true,
@@ -26,15 +26,11 @@ $("#schemaForm").validate({
         },
         dob: { required: "Please select date of birth " },
         country: { required: "Please select country" },
-        userprofile: {
-            required: "Please select userprofile",
-            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
-        },
         image: {
-            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         editimage: {
-            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         schema_document : {
             required : "Please select schema document",
@@ -54,6 +50,8 @@ $("#userForm").validate({
         lname: { required: true },
         email: { required: true, email: true },
         password: { required: true },
+        country : { required : true },
+        nationality : { required : true },
         dob: { 
             required: true,
             date : true
@@ -72,12 +70,13 @@ $("#userForm").validate({
             required : true
         },
         // country: { required: true },
+        date_of_expiry: { required: true },
         nationalIdImage: { 
             required: true, 
-            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"  
         },
         editnationalIdImage: { 
-            accept: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
          }
     },
     messages: {
@@ -90,6 +89,8 @@ $("#userForm").validate({
         password : {
             required : "Default password is 123456"
         },
+        country : { required : "Please select country" },
+        nationality : { required : "Nationality is required" },
         dob: { 
             required: "Please select date of birth " 
         },
@@ -105,13 +106,13 @@ $("#userForm").validate({
         address : {
             required : "Please enter address"
         },
-        // country: { required: "Please select country" },
+        date_of_expiry: { required: "Please select document date of expiry" },
         nationalIdImage: {
-            required: "Please select national id image",
-            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
+            required: "Please select national id file",
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
         editnationalIdImage: {
-            accept: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
+            extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",
         },
     },
     submitHandler: function (form) {
@@ -212,6 +213,9 @@ $("#investmentForm").validate({
         status : {
             required : true
         },
+        contract : {
+            required : true
+        },
         contract_reciept: { 
             required: true, 
             extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf" 
@@ -252,6 +256,9 @@ $("#investmentForm").validate({
         },
         status : {
             required : "Please select status"
+        },
+        contract : {
+            required : "Please select contract"
         },
         contract_reciept: {
             required: "Please select contract reciept",

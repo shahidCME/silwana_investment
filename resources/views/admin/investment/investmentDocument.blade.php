@@ -62,6 +62,20 @@
                     </dd>
                 </dl>
             </dd>
+            @if($viewData[0]->contract_pdf != '')
+            <dt class="col-sm-3"> Contract pdf</dt>
+            <dd class="col-sm-9">
+                <dl class="row">
+                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
+                    <dd class="col-sm-8">
+                        <a href="{{ url('uploads/contract_reciept/'.$viewData[0]->contract_pdf) }}" class="btn btn-dark btn-lg" download>
+                            <i class="fa fa-download"></i>
+                            Download
+                        </a>
+                    </dd>
+                </dl>
+            </dd>
+            @endif
             @if($viewData[0]->contract_reciept != '')
             <dt class="col-sm-3"> Contract Reciept</dt>
             <dd class="col-sm-9">

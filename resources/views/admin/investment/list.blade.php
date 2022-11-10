@@ -16,7 +16,7 @@
                     <th>Amount</th>
                     <th>Return Type</th>
                     <th>Status</th>
-                    <th class="datatable-nosort">Action</th>
+                    <th class="datatable-nosort">Action/Contract pdf </th>
                 </tr>
             </thead>
             <tbody>

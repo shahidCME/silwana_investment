@@ -69,6 +69,7 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/customerDelete/{id}', [UserController::class, 'delete']);
     Route::get('/customerEdit/{id}', [UserController::class, 'edit']);
     Route::post('/customerEdit', [UserController::class, 'edit']);
+    Route::get('/gerNationality', [UserController::class, 'gerNationality']);
     // End start Customer Module
     
     // Start Schema Module
