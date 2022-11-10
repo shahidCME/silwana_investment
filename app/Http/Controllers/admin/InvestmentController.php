@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\File;
 use App\Models\admin\Investment;
 use App\Models\admin\Schema;
 use App\Models\admin\User;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 use DB;
 use DataTables;
-use PDF;
+use mPDF;
 
 class InvestmentController extends Controller
 {
@@ -217,6 +218,7 @@ class InvestmentController extends Controller
     }
 
     function edit ($eid='',Request $req){
+        
         $customer = User::where('status','=','1')->get();
         $data['getCustomer'] = $customer;
         $schema = schema::where('status','=','1')->get();
@@ -305,12 +307,29 @@ class InvestmentController extends Controller
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->get();
+                    // dd($viewData);
                     $data['viewData'] = $viewData;
+                    $data['arabic'] =  array();
+                    if($req->lang == '1'){
+                        $lang = new GoogleTranslate('en');
+                        $arabic = [
+                            'mobile'=> $lang->setSource('en')->setTarget('ar')->translate($viewData[0]->mobile),
+                            'dob' => $lang->setSource('en')->setTarget('ar')->translate(date('d-F-Y',strtotime($viewData[0]->dob))),
+                            'date_of_expiry' =>$lang->setSource('en')->setTarget('ar')->translate(date('d-F-Y',strtotime($viewData[0]->date_of_expiry))),
+                            'amount' =>$lang->setSource('en')->setTarget('ar')->translate($viewData[0]->amount),
+                            'customerFname' =>$lang->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname),
+                            'customerLname' =>$lang->setSource('en')->setTarget('ar')->translate($viewData[0]->customerLname),
+                            'national_id' => $viewData[0]->national_id,
+                            'nationality' =>$lang->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality),
 
-                    $pdf = PDF::loadView('admin.contractTemplate.'.$req->contract, $data);
-                    $filename = $req->contract.'.'.time().'.pdf';
+                        ];
+                        $data['arabic'] = $arabic;
+                    }
+                    $pdf = mPDF::loadView('admin.contractTemplate.'.$req->contract, $data);
+                    $filename = $req->contract.'_'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
-                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename]);
+                    
+                    DB::table('investments')->where('id',$id)->update(["language"=>$req->lang,'contract_type'=>$req->contract,'contract_pdf'=>$filename]);
             }
               // $filename = $req->old_image;
             if($res){

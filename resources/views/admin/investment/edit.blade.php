@@ -89,16 +89,31 @@
         </div>
         @endif
     </div>
-    @if(admin_login()['role'] == '4' || admin_login()['role'] == '1')
-    <div class="form-group">
-        <label>Select Contract</label>
-            <select class="custom-select2 form-control"  name="contract"  style="width: 100%; height: 38px">
-                <option value="">Select Contract</option>
-                @foreach (getContractTemplate() as $template => $item)
-                <option value="{{ $template }}" >{{$item}}</option>
-                @endforeach
-                </select>
-                <label id="contract-error" class="error" for="contract"></label>
+        @if(admin_login()['role'] == '4' || admin_login()['role'] == '1')
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Select Contract</label>
+                    <select class="custom-select2 form-control"  name="contract"  style="width: 100%; height: 38px">
+                        <option value="">Select Contract</option>
+                        @foreach (getContractTemplate() as $template => $item)
+                        <option value="{{ $template }}"  {{ ($editData[0]->contract_type != NULL && $editData[0]->contract_type == $template ) ? 'selected': '' }}>{{$item}}</option>
+                        @endforeach
+                    </select>
+                    <label id="contract-error" class="error" for="contract"></label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Language</label>
+                    <select class="custom-select2 form-control"  name="lang"  style="width: 100%; height: 38px">
+                        <option value="">Select Language</option>
+                        <option value="0"  {{ ($editData[0]->language == "0" ) ? 'selected': '' }} >English</option>
+                        <option value="1"  {{ ($editData[0]->language == "1" ) ? 'selected': '' }} >Arabic</option>
+                    </select>
+                    <label id="contract-error" class="error" for="contract"></label>
+                </div>
+            </div>
         </div>
         <div class="form-group"  style="display:none">
             <label>Contract Reciept</label>
