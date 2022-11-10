@@ -293,9 +293,9 @@ class InvestmentController extends Controller
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
                 }
-                // if($req->edit_contract_pdf != ''){
-                //     unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
-                // }
+                if($req->edit_contract_pdf != ''){
+                    unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
+                }
                 $id = decrypt($req->update_id);
                 $query=DB:: table('investments as i');
                 $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
@@ -305,7 +305,6 @@ class InvestmentController extends Controller
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->get();
-                    // dd($viewData);
                     $data['viewData'] = $viewData;
 
                     $pdf = PDF::loadView('admin.contractTemplate.'.$req->contract, $data);
