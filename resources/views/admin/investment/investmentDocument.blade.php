@@ -29,7 +29,7 @@
                 <dl class="row">
                     {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
-                        {{ $viewData[0]->details }}
+                        {!! $viewData[0]->details !!}
                     </dd>
                 </dl>
             </dd>

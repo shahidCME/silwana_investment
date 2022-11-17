@@ -11,6 +11,8 @@ class Investment extends Model
 {
     use HasFactory,SoftDeletes;
 
+    // protected $hidden = ['password'];
+
     public function getData($id){
        return  Investment::where('id','=',$id)->get();
     }
@@ -83,4 +85,5 @@ class Investment extends Model
         }
         return true;
     }
+
 }

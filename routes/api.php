@@ -6,6 +6,7 @@ use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\SalesPersonController;
 use App\Http\Controllers\api\SchemaController;
+use App\Http\Controllers\api\InvestmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,17 @@ Route::post('addSchema',[SchemaController::class,'addSchema']);
 Route::post('editSchema',[SchemaController::class,'editSchema']);
 Route::post('updateSchema',[SchemaController::class,'updateSchema']);
 Route::post('deleteSchema',[SchemaController::class,'deleteSchema']);
+
+Route::post('getInvestment',[InvestmentController::class,'index']);
+Route::post('addInvestment',[InvestmentController::class,'add']);
+Route::post('editInvestment',[InvestmentController::class,'edit']);
+Route::post('updateInvestment',[InvestmentController::class,'update']);
+Route::post('deleteInvestment',[InvestmentController::class,'delete']);
+Route::post('customerAndSchemaList',[InvestmentController::class,'customerAndSchemaList']);
+Route::post('getRoi',[InvestmentController::class,'getRoi']);
+Route::post('investmentDetails',[InvestmentController::class,'investmentDetails']);
+Route::post('roiPay',[InvestmentController::class,'paymentReciept']);
+
 
 // Route::group(['middleware' => ['auth:sanctum','abilities:admin']], function () {
 //     Route::get('/getUsers', [UserController::class, 'index']);

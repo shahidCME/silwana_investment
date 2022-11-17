@@ -16,7 +16,7 @@ class CreateAddColumInvestmentTable extends Migration
         Schema::table('investments', function (Blueprint $table) {
             
             $table->string('contract_type')->nullable();
-            $table->enum('language',['0', '1'])->default('1')->comment('0=>english;1=>arabic');;
+            $table->enum('language',['0', '1'])->default('1')->comment('0=>english;1=>arabic');
         });
     }
 

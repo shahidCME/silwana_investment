@@ -161,12 +161,13 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        
         /*
-         * Package Service Providers...
-         */
-
+        * Package Service Providers...
+        */
+        
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
+    
 
 
 

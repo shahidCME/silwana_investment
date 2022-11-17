@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\Rule; 
 use Illuminate\Support\Facades\File;
 use App\Models\admin\Investment;
@@ -15,6 +16,7 @@ use App\Models\admin\User;
 use DB;
 use DataTables;
 use PDF;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class InvestmentController extends Controller
 {
@@ -304,13 +306,51 @@ class InvestmentController extends Controller
                     ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','k.date_of_expiry','k.national_id','c.nationality');
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
-                    $viewData = $query->get();
+                    $viewData = $query->groupBy('i.id')->get();
                     $data['viewData'] = $viewData;
+                    $data['arabic'] = [];
+                    $start_date = strtotime($req->start_date);
+                    if($req->return_type == '0'){
+                        // dd($req->start_date);
+                        $start_date = strtotime($req->start_date);
+                        $year = (12/$req->tenure);
+                        $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                        $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
+                        $data['viewData'][0]->contract_end_date = $end_date;
+                    }else{
+                        $start_date = strtotime('Y-m-d',$req->start_date);
+                        $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",$start_date));
+                        $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
+                        $data['viewData'][0]->contract_end_date = $contract_end_date;
+                    }
+                      $contractStartDateFraction = explode("-",date("d-F-Y",$start_date));
+                      $data['viewData'][0]->day   =  $day = $contractStartDateFraction[0];
+                      $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
+                      $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
+                    if($req->lang == '1'){
+                        $tr = new GoogleTranslate();
+                        $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
+                        $data['arabic']['customerLname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerLname);
+                        $data['arabic']['nationality'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality);
+                        // $data['arabic']['national_id'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->national_id);
+                        $data['arabic']['national_id'] = $viewData[0]->national_id;
+                        $data['arabic']['nationality'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality);
+                        $date_of_expiry = date('d-F-Y',strtotime($viewData[0]->date_of_expiry));
+                        $data['arabic']['date_of_expiry'] = $tr->setSource('en')->setTarget('ar')->translate($date_of_expiry);
+                        $dob = date('d-F-Y',strtotime($viewData[0]->dob));
+                        $data['arabic']['dob'] = $tr->setSource('en')->setTarget('ar')->translate($dob);
+                        $data['arabic']['amount'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->amount);
+                        $data['arabic']['contract_end_date'] = $viewData[0]->contract_end_date;
+                        $data['arabic']['contract_start_date'] = $viewData[0]->contract_start_date;
 
-                    $pdf = PDF::loadView('admin.contractTemplate.'.$req->contract, $data);
-                    $filename = $req->contract.'.'.time().'.pdf';
+                        $data['arabic']['day'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->day);
+                        $data['arabic']['month'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->month);
+                        $data['arabic']['year'] = $tr->setSource('en')->setTarget('ar')->translate(strtolower(convertNumberToWord($viewData[0]->year)));
+                    }
+                    $pdf = PDF::loadView('admin.contractTemplate.'.strtolower($req->contract), $data);
+                    $filename = strtolower($req->contract).'.'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
-                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename]);
+                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
             }
               // $filename = $req->old_image;
             if($res){
