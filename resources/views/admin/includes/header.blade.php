@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-		<title>DeskApp - Bootstrap Admin Dashboard HTML Template</title>
+		<title>Silwana Contract Management</title>
 		<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 		<!-- Site favicon -->
