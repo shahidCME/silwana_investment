@@ -33,7 +33,7 @@
                             <div id="chart3"></div>
                         </div>
                         <div class="widget-data">
-                            <div class="h4 mb-0">$ {{ $totalReturn }}</div>
+                            <div class="h4 mb-0">AED {{ $totalReturn }}</div>
                             <div class="weight-600 font-14">Total Return</div>
                         </div>
                     </div>

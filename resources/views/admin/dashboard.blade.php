@@ -63,7 +63,7 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">$ {{ $totalInvestment }}</div>
+                    <div class="weight-700 font-24 text-dark">AED {{ $totalInvestment }}</div>
                     <div class="font-14 text-secondary weight-500">Investment</div>
                 </div>
                 <div class="widget-icon">
