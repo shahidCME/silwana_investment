@@ -49,9 +49,14 @@ class MyinvestmentController extends Controller
                     $encryptedId = encrypt($row->id);
                     $view = "investmentDetails/".$encryptedId;
                     $roi = "userRoi/".$encryptedId;
-                   $btn = '<a class="btn btn-warning btn-sm" href="'.url($roi).'"><i class="dw dw-eye"></i> ROI</a>
+                    $btn = '<a class="btn btn-warning btn-sm" href="'.url($roi).'"><i class="dw dw-eye"></i> ROI</a>
                           <a class="btn btn-success btn-sm" href="'.url($view).'"><i class="dw dw-file"></i> View</a>'; 
-                         return $btn;
+                        //  return $btn;
+                    if($row->contract_pdf != ''){
+                        $d_url = url('uploads/contract_pdf/'.$row->contract_pdf);
+                            $btn .='<a href="'.$d_url.'" class="btn btn-primary btn-sm" style="margin-left: 3px;" download=""><i class="fa fa-download"></i></a>';
+                    }
+                    return $btn;
                 })
                 ->addColumn('status', function($row){
                     if($row->status == '0') {
