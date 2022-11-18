@@ -32,6 +32,7 @@ class SalesPersonController extends Controller
         }
         $query->take($limit);
         // Elq();
+        $query->orderBy('id','desc');
         $salesPerson = $query->get();
         // Plq();
         $responce = [

@@ -35,6 +35,7 @@ class UserController extends Controller
                 $where = array(['admin_id','=',$Session['id']]);
                 $query->where($where);
             }
+            $query->orderBy('id','desc');
             $data = $query->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('first name', function($row){

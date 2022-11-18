@@ -29,7 +29,7 @@ class SchemaController extends Controller
     public function getSchemaDataTable(Request $request){
         if ($request->ajax()) {
             $Session = Session::get('admin_login');
-            $data = Schema:: get();
+            $data = Schema:: orderBy('id','desc')->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function($row){
                     $row->name = $row->fname.' '.$row->lname;

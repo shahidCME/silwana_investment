@@ -44,6 +44,7 @@ class InvestmentController extends Controller
                 $query->where('i.admin_id',$id);
             }
             $query->where('i.deleted_at',null);
+            $query->orderBy('id','desc');
             $data = $query->get();
             
             return Datatables::of($data)->addIndexColumn()

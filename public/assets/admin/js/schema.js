@@ -12,7 +12,8 @@ $(document).ready(function () {
         ajax:{
             url : base_url +"getSchemaDataTable",
             method:"POST",
-        },   
+        },  
+        order: [ [0, 'false'] ],
         columns: [
             { data: "name" },
             { data: "type" },

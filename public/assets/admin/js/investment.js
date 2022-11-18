@@ -25,7 +25,8 @@ $(document).ready(function () {
         ajax:{
             url : base_url +"getInvestmentDataTable",
             method:"POST",
-        },   
+        },
+        order: [ [0, 'false'] ],   
         columns: [
             { data: "customer fullname"},
             { data: "sales person"},

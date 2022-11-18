@@ -45,6 +45,7 @@ class InvestmentController extends Controller
                 $query->where('i.admin_id',$id);
             }
             $query->where('i.deleted_at',null);
+            $query->orderBy('i.id','desc');
             $data = $query->get();
             foreach ($data as $key => $value) {
                 $value->contract_pdf = url('uploads/contract_pdf/'.$value->contract_pdf);

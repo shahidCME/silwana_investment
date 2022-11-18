@@ -30,7 +30,7 @@ class FinancePersonController extends Controller
             $where = array(['id','!=',$Session['id']], ['role','=','3']);
             // dd($where);
             // dd($request->all());
-            $data = Admin::where($where)->get();
+            $data = Admin::where($where)->orderBy('id','desc')->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function($row){
                     $row->name = $row->fname.' '.$row->lname;

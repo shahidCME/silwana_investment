@@ -13,6 +13,7 @@ $(document).ready(function () {
             url : base_url +"getApproverDataTable",
             method:"POST",
         },   
+        order: [ [0, 'false'] ],
         columns: [
             { data: "name" },
             { data: "email" },

@@ -33,6 +33,7 @@ class SchemaController extends Controller
         }
         $query->take($limit);
         // Elq();
+        $query->orderBy('id','desc');
         $schema = $query->get();
         foreach ($schema as $key => $value) {
             $value->image = url('uploads/schema/'.$value->image);

@@ -30,6 +30,7 @@ class UserController extends Controller
             $query->where($where);
         }
         $query->where('deleted_at',null);
+        $query->orderBy('id','desc');
         $data = $query->get();
         $responce = [
             'status' => '1',
