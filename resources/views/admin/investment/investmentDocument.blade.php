@@ -49,7 +49,15 @@
                 <dl class="row">
                     {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
-                        {{ $viewData[0]->amount  }}
+                        {{ $viewData[0]->amount  }} 
+                    </dd>
+                </dl>
+            </dd>
+            <dt class="col-sm-3">Amount in Word</dt>
+            <dd class="col-sm-9">
+                <dl class="row">
+                    <dd class="col-sm-8">
+                        ({{ convertNumberToWord($viewData[0]->amount) }})
                     </dd>
                 </dl>
             </dd>

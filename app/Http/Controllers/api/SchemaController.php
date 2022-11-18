@@ -52,8 +52,8 @@ class SchemaController extends Controller
             'name'=>'required',
             'type'=>'required',
             'start_date'=>'required|date_format:"Y-m-d"',
-            'image'=>'required|mimes:jpg,png,gif,jpeg',
-            'document'=>'required|mimes:doc,docx,pdf,rtf',
+            'image'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
+            'document'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
             'status'=>'required',
             'details'=>'required',
         ]);
@@ -135,8 +135,8 @@ class SchemaController extends Controller
             'name'=>'required',
             'type'=>'required',
             'start_date'=>'required|date_format:"Y-m-d"',
-            'image'=>'mimes:jpg,png,gif,jpeg',
-            'document'=>'mimes:doc,docx,pdf,rtf',
+            'image'=>'mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
+            'document'=>'mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
             'status'=>'required',
             'details'=>'required',
         ]);
