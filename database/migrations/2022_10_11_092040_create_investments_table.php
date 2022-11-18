@@ -20,7 +20,7 @@ class CreateInvestmentsTable extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('schema_id')->references('id')->on('schemas')->onDelete('cascade');
             $table->date('start_date');
-            $table->float('amount',15, 2);
+            $table->decimal('amount',28, 2);
             $table->integer('tenure');
             $table->enum('return_type', ['0', '1'])->default('0')->comment('0=>monthly;1=>yearly'); // 0 =>monthly 1=>yearly 
             $table->float('return_percentage');
