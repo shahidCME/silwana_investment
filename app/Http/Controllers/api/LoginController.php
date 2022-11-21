@@ -29,7 +29,8 @@ class LoginController extends Controller
                     $response = [
                         'status' => '1',
                         'message' => 'Login successfull',
-                        'role' =>'2'
+                        'role' =>'2',
+                        'id' =>$user->id
                     ];
                     return response()->json($response);
                 }
@@ -48,7 +49,8 @@ class LoginController extends Controller
                     $response = [
                         'status' => '1',
                         'message' => 'Login successfull',
-                        'role' => $admin->role
+                        'role' => $admin->role,
+                        'id'=>$admin->id
                     ];
                      return response()->json($response);
                 }
