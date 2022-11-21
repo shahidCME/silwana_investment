@@ -328,6 +328,7 @@ class InvestmentController extends Controller
                       $data['viewData'][0]->day   =  $day = $contractStartDateFraction[0];
                       $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
                       $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
+                      $viewData[0]->amountArabic = convertNumberToWord($viewData[0]->amount);
                     if($req->lang == '1'){
                         $tr = new GoogleTranslate();
                         $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
@@ -340,7 +341,8 @@ class InvestmentController extends Controller
                         $data['arabic']['date_of_expiry'] = $tr->setSource('en')->setTarget('ar')->translate($date_of_expiry);
                         $dob = date('d-F-Y',strtotime($viewData[0]->dob));
                         $data['arabic']['dob'] = $tr->setSource('en')->setTarget('ar')->translate($dob);
-                        $data['arabic']['amount'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->amount);
+                        $data['arabic']['amount'] = $tr->setSource('en')->setTarget('ar')->translate(($viewData[0]->amount));
+                        $data['arabic']['amountArabic'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->amountArabic);
                         $data['arabic']['contract_end_date'] = $viewData[0]->contract_end_date;
                         $data['arabic']['contract_start_date'] = $viewData[0]->contract_start_date;
 

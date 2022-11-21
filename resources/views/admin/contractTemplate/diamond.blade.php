@@ -142,12 +142,12 @@
                <td>
                   <h6  style="text-align: right;"  dir="rtl"><strong>البند الثاني: مدفوعات رأس المال التجاري</strong></h6>
                   <p style="text-align: right;margin-bottom: 25px;" dir="rtl">رأس المال التجاري المقدم من الطرف الثاني كشريك تجاري بقيمة المبلغ المقدم.</p>
-                  <p style="text-align: right;margin-bottom: 25px;" dir="rtl">وافق وقبل الطرف الثاني على شراكته التجارية بمبلغ وقدره {{ (!empty($arabic)) ? $arabic['amount'] : '***' }} ( {{ (!empty($arabic)) ? $arabic['amount'] : '***' }} درهم إماراتي) وسلمه للطرف الأول الذي يقوم بأداء عمله كتاجر مشاريع بغرض المشاركة في تجارة سلوانا دايموند الزراعية والحيوانية، وهذا المبلغ يعتبر كإيداع مبدئي يمكن زيادته طبقاً للبنود المنظمة لهذا الشأن.</p>
+                  <p style="text-align: right;margin-bottom: 25px;" dir="rtl">وافق وقبل الطرف الثاني على شراكته التجارية بمبلغ وقدره {{ (!empty($arabic)) ? $arabic['amount'] : '***' }} ( {{ (!empty($arabic)) ? $arabic['amountArabic'] : '***' }}  درهم إماراتي) وسلمه للطرف الأول الذي يقوم بأداء عمله كتاجر مشاريع بغرض المشاركة في تجارة سلوانا دايموند الزراعية والحيوانية، وهذا المبلغ يعتبر كإيداع مبدئي يمكن زيادته طبقاً للبنود المنظمة لهذا الشأن.</p>
                </td>
                <td dir="ltr">
                   <h6><strong>Item (2): Commercial Capital Amount </strong></h6>
                   <p style="font-size: 16px;margin-bottom:25px;">The above-mentioned Preamble shall be deemed as an integral part of this agreement and shall be read and interpreted along with it.</p>
-                  <p style="font-size: 16px;margin-bottom:25px;">The second party has agreed and accepted to pay a commercial capital of {{ (empty($arabic)) ? $viewData[0]->amount : '***' }} Dirhams Emirati ({{ (empty($arabic)) ? $viewData[0]->amount : '***' }}Dirhams Emirati) and handed it over to the First Party which will carry on its commercial business as a producer and trader for the purpose of participating in the commercial livestock and agricultural products of Silwana Dimond pursuant to the above-mentioned preamble. And this amount will be considered as initial commercial capital and can be increased in accordance with the items regulating this matter.
+                  <p style="font-size: 16px;margin-bottom:25px;">The second party has agreed and accepted to pay a commercial capital of {{ (empty($arabic)) ? $viewData[0]->amount : '***' }} Dirhams Emirati ({{ (empty($arabic)) ? convertNumberToWord($viewData[0]->amount) : '***' }} Dirhams Emirati) and handed it over to the First Party which will carry on its commercial business as a producer and trader for the purpose of participating in the commercial livestock and agricultural products of Silwana Dimond pursuant to the above-mentioned preamble. And this amount will be considered as initial commercial capital and can be increased in accordance with the items regulating this matter.
                   </p>
                </td>
             </tr>
