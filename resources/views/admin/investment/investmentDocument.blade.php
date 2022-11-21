@@ -76,7 +76,7 @@
                 <dl class="row">
                     {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
-                        <a href="{{ url('uploads/contract_reciept/'.$viewData[0]->contract_pdf) }}" class="btn btn-dark btn-lg" download>
+                        <a href="{{ url('uploads/contract_pdf/'.$viewData[0]->contract_pdf) }}" class="btn btn-dark btn-lg" download>
                             <i class="fa fa-download"></i>
                             Download
                         </a>

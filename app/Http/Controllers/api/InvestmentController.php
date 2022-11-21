@@ -383,7 +383,7 @@ class InvestmentController extends Controller
                     }
                     // dd($data['arabic']);
                     $pdf = PDF::loadView('admin.contractTemplate.'. strtolower($req->contract), $data);
-                    $filename = strtolower($req->contract).'.'.time().'.pdf';
+                    $filename = strtolower($req->contract).'_'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
                     DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
             }

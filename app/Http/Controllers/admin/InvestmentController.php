@@ -290,7 +290,7 @@ class InvestmentController extends Controller
                 $file->move(public_path('uploads/other_document'),$other_document);
             }
 
-            $res = Investment :: updateRecords($req->all(),$filename,$invest_document,$other_document);
+            $res = Investment :: updateReccords($req->all(),$filename,$invest_document,$other_document);
             if(	$req->status=='1'){
                 // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
@@ -330,6 +330,7 @@ class InvestmentController extends Controller
                       $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
                       $viewData[0]->amountArabic = convertNumberToWord($viewData[0]->amount);
                     if($req->lang == '1'){
+                        
                         $tr = new GoogleTranslate();
                         $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
                         $data['arabic']['customerLname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerLname);
@@ -351,7 +352,7 @@ class InvestmentController extends Controller
                         $data['arabic']['year'] = $tr->setSource('en')->setTarget('ar')->translate(strtolower(convertNumberToWord($viewData[0]->year)));
                     }
                     $pdf = PDF::loadView('admin.contractTemplate.'.strtolower($req->contract), $data);
-                    $filename = strtolower($req->contract).'.'.time().'.pdf';
+                    $filename = strtolower($req->contract).'_'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
                     DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
             }
