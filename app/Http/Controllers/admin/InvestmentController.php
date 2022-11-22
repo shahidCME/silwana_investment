@@ -80,7 +80,7 @@ class InvestmentController extends Controller
                </div>'; 
                if($row->contract_pdf != ''){
                     $d_url = url('uploads/contract_pdf/'.$row->contract_pdf);
-                    $btn .='<a href="'.$d_url.'" class="badge badge-success" download=""><i class="fa fa-download"></i></a>';
+                    $btn .='<a href="'.$d_url.'" target="_blank" class="badge badge-success" ><i class="fa fa-download"></i></a>';
                  }
                     return $btn;
                 })
