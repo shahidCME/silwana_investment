@@ -31,6 +31,7 @@ Route::post('/addUser', [UserController::class, 'addUser']);
 Route::post('/editUser', [UserController::class, 'edit']);
 Route::post('/deleteUser', [UserController::class, 'delete']);
 Route::post('/updateUser', [UserController::class, 'update']);
+Route::get('/getCountryCode', [UserController::class, 'getCountryCode']);
 
 
 Route::post('getSalesperson',[SalesPersonController::class,'index']);

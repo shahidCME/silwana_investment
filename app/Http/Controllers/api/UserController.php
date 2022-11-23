@@ -41,6 +41,15 @@ class UserController extends Controller
 
     }
 
+    public function getCountryCode(){
+        $data = DB::table('countries')->get();
+        $responce = [
+            'status' => '1',
+            'message'=> 'country code',
+            'data' => $data
+        ];
+        return response()->json($responce);
+    }
 
     public function addUser(Request $request){
         $validator = Validator::make($request->all(), [
@@ -50,7 +59,8 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'mobile' => 'required|numeric',
             'dob' => 'required|date_format:"Y-m-d"',
-            'status' => 'required'
+            'status' => 'required',
+            'country_id'=>'required'
         ]);
         if ($validator->fails()) {
             $responce = [
