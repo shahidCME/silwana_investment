@@ -7,6 +7,7 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\SalesPersonController;
 use App\Http\Controllers\api\SchemaController;
 use App\Http\Controllers\api\InvestmentController;
+use App\Http\Controllers\api\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,9 @@ use App\Http\Controllers\api\InvestmentController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('Dashboard',[DashboardController::class,'index']);
+
+
 Route::post('login',[LoginController::class,'index']);
 Route::get('/logout',[LoginController::class,'logout']);
 Route::post('/forgetPassword',[LoginController::class,'forgetPassword']);
