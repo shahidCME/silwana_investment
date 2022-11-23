@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\admin\Investment;
 use App\Models\admin\Admin;
 use App\Models\admin\User;
+use App\Models\admin\Schema;
 use DB;
 class DashboardController extends Controller
 {
@@ -31,6 +32,8 @@ class DashboardController extends Controller
                 $data['totalSalePerson'] = Admin::where('role','0')->count();
                 $data['totalFinancePerson'] = Admin::where('role','3')->count();
                 $data['totalApprover'] = Admin::where('role','4')->count();
+                $data['totalSchema'] = Schema::count();
+
             }else{
                 $validator = Validator::make($request->all(), [
                     'role'    => 'required|numeric',

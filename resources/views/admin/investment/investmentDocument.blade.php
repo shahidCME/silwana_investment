@@ -57,7 +57,7 @@
             <dd class="col-sm-9">
                 <dl class="row">
                     <dd class="col-sm-8">
-                        ({{ convertNumberToWord($viewData[0]->amount) }})
+                        {{ convertNumberToWord($viewData[0]->amount) }} 
                     </dd>
                 </dl>
             </dd>
