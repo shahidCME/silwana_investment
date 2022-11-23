@@ -73,7 +73,7 @@
         </div>
         @if(admin_login()['role'] == '1' || admin_login()['role'] == '4')
         <div class="col-md-6">
-            <label class="weight-600">Return type</label>
+            <label class="weight-600">Status</label>
             <div class="custom-control custom-radio mb-5">
                 <input type="radio" id="status1" name="status" value="0" class="custom-control-input" {{ ($editData[0]->status == 0)? "checked" :"" }}>
                 <label class="custom-control-label" for="status1">Rejecte</label>
