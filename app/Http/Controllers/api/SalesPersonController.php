@@ -25,7 +25,7 @@ class SalesPersonController extends Controller
         $limit = 10;
         $offset = 0;
         $query = DB::table('admins')->select('id','email','fname','lname','mobile','role','status','created_at','updated_at');
-        $query->where('role','0');
+        $query->where(['role'=>'0','deleted_at'=>null]);
         if($request['offset'] > 0 ){
             $off= $limit * $request['offset'];
             $query->skip($off);
@@ -41,7 +41,7 @@ class SalesPersonController extends Controller
             'data'=>$salesPerson,
         ];
         return response()->json($responce);
-        dd($salesPerson);
+        // dd($salesPerson);
 
     }
 

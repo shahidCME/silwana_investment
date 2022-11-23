@@ -57,6 +57,7 @@ class Investment extends Model
         $roi = DB::table('roi')->where(['investment_id' =>$id,'status'=>'1'])->get()->toArray();
         $completedRecord = count($roi);
         for ($i=1; $i <= ($postData['tenure']-$completedRecord)  ; $i++) { 
+
             if(!empty($roi)){
                 $date_of_return = $roi[$completedRecord-1]->date_of_return;
                 $continueFrom = strtotime($date_of_return);
@@ -68,6 +69,7 @@ class Investment extends Model
             }else{
                 $final_date = date('Y-m-d', strtotime("+".$i." years",$continueFrom));
             }
+            
             $returnAmount = ($postData['amount'] * $postData['return_percentage'])/100;
             $willInsert = [
                 'investment_id'=>$id,
