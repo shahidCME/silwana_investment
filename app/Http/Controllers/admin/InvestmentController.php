@@ -219,7 +219,7 @@ class InvestmentController extends Controller
         return view('admin/main_layout',$data);
     }
 
-    function edit ($eid='',Request $req){
+    function edit($eid='',Request $req){
         $customer = User::where('status','=','1')->get();
         $data['getCustomer'] = $customer;
         $schema = schema::where('status','=','1')->get();
@@ -289,8 +289,7 @@ class InvestmentController extends Controller
                 $other_document = 'other_document_'.time().'.'.$ext;
                 $file->move(public_path('uploads/other_document'),$other_document);
             }
-
-            $res = Investment :: updateReccords($req->all(),$filename,$invest_document,$other_document);
+            $res = Investment::updateRecords($req->all(),$filename,$invest_document,$other_document);
             if(	$req->status=='1'){
                 // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {

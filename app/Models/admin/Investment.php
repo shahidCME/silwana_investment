@@ -35,7 +35,6 @@ class Investment extends Model
 
 
     public function updateRecords($postData,$filename,$invest_document,$other_document){
-        // dd($postData);
         $id = decrypt($postData['update_id']);
         $updateData = [
             'user_id' => $postData['customer'],
@@ -69,7 +68,6 @@ class Investment extends Model
             }else{
                 $final_date = date('Y-m-d', strtotime("+".$i." years",$continueFrom));
             }
-            // dd($final_date);
             $returnAmount = ($postData['amount'] * $postData['return_percentage'])/100;
             $willInsert = [
                 'investment_id'=>$id,
