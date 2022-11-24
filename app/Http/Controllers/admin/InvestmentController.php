@@ -24,7 +24,7 @@ class InvestmentController extends Controller
     public function index()
     {
         $data['page'] = "admin.investment.list";
-        $data['js'] = ['investment'];
+        $data['js'] = ['investment','validateFile'];
         $data['addButton'] = url('addInvestment');
         $data['title'] = "Investment list";
         return view('admin/main_layout',$data);
@@ -44,6 +44,7 @@ class InvestmentController extends Controller
                 $query->where('i.admin_id',$id);
             }
             $query->where('i.deleted_at',null);
+            $query->where('i.status','!=','9');
             $query->orderBy('id','desc');
             $data = $query->get();
             
@@ -62,6 +63,7 @@ class InvestmentController extends Controller
             })
              ->addColumn('action', function($row){      
                     $role = (admin_login()['role'] == "3") ? 'd-none' : '';              
+                    $cancel = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';              
                     $encryptedId = encrypt($row->id);
                     $editurl = "InvestmentEdit/".$encryptedId;
                     $deleteurl = "InvestmentDelete/".$encryptedId;
@@ -76,6 +78,7 @@ class InvestmentController extends Controller
                        <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
+                       <a class="dropdown-item '.$cancel.' CancelContract" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
                    </div>
                </div>'; 
                if($row->contract_pdf != ''){
@@ -462,6 +465,41 @@ class InvestmentController extends Controller
                 return redirect('roi/'.$req->investment_id)->with('Mymessage', flashMessage('danger','Something Went Wrong'));
             }
         }
+        return view('admin/main_layout',$data);
+
+    }
+
+    public function contractCancel(Request $request){
+        $uid = decrypt($request->investment_id);
+        $res = Investment::where('id',$uid)->update(['status'=>'9','contractCancelComment'=>$request->contractCancelComment,'updated_at'=>dbDateFormat()]);
+        if($res){
+            return redirect('Investment')->with('Mymessage', flashMessage('success','Investment Canceled Successfully'));
+        }else{
+            return redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+        }
+    }
+
+    public function cancelledInvestment(){
+        $Session = Session::get('admin_login');
+        $query = DB:: table('investments as i');
+              $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
+                    ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
+                    ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname');
+            if($Session['super_admin'] == '0'){
+                $id = $Session['id'];
+                $query->where('i.admin_id',$id);
+            }
+            $query->where('i.deleted_at',null);
+            $query->where('i.status','9');
+            $query->orderBy('id','desc');
+            $record = $query->get();
+        // dd($record);
+        $data['page']  = 'admin.investment.cancelledInvestment';
+        $data['js'] = ['cancelInvestment'];
+        $data['cancelledInvestment'] = $record;
+        $data['title'] = 'cancelled Investment';
+        
         return view('admin/main_layout',$data);
 
     }

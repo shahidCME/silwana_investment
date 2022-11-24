@@ -28,7 +28,7 @@ class CreateInvestmentsTable extends Migration
             $table->string('investment_doc');
             $table->string('other_doc')->nullable();
             $table->string('contract_pdf')->nullable();
-            $table->enum('status', ['0','1','2'])->default('1')->comment('0=>rejected;1=>approved;2=>pending'); // 0 =>rejected 1=>approved 2 => pending 
+            $table->enum('status', ['0','1','2','9'])->default('1')->comment('0=>rejected;1=>approved;2=>pending;0=>cancel'); // 0 =>rejected 1=>approved 2 => pending 
             $table->softDeletes();
             $table->timestamps();
         });

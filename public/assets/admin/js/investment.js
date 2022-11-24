@@ -11,6 +11,14 @@ $(document).on('click','.payBtn',function(){
     var val = $(this).data('id');
     $('#roi_id').val(val);
 });
+
+$(document).on('click','.CancelContract',function(){
+    var investment_id = $(this).data('id');
+    $('#investment_id').val(investment_id);
+
+});
+
+
 $(document).ready(function () {
     // DataTable
     $.ajaxSetup({

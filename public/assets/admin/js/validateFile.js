@@ -438,3 +438,22 @@ $("#Roiform").validate({
             $(form).submit();
     }
 });
+
+$("#contractCancelForm").validate({
+    rules: {
+        contractCancelComment : {
+            required : true,
+        },
+    },
+    messages: {
+        contractCancelComment: {
+            required: "Please enter Comment",
+        },
+    },
+    submitHandler: function (form) {
+        $('body').attr('disabled','disabled');
+        $('#btnSubmit').attr('disabled','disabled');
+        $('#btnSubmit').value('please wait');
+            $(form).submit();
+    }
+});

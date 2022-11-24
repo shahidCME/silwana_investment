@@ -91,6 +91,8 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/InvestmentEdit/{id}', [InvestmentController::class, 'edit']);
     Route::post('/InvestmentEdit', [InvestmentController::class, 'edit']);
     Route::get('/InvestmentDocument/{id}', [InvestmentController::class, 'investmentDocument']);
+    Route::post('/contractCancel', [InvestmentController::class, 'contractCancel']);
+    Route::get('/cancelledInvestment', [InvestmentController::class, 'cancelledInvestment']);
     Route::get('/roi/{id}', [InvestmentController::class, 'getRoi']);
     Route::post('/roi/{id}', [InvestmentController::class, 'getRoi']);
 

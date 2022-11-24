@@ -28,6 +28,7 @@ class MyinvestmentController extends Controller
                 $query->where('i.user_id',$id);
             }
             // Elq();
+            $query->where('i.status','!=','9');
             $query->where('i.deleted_at',null);
             $data = $query->get();
             // Plq();

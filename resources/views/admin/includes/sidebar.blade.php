@@ -63,6 +63,12 @@
 								><span class="mtext">Investment</span>
 							</a>
 						</li>
+						<li>
+							<a href="{{ url('cancelledInvestment') }}" class="dropdown-toggle no-arrow">
+								<span class="micon bi bi-x-circle-fill"></span
+								><span class="mtext">Cancelled Investment</span>
+							</a>
+						</li>
 						@endif
 						@if(admin_login()['role'] == '2')
 						<li>
