@@ -29,6 +29,7 @@ class UserController extends Controller
             $where = array('admin_id',$request->id);
             $query->where($where);
         }
+        
         $query->where('deleted_at',null);
         $query->orderBy('id','desc');
         $data = $query->get();
@@ -63,7 +64,8 @@ class UserController extends Controller
             'mobile' => 'required|numeric',
             'dob' => 'required|date_format:"Y-m-d"',
             'status' => 'required',
-            'country_id'=>'required'
+            'country_id'=>'required',
+            'nationality' => 'required'
         ]);
         if ($validator->fails()) {
             $responce = [
@@ -82,6 +84,7 @@ class UserController extends Controller
             $res->mobile = $request->mobile; 
             $res->status = $request->status; 
             $res->country_id = $request->country_id; 
+            $res->nationality = $req->nationality;
             $res->dob = dbDateFormat($request->dob,true); 
             $res->created_at = dbDateFormat(); 
             $res->updated_at = dbDateFormat(); 

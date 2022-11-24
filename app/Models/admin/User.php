@@ -14,6 +14,7 @@ use DB;
 class User extends Authenticatable
 {
     use HasFactory,SoftDeletes,HasApiTokens;
+    // protected $hidden = ['password'];
     public function getData($id){
         $get = User::where(['id'=>$id])->get();
         return $get;
