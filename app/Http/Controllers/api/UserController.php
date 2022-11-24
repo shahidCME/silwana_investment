@@ -32,6 +32,9 @@ class UserController extends Controller
         $query->where('deleted_at',null);
         $query->orderBy('id','desc');
         $data = $query->get();
+        foreach($data as $value){
+            $value->role = '2';
+        }
         $responce = [
             'status' => '1',
             'message'=> 'user list',
