@@ -43,7 +43,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myLargeModalLabel">
-                            Contact Cancelled Comment 
+                            Contract Cancelled Comment 
                         </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
