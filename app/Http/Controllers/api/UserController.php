@@ -157,7 +157,8 @@ class UserController extends Controller
             'lname'  => 'required',
             'gender' => 'required',
             'mobile' => 'required|numeric',
-            'dob'    => 'required|date_format:"Y-m-d"'
+            'dob'    => 'required|date_format:"Y-m-d"',
+            'country_id'=>'required'
         ]);
         if ($validator->fails()) {
             $responce = [
@@ -170,6 +171,7 @@ class UserController extends Controller
             $res->fname = $request->fname; 
             $res->lname = $request->lname; 
             $res->gender = $request->gender; 
+            $res->country_id = $request->country_id;
             $res->mobile = $request->mobile;
             if(isset($request->status)){
                 $res->status = $request->status; 
