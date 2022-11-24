@@ -52,22 +52,36 @@ class Investment extends Model
         ];
         // dd($updateData);
         Investment::where('id', $id)->update($updateData);
+        $investData = Investment::where('id', $id)->get();
+        $availableStartData = $investData[0]->start_date;
+
         DB::table('roi')->where(['investment_id' =>$id,'status'=>'0'])->delete(); 
 
         $roi = DB::table('roi')->where(['investment_id' =>$id,'status'=>'1'])->get()->toArray();
         $completedRecord = count($roi);
+        
+        if($availableStartData != $postData['start_date']){
+            $completedRecord = 0;
+        }
+
         for ($i=1; $i <= ($postData['tenure']-$completedRecord)  ; $i++) { 
 
-            if(!empty($roi)){
-                $date_of_return = $roi[$completedRecord-1]->date_of_return;
-                $continueFrom = strtotime($date_of_return);
+            if($availableStartData == $postData['start_date']){
+            
+                if(!empty($roi)){
+                    $date_of_return = $roi[$completedRecord-1]->date_of_return;
+                    $continueFrom = strtotime($date_of_return);
+                }else{
+                    $continueFrom = strtotime(dbDateFormat($postData['start_date'],true));
+                }
             }else{
                 $continueFrom = strtotime(dbDateFormat($postData['start_date'],true));
-            }
+            }   
+                
             if($postData['return_type'] == '0'){
-                $final_date = date("Y-m-d", strtotime("+".$i." month", $continueFrom));
+                    $final_date = date("Y-m-d", strtotime("+".$i." month", $continueFrom));
             }else{
-                $final_date = date('Y-m-d', strtotime("+".$i." years",$continueFrom));
+                    $final_date = date('Y-m-d', strtotime("+".$i." years",$continueFrom));
             }
             
             $returnAmount = ($postData['amount'] * $postData['return_percentage'])/100;
