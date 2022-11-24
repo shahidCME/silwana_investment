@@ -44,6 +44,7 @@ class InvestmentController extends Controller
                 $query->where('i.admin_id',$id);
             }
             $query->where('i.deleted_at',null);
+            $query->where('u.deleted_at',null);
             $query->where('i.status','!=','9');
             $query->orderBy('id','desc');
             $data = $query->get();
@@ -502,5 +503,16 @@ class InvestmentController extends Controller
         
         return view('admin/main_layout',$data);
 
+    }
+
+    public function cancelledRoi($eid){
+            $id = decrypt($eid);
+            $record = DB::table('roi')->where(['investment_id'=>$id,'status'=>'1'])->get();
+            $data['investment_id'] = $eid;
+            $data['roi'] = $record;
+            $data['title'] = 'Return of Investment';
+            $data['page']  = 'admin.investment.roi';
+            $data['js'] = ['investment','validateFile'];
+            return view('admin/main_layout',$data);
     }
 }

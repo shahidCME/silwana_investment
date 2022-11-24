@@ -28,7 +28,7 @@
                     <td>{{ ($value->return_type =='0') ? "Monthly" : "Yearly"; }}</td>
                     <td class="datatable-nosort">
                     <a href="#" class="btn btn-warning btn-sm comment" data-comment ="{{ $value->contractCancelComment }}" data-toggle="modal" data-target="#Medium-modal" type="button">Comment</a>
-                        <?php $btn = '<a href="'.url('roi/'.encrypt($value->id)).'" class="btn btn-primary btn-sm">Roi</a>'; ?>
+                        <?php $btn = '<a href="'.url('cancelledRoi/'.encrypt($value->id)).'" class="btn btn-primary btn-sm">Roi</a>'; ?>
                         <?=$btn?>
                     </td>
                 </tr>      
