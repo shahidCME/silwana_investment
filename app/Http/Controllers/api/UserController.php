@@ -81,6 +81,7 @@ class UserController extends Controller
             $res->gender = $request->gender; 
             $res->mobile = $request->mobile; 
             $res->status = $request->status; 
+            $res->country_id = $request->country_id; 
             $res->dob = dbDateFormat($request->dob,true); 
             $res->created_at = dbDateFormat(); 
             $res->updated_at = dbDateFormat(); 
