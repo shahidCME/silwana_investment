@@ -13,7 +13,7 @@
                     <th>Cancel Date</th>
                     <th>Amount</th>
                     <th>Return Type</th>
-                    <th class="datatable-nosort">Action/Contract pdf </th>
+                    <th class="datatable-nosort">Action</th>
                 </tr>
             </thead>
             <tbody>
