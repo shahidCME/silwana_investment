@@ -78,7 +78,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-12 col-md-2 col-form-label">DOB</label>
-                <input class="form-control date-picker" name="dob" placeholder="Select Date" value="{{ $editData[0]->dob }}" type="text">
+                <input class="form-control date-picker" name="dob" placeholder="Select Date" value="{{ date('d F Y',strtotime($editData[0]->dob)) }}" type="text">
         </div>
         <div class="form-group">
             {{-- <label class="weight-600">KYC Document</label> --}}
