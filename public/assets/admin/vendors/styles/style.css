@@ -520,13 +520,16 @@ p {
   -webkit-box-shadow: 0 0 28px rgba(0, 0, 0, 0.08);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.01);
 }
+#InvestmentTable_wrapper .table{
+  width: 100%  !important;
+}  
 
 
 /* ================================================= */
-@media only screen and (max-width: 2200px)
+@media only screen and (max-width: 1500px)
 {
 
-  #InvestmentTable_wrapper .col-sm-12{
+  #InvestmentTable_wrapper > .row:nth-child(2) .col-sm-12{
     width: 100% !important;
     overflow: scroll !important;
   }
