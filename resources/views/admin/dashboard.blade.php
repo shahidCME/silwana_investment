@@ -11,7 +11,7 @@
                 <div class="widget-data">
                     <div class="weight-700 font-24 text-dark">{{$totalUser}}</div>
                     <div class="font-14 text-secondary weight-500">
-                        Users
+                        Customer
                     </div>
                 </div>
                 <div class="widget-icon">
