@@ -231,7 +231,7 @@ class InvestmentController extends Controller
             'return_type'=>'required',
             'tenure' => 'required',
             'return_percentage' => 'required',
-            'start_date' => 'required',
+            'start_date' => 'required||date_format:"Y-m-d"',
             'status' => 'digits_between:0,2',
             'contract'=>'required',
             'lang'=>'required',
@@ -303,23 +303,42 @@ class InvestmentController extends Controller
                 'updated_at' => dbDateFormat(), 
             ];
             // dd($updateData);
-           $result = Investment::where('id', $id)->update($updateData);
+            $result = Investment::where('id', $id)->update($updateData);
+            
+            $investData = Investment::where('id', $id)->get();
+            $availableStartData = $investData[0]->start_date;
+
+            
             DB::table('roi')->where(['investment_id' =>$id,'status'=>'0'])->delete(); 
 
             $roi = DB::table('roi')->where(['investment_id' =>$id,'status'=>'1'])->get()->toArray();
             $completedRecord = count($roi);
+
+            if($availableStartData != $req->start_date){
+                $completedRecord = 0;
+            }
+
+
             for ($i=1; $i <= ($req->tenure-$completedRecord)  ; $i++) { 
+
+            if($availableStartData == $req->start_date){
+
                 if(!empty($roi)){
                     $date_of_return = $roi[$completedRecord-1]->date_of_return;
                     $continueFrom = strtotime($date_of_return);
                 }else{
                     $continueFrom = strtotime(dbDateFormat($req->start_date,true));
                 }
-                if($req->return_type == '0'){
-                    $final_date = date("Y-m-d", strtotime("+".$i." month", $continueFrom));
-                }else{
-                    $final_date = date('Y-m-d', strtotime("+".$i." years",$continueFrom));
-                } 
+            }else{
+                    $continueFrom = strtotime(dbDateFormat($req->start_date,true));
+            }
+
+            if($req->return_type == '0'){
+                $final_date = date("Y-m-d", strtotime("+".$i." month", $continueFrom));
+            }else{
+                $final_date = date('Y-m-d', strtotime("+".$i." years",$continueFrom));
+            } 
+
                 $returnAmount = ($req->amount * $req->return_percentage)/100;
                 $willInsert = [
                     'investment_id'=>$id,
