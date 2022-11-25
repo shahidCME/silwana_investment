@@ -113,7 +113,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-8">
-                <label>Image Of Natinal Id</label>
+                <label>Natinal Id</label>
                 <input type="hidden" name="old_image" value="{{ (isset($editData[0]->kycData)) ? $editData[0]->kycData[0]->nationalIdImage : '' }}">
                 <input type="file" name="editnationalIdImage" class="form-control-file form-control height-auto">
             </div>

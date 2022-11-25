@@ -112,7 +112,7 @@
                 <input class="form-control date-picker" name="date_of_expiry" placeholder="Select Date of expiry"  type="text">
         </div>
         <div class="form-group">
-            <label>Upload Natinal Id</label>
+            <label>Natinal Id</label>
             <input type="file" name="nationalIdImage" class="form-control-file form-control height-auto">
         </div>
 

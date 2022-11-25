@@ -37,6 +37,13 @@ class UserController extends Controller
             }
             $query->orderBy('id','desc');
             $data = $query->get();
+            foreach($data as $key =>$value){
+                $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
+                if(!empty($kyc->all())){
+                    $value->nationalIdImage = $kyc[0]->nationalIdImage;
+                }
+            }
+            // dd($data);
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('first name', function($row){
                     return $row->fname;
@@ -48,18 +55,20 @@ class UserController extends Controller
                     $encryptedId = encrypt($row->id);
                     $editurl = "customerEdit/".$encryptedId;
                     $deleteurl = "customerDelete/".$encryptedId;
-                   $btn = '<div class="dropdown">
+                    $nationalId = url("uploads/national_id/");
+                   $btn = '<div class="dropdown" style="display:inline">
                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                        <i class="dw dw-more"></i>
                    </a>
-                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list" >
                        <a class="dropdown-item" href="'.url($editurl).'"><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
-                     
-                     
                    </div>
                </div>'; 
-                         return $btn;
+                if(isset($row->nationalIdImage)){
+                    $btn .='<a href='.url("uploads/national_id/".$row->nationalIdImage).' target="_blank" class="badge badge-success"><i class="fa fa-download"></i></a>';
+                }
+                return $btn;
                 })
                 ->addColumn('status', function($row){
                     return ($row->status == '1') ? '<button type="button" class="badge badge-success">Active</button>' : '<button type="button" class="badge badge-danger   ">Inactive</button>';

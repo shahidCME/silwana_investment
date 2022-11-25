@@ -14,7 +14,7 @@
                     <th>Mobile</th>
                     <th>Status</th>
                     <th>DOB</th>
-                    <th class="datatable-nosort">Action</th>
+                    <th class="datatable-nosort">Action/kycdoc</th>
                 </tr>
             </thead>
             <tbody>
