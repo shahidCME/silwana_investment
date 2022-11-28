@@ -9,7 +9,6 @@ $(document).ready(function () {
     $("#salesTable").DataTable({
         processing: true,
         serverSide: true,
-        // scrollX: true,
         ajax:{
             url : base_url +"getSalesPersonDataTable",
             method:"POST",

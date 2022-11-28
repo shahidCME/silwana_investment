@@ -30,7 +30,7 @@ $(document).ready(function () {
     $("#InvestmentTable").DataTable({
         processing: true,
         serverSide: true,
-        scrollX:true,
+        // scrollX:true,
         ajax:{
             url : base_url +"getInvestmentDataTable",
             method:"POST",
@@ -51,5 +51,5 @@ $(document).ready(function () {
 });
 
 $("#datatable").DataTable({
-    scrollX: true,
+    // scrollX: true,
 });

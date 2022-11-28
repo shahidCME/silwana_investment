@@ -4,5 +4,5 @@ $(document).on('click','.comment',function(){
 
 });
 $("#datatable").DataTable({
-    scrollX: true,
+    // scrollX: true,
 });
