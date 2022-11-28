@@ -3,7 +3,7 @@
         <h4 class="text-blue h4">{{ $title }}</>
         </div>
     <div class="pb-20">
-        <table class="table stripe hover nowrap " id="data-table">
+        <table class="table stripe hover nowrap " id="datatable" width="100%">
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort">Sno.</th>
