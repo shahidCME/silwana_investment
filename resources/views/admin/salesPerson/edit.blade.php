@@ -28,8 +28,8 @@
             <input class="form-control" name="mobile" value="{{ $editData[0]->mobile }}" type="text" placeholder="Enter mobile">
         </div>
         <div class="form-group">
-            <div class="row">
-                <div class="col-md-4 ">
+            <div class="row" >
+                <div class="col-md-4 " style="display:none">
                     <label class="weight-600">Role</label>
                     <div class="custom-control custom-radio mb-5">
                         <input type="radio" id="role1" name="role" value="1" class="custom-control-input" {{ ($editData[0]->role ==1)?"checked" :"" }}>

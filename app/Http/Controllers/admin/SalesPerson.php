@@ -92,6 +92,7 @@ class SalesPerson extends Controller
         $data['title'] = 'Eidt Sales Person';
         $data['action'] = url('salesPersonEdit');
         if($req->all()){
+            // dd($req->all());
             $res = Admin :: updateRecords($req->all());
             if($res){
                 return redirect('salesPerson')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
