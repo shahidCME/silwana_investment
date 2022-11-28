@@ -95,6 +95,20 @@ class UserController extends Controller
             $res->save();
             $last_id = $res->id;
             if(isset($request->is_kyc) && $request->is_kyc == 1){
+                $validator = Validator::make($request->all(), [
+                    'national_id' => 'required',
+                    'address' => 'required',
+                    'nationalIdImage' => 'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
+                    'date_of_expiry' => 'required|date_format:"Y-m-d"'
+                ]);
+                if ($validator->fails()) {
+                    $responce = [
+                        'status'=>'0',
+                        'errors'=>$validator->errors()
+                    ];
+                    return response()->json($responce);
+                }
+                $filename= '';
                 if($request->hasfile('nationalIdImage')){
                     $file = $request->file('nationalIdImage');
                     $ext = $file->getClientOriginalExtension();
