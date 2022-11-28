@@ -7,7 +7,7 @@
     </div>
     <div class="pb-20 investment-card-table">
         
-        <table class="table stripe hover nowrap " id="InvestmentTable">
+        <table class="table stripe hover nowrap " id="InvestmentTable" width="100%">
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort">Customer Fullname</th>
