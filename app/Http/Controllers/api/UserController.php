@@ -35,7 +35,7 @@ class UserController extends Controller
         $data = $query->get();
         foreach($data as $value){
             $value->role = '2';
-            $data[0]->is_kyc = '0';
+            $value->is_kyc = '0';
             $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
             if(!empty($kyc->all())){
                 $value->is_kyc = '1';
