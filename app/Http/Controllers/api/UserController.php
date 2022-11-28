@@ -33,9 +33,9 @@ class UserController extends Controller
         $query->where('deleted_at',null);
         $query->orderBy('id','desc');
         $data = $query->get();
-        $data[0]->is_kyc = '0';
         foreach($data as $value){
             $value->role = '2';
+            $data[0]->is_kyc = '0';
             $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
             if(!empty($kyc->all())){
                 $value->is_kyc = '1';
