@@ -33,11 +33,16 @@ class UserController extends Controller
         $query->where('deleted_at',null);
         $query->orderBy('id','desc');
         $data = $query->get();
+        $data[0]->is_kyc = '0';
         foreach($data as $value){
             $value->role = '2';
-        $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
+            $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
             if(!empty($kyc->all())){
-                $value->nationalIdImage = $kyc[0]->nationalIdImage;
+                $value->is_kyc = '1';
+                $value->nationalIdImage = url('public/national_id/'.$kyc[0]->nationalIdImage);
+                $value->national_id = $kyc[0]->national_id;
+                $value->address = $kyc[0]->address;
+                $value->date_of_expiry = $kyc[0]->date_of_expiry;
             }
         }
         $responce = [
@@ -120,6 +125,7 @@ class UserController extends Controller
                     'user_id'=>$last_id,
                     'national_id'=> $request->national_id,
                     'address'=>$request->address,
+                    "date_of_expiry"=>$request->date_of_expiry,
                     'nationalIdImage'=>$filename,
                     'created_at' => dbDateFormat(),
                     'updated_at' => dbDateFormat()
@@ -228,6 +234,7 @@ class UserController extends Controller
                         'user_id'=>$request->user_id,
                         'national_id'=> $request->national_id,
                         'address'=>$request->address,
+                        "date_of_expiry"=>$request->date_of_expiry,
                         'nationalIdImage'=>(isset($filename)) ? $filename : $userKcy[0]->nationalIdImage ,
                         'created_at'=>dbDateFormat(),
                         'updated_at'=>dbDateFormat()
