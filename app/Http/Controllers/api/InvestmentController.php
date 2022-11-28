@@ -34,7 +34,7 @@ class InvestmentController extends Controller
               $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
                     ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname');
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.image as schemaImage','s.documents as schemaDocuments');
             if($request['offset'] > 0 ){
                 $off= $limit * $request['offset'];
                 $query->skip($off);
@@ -49,6 +49,8 @@ class InvestmentController extends Controller
             $data = $query->get();
             foreach ($data as $key => $value) {
                 $value->contract_pdf = url('uploads/contract_pdf/'.$value->contract_pdf);
+                $value->schemaImage = url('uploads/schema/'.$value->schemaImage);
+                $value->schemaDocuments = url('uploads/schema_doc/'.$value->schemaDocuments);
             }
             $responce = [
                 'status'=>'1',
