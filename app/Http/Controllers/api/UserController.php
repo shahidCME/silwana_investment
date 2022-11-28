@@ -163,11 +163,13 @@ class UserController extends Controller
         foreach ($data as $key => $value) {
             $userKyc = DB::table('user_kyc')->where('user_id',$value->id,'deleted_at',null)->get();
             if(!empty($userKyc->all())){
-                $value->is_kyc = true;
-                $value->kycData = $userKyc;
-                $userKyc[0]->nationalIdImage = url('uploads/national_id/'.$userKyc[0]->nationalIdImage);
+                $value->is_kyc = '1';
+                $value->national_id = $userKyc[0]->national_id;
+                $value->address = $userKyc[0]->address;
+                $value->date_of_expiry = $userKyc[0]->date_of_expiry;
+                $value->nationalIdImage = url('uploads/national_id/'.$userKyc[0]->nationalIdImage);
             }else{
-                $value->is_kyc = false;
+                $value->is_kyc = '0';
             }
         }
         $responce = [
