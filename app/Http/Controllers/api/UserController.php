@@ -69,7 +69,7 @@ class UserController extends Controller
             'admin_id' => 'required',
             'fname' => 'required',
             'lname' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => ['required', Rule::unique('users')->whereNull('deleted_at')],
             'mobile' => 'required|numeric',
             'dob' => 'required|date_format:"Y-m-d"',
             'status' => 'required',
@@ -161,7 +161,7 @@ class UserController extends Controller
 
         $data = User::where('id',$request->user_id)->get();
         foreach ($data as $key => $value) {
-            $userKyc = DB::table('user_kyc')->where('user_id',$value->id,'deleted_at',null)->get();
+            $userKyc = DB::table('user_kyc')->where('user_id',$value->id,'deleted_at',NULL)->get();
             if(!empty($userKyc->all())){
                 $value->is_kyc = '1';
                 $value->national_id = $userKyc[0]->national_id;

@@ -92,7 +92,7 @@ class UserController extends Controller
             $validatedData = $req->validate([
                 'fname' => 'required',
                 'lname' => 'required',
-                'email' => 'required|email|unique:users',
+                'email' => ['required', Rule::unique('users')->whereNull('deleted_at')],
                 'mobile' => 'required',
             ], [
                 'fname.required' => 'Please enter first name',
