@@ -35,6 +35,10 @@ class UserController extends Controller
         $data = $query->get();
         foreach($data as $value){
             $value->role = '2';
+        $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
+            if(!empty($kyc->all())){
+                $value->nationalIdImage = $kyc[0]->nationalIdImage;
+            }
         }
         $responce = [
             'status' => '1',
@@ -84,7 +88,7 @@ class UserController extends Controller
             $res->mobile = $request->mobile; 
             $res->status = $request->status; 
             $res->country_id = $request->country_id; 
-            $res->nationality = $req->nationality;
+            $res->nationality = $request->nationality;
             $res->dob = dbDateFormat($request->dob,true); 
             $res->created_at = dbDateFormat(); 
             $res->updated_at = dbDateFormat(); 
