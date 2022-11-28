@@ -1,9 +1,15 @@
+<!-- <style>
+    .dataTables_wrapper > .row:nth-child(2) > .table{
+        width: 100% !important;
+    }   
+</style> -->
+
 <div class="card-box mb-30">
     <div class="pd-20">
         <h4 class="text-blue h4">{{ $title }}</> 
     </div>
     <div class="pb-20">
-        <table class="table stripe hover nowrap" id="data-table">
+        <table class="table stripe hover nowrap" id="datatable"  width="100%">
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort">Customer Fullname</th>

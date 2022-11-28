@@ -51,6 +51,7 @@ class InvestmentController extends Controller
                 $value->contract_pdf = url('uploads/contract_pdf/'.$value->contract_pdf);
                 $value->schemaImage = url('uploads/schema/'.$value->schemaImage);
                 $value->schemaDocuments = url('uploads/schema_doc/'.$value->schemaDocuments);
+                $value->amount_in_word = convertNumberToWord($value->amount);
             }
             $responce = [
                 'status'=>'1',

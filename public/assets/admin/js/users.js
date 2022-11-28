@@ -11,6 +11,7 @@ $(document).ready(function () {
         $("#userTable").DataTable({
             processing: true,
             serverSide: true,
+            scrollY: true,
             ajax: {
                 url:base_url + "getCustomerDataTable",
                 method:"POST",

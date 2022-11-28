@@ -3,3 +3,6 @@ $(document).on('click','.comment',function(){
     $('#dynamic_comment').html(comment);
 
 });
+$("#datatable").DataTable({
+    scrollX: true,
+});
