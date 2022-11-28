@@ -1,3 +1,14 @@
+<!-- <style>
+.dataTables_scroll .dataTables_scrollBody{
+	padding: 30px 0px !important;
+}
+
+#salesTable_wrapper table tbody tr {
+    padding: 25px 0px !important;
+    height: 120px !important;
+}
+
+</style> -->
 <div class="card-box mb-30">
 						<div class="pd-20">
 							<h4 class="text-blue h4">{{ $title }}</>

@@ -5,7 +5,7 @@
         
         </div>
     <div class="pb-20">
-        <table class="table stripe hover nowrap" id="userTable">
+        <table class="table stripe hover nowrap" id="userTable" width="100%">
             <thead>
                 <tr>
                     <th class="table-plus datatable-nosort">First Name</th>

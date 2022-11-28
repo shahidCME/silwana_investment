@@ -18,6 +18,7 @@ $(document).ready(function () {
     $("#UserInvestmentTable").DataTable({
         processing: true,
         serverSide: true,
+        // scrollX : true,
         ajax:{
             url : base_url +"getUserInvestmentDataTable",
             method:"POST",
