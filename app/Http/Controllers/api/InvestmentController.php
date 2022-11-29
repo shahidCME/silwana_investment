@@ -48,10 +48,10 @@ class InvestmentController extends Controller
             $query->orderBy('i.id','desc');
             $data = $query->get();
             foreach ($data as $key => $value) {
-                $value->contract_pdf = url('uploads/contract_pdf/'.$value->contract_pdf);
-                $value->schemaImage = url('uploads/schema/'.$value->schemaImage);
-                $value->schemaDocuments = url('uploads/schema_doc/'.$value->schemaDocuments);
-                $value->amount_in_word = convertNumberToWord($value->amount);
+                $value->contract_pdf    = ($value->contract_pdf != '') ? url('uploads/contract_pdf/'.$value->contract_pdf) : "";
+                $value->schemaImage     = ($value->schemaImage != '') ? url('uploads/schema/'.$value->schemaImage) : "";
+                $value->schemaDocuments = ($value->schemaDocuments != '' ) ? url('uploads/schema_doc/'.$value->schemaDocuments) : "";
+                $value->amount_in_word  = convertNumberToWord($value->amount);
             }
             $responce = [
                 'status'=>'1',
@@ -466,8 +466,8 @@ class InvestmentController extends Controller
         $schemaList = Schema::get();
         $responce = [
             'status'=>'1',
-            'customer_list' =>$customerList, 
-            'schema_list' =>$schemaList, 
+            'message' =>"customerAndschemaList",
+            'data'=>[ 'customer_list' =>$customerList, 'schema_list' =>$schemaList] 
         ];
         return response()->json($responce);
 
