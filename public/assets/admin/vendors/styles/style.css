@@ -529,14 +529,14 @@ p {
 @media only screen and (max-width: 1500px)
 {
 
-  #InvestmentTable_wrapper > .row:nth-child(2) .col-sm-12{
+  .dataTables_wrapper > .row:nth-child(2) .col-sm-12{
     width: 100% !important;
     overflow: scroll !important;
   }
-  .investment-card-box{
+  .dataTables_wrapper{
      overflow: hidden;
   }
-  #InvestmentTable_wrapper .table{
+  .dataTables_wrapper .table{
     width: 100%  !important;
   }  
 }

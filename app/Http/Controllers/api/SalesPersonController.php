@@ -22,10 +22,22 @@ class SalesPersonController extends Controller
         //     ];
         //     return response()->json($responce);
         // }
+
+        if($request->role == '3'){
+            $message = 'Finance person list';
+        
+        }elseif($request->role == '4'){
+
+            $message = 'Approver list';
+        
+        }else{
+            $message = 'Sales person list';
+        }
+
         $limit = 10;
         $offset = 0;
         $query = DB::table('admins')->select('id','email','fname','lname','mobile','role','status','created_at','updated_at');
-        $query->where(['role'=>'0','deleted_at'=>null]);
+        $query->where(['role'=>$request->role,'deleted_at'=>null]);
         if($request['offset'] > 0 ){
             $off= $limit * $request['offset'];
             $query->skip($off);
@@ -37,7 +49,7 @@ class SalesPersonController extends Controller
         // Plq();
         $responce = [
             'status'=>'1',
-            'message'=>'sales person list',
+            'message'=>$message,
             'data'=>$salesPerson,
         ];
         return response()->json($responce);
