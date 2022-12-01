@@ -148,12 +148,16 @@ class SchemaController extends Controller
             ];
             return response()->json($responce);
         }
-        $getData = Schema::table('schemas')->select('*')->where(['id'=>$req->id])->get();
+        $filename= '';
+        $document = '';
+        // Elq();
+        $getData = Schema::select('*')->where(['id'=>$req->id])->get();
+        // Plq();
+        // dd($getData);
         if(!empty($getData->all())){
             $filename = $getData[0]->image;
             $document = $getData[0]->documents;
         }
-
         if($req->hasfile('image')){
             if($filename != null && file_exists(public_path('uploads/schema/'.$filename)) ){
                 unlink(public_path('uploads/schema/'.$filename));
@@ -186,7 +190,7 @@ class SchemaController extends Controller
                 'documents' => $document,
                 'updated_at' => dbDateFormat(), 
             ];
-           $res = Schema::table('schemas')->where('id', $id)->update($updateData);
+           $res = Schema::where('id', $id)->update($updateData);
             if($res){
                 $responce = [
                     'status'=>'1',
