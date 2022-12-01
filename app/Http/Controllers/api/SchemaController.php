@@ -190,8 +190,10 @@ class SchemaController extends Controller
                 'documents' => $document,
                 'updated_at' => dbDateFormat(), 
             ];
+            Elq();
            $res = Schema::where('id', $id)->update($updateData);
-            if($res){
+            Plq(); 
+           if($res){
                 $responce = [
                     'status'=>'1',
                     'message'=>"Record updated successfully"
