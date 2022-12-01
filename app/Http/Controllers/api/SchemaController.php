@@ -179,7 +179,7 @@ class SchemaController extends Controller
         }
 
         if($req ->all()){
-            $id = $req['id'];
+            $id = $req->id;
             $updateData = [
                 'name' => $req['name'],
                 'type' => $req['type'],
@@ -190,6 +190,7 @@ class SchemaController extends Controller
                 'documents' => $document,
                 'updated_at' => dbDateFormat(), 
             ];
+            dd($updateData);
             Elq();
            $res = Schema::where('id', $id)->update($updateData);
             Plq(); 
