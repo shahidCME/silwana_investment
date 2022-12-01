@@ -179,7 +179,7 @@ class SchemaController extends Controller
         }
 
         if($req ->all()){
-            $id = $req->id;
+           echo  $id = $req->id;
             $updateData = [
                 'name' => $req['name'],
                 'type' => $req['type'],
