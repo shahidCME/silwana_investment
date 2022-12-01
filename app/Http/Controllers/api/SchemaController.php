@@ -151,7 +151,7 @@ class SchemaController extends Controller
         $filename= '';
         $document = '';
         // Elq();
-        $getData = Schema::select('*')->where(['id'=>$req->id])->get();
+        $getData = Schema::where(['id'=>$req->id])->get();
         // Plq();
         // dd($getData);
         if(!empty($getData->all())){
