@@ -26,7 +26,7 @@ class UserController extends Controller
         }
         $query = DB::table('users');
         if($request->role == '0'){
-            $where = array('admin_id',$request->id);
+            $where = array('admin_id'=>$request->id);
             $query->where($where);
         }
         
