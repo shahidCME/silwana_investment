@@ -60,6 +60,9 @@ Route::post('customerAndSchemaList',[InvestmentController::class,'customerAndSch
 Route::post('getRoi',[InvestmentController::class,'getRoi']);
 Route::post('investmentDetails',[InvestmentController::class,'investmentDetails']);
 Route::post('roiPay',[InvestmentController::class,'paymentReciept']);
+Route::post('contractCancel',[InvestmentController::class,'contractCancel']);
+Route::post('cancelledInvestment',[InvestmentController::class,'cancelledInvestment']);
+Route::post('cancelledRoi',[InvestmentController::class,'cancelledRoi']);
 
 
 // Route::group(['middleware' => ['auth:sanctum','abilities:admin']], function () {

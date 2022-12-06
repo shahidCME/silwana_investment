@@ -561,4 +561,109 @@ class InvestmentController extends Controller
             return response()->json($responce);
 
     }
+
+    public function contractCancel(Request $req){
+        $validator = Validator::make($req->all(), [
+            'investment_id'=> 'required|numeric',
+            'contractCancelComment'=> 'required',
+        ]);
+        if ($validator->fails()) {
+            $responce = [
+                'status'=>'0',
+                'errors'=>$validator->errors()
+            ];
+            return response()->json($responce);
+        }
+        $uid = decrypt($req->investment_id);
+        $res = Investment::where('id',$uid)->update(['status'=>'9','contractCancelComment'=>$req->contractCancelComment,'updated_at'=>dbDateFormat()]);
+        if($res){
+            $responce = [
+                'status'=>'1',
+                'message'=>"Investment Canceled Successfully",
+            ];
+        }else{
+            $responce = [
+                'status'=>'0',
+                'message'=>"Something Went Wrong",
+            ];
+        }
+        return response()->json($responce);
+    }
+
+    public function cancelledInvestment(Request $req){
+        $validator = Validator::make($req->all(), [
+            'role'=> 'required|numeric',
+            'id'  => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            $responce = [
+                'status'=>'0',
+                'errors'=>$validator->errors()
+            ];
+            return response()->json($responce);
+        }
+        $limit = 10;
+        $query = DB:: table('investments as i');
+              $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
+                    ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
+                    ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname');
+            if($req->role == '0'){
+                $id = $req->id;
+                $query->where('i.admin_id',$id);
+            }
+            if($req->offset > 0 ){
+                $off= $limit * $req->offset;
+                $query->skip($off);
+            }
+            $query->take($limit);
+            $query->where('i.deleted_at',NULL);
+            $query->where('i.status','9');
+            $query->orderBy('id','desc');
+            $record = $query->get();
+            foreach ($record as $key => $value) {
+                $value->contract_pdf    = ($value->contract_pdf != '') ? url('uploads/contract_pdf/'.$value->contract_pdf) : "";
+            }
+            // dd($record);
+            if($record){
+                $responce = [
+                    'status'=>'1',
+                    'message'=>"Cancelled Investment",
+                    'data' => $record
+                ];
+            }else{
+                $responce = [
+                    'status'=>'0',
+                    'message'=>"No data found",
+                ];
+            }
+            return response()->json($responce);
+    }
+
+    public function cancelledRoi(Request $req){
+        $validator = Validator::make($req->all(), [
+            'investment_id'  => 'required'
+        ]);
+        if ($validator->fails()) {
+            $responce = [
+                'status'=>'0',
+                'errors'=>$validator->errors()
+            ];
+            return response()->json($responce);
+        }
+        $record = DB::table('roi')->where(['investment_id'=>$req->investment_id,'status'=>'1'])->get();
+        if(!empty($record->all())){
+            $responce = [
+                'status'=>'1',
+                'message'=>"Cancelled Roi",
+                'data' => $record
+            ];
+        }else{
+            $responce = [
+                'status'=>'0',
+                'message'=>"No data found",
+            ];
+        }
+        return response()->json($responce);
+    }
 }

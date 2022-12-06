@@ -91,7 +91,7 @@ class LoginController extends Controller
         if(empty($record->all())){
             $record = Admin :: where('email',$request->email)->get();
         }
-
+        dd($record);
         if(!empty($record->all())){
             $token = Str::random(64);
             DB::table('password_resets')->insert([
