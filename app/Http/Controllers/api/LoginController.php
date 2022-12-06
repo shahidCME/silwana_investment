@@ -91,7 +91,7 @@ class LoginController extends Controller
         if(empty($record->all())){
             $record = Admin :: where('email',$request->email)->get();
         }
-        dd($record);
+        // dd($record);
         if(!empty($record->all())){
             $token = Str::random(64);
             DB::table('password_resets')->insert([
@@ -101,7 +101,7 @@ class LoginController extends Controller
               ]);
 
             Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
-                $message->to($request->email);
+                $message->to('sahid.cmexpertise@gmail.com');
                 $message->subject('Reset Password');
             });
             $responce = [
