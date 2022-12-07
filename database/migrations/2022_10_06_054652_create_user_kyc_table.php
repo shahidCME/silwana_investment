@@ -18,8 +18,8 @@ class CreateUserKycTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name_document',500);
-            $table->date('valid_from')->nullable()->default('NULL');
-            $table->date('valid_thru')->nullable()->default('NULL');
+            $table->date('valid_from')->nullable()->default(NULL);
+            $table->date('valid_thru')->nullable()->default(NULL);
             $table->string('document_file',1000);
             $table->softDeletes();
             $table->timestamps();
