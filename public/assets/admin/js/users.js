@@ -225,7 +225,6 @@ $("#userForm").validate({
     },
     submitHandler: function (form) {
         var valid =  handleDynamic();
-        alert(valid);
         if(valid == '0'){
             $('body').attr('disabled','disabled');
             $('#btnSubmit').attr('disabled','disabled');
