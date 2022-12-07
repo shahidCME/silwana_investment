@@ -17,10 +17,10 @@ class CreateUserKycTable extends Migration
         Schema::create('user_kyc', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('national_id',500);
-            $table->date('date_of_expiry');
-            $table->string('address',500);
-            $table->string('nationalIdImage',1000);
+            $table->string('name_document',500);
+            $table->date('valid_from')->nullable()->default('NULL');
+            $table->date('valid_thru')->nullable()->default('NULL');
+            $table->string('document_file',1000);
             $table->softDeletes();
             $table->timestamps();
         });

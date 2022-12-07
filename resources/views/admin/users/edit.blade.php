@@ -1,3 +1,8 @@
+<style>
+    label.custom{
+        color:red;
+    }
+</style>
 <div class="pd-20 card-box mb-30">
     <div class="clearfix">
         <div class="pull-left">
@@ -78,53 +83,106 @@
         </div>
         <div class="form-group">
             <label class="col-sm-12 col-md-2 col-form-label">DOB</label>
-                <input class="form-control date-picker" name="dob" placeholder="Select Date" value="{{ date('d F Y',strtotime($editData[0]->dob)) }}" type="text">
+                <input class="form-control date-picker_dob" name="dob" placeholder="Select Date" value="{{ date('d F Y',strtotime($editData[0]->dob)) }}" type="text">
         </div>
         <div class="form-group">
             {{-- <label class="weight-600">KYC Document</label> --}}
             <div class="custom-control custom-checkbox mb-5">
-                    <input type="checkbox" name="is_kyc" value="1" class="custom-control-input" id="customCheck1" {{ ($editData[0]->kyc == true) ? 'checked' : '' }} >
+                    <input type="checkbox" name="is_kyc" value="1" class="custom-control-input is_kyc" id="customCheck1" {{ ($editData[0]->kyc == true) ? 'checked' : '' }} >
                     <label class="custom-control-label" for="customCheck1">KYC Details</label>
                 </div>
         </div>
         <div id="kycForm" style="display: {{ ($editData[0]->kyc == true) ? 'block' : 'none' }}">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>National Id Number</label>
-                            <input class="form-control" name="national_id" value="{{ (isset($editData[0]->kycData)) ? $editData[0]->kycData[0]->national_id : '' }}" type="text" placeholder="Enter name">
-                            <label id="national_id-error" class="error" for="national_id">@error('nanational_idme') {{ $message }} @enderror</label>
+            <div class="form-group" id="append_html">
+                @if(!empty($editData[0]->kycData))
+
+                    @foreach ($editData[0]->kycData as $key =>$item)
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group mb-0">
+                                @if($key == 0)
+                                    <label>Name Document</label>
+                                @endif
+                                <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name" value="{{ $item->name_document }}">
+                                <label id="name_document-error" class="custom" for="name_document">@error('name_document') {{ $message }} @enderror</label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 ">
-                        <div class="form-group">
-                            <div class="form-group">
-                            <label>Address</label>
-                            <textarea class="form-control" name="address">{{ (isset($editData[0]->kycData)) ? $editData[0]->kycData[0]->address : '' }}</textarea>
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                @if($key == 0)
+                                <label>Valid From</label>
+                                @endif
+                                <input type="text" class="form-control valid_from date-picker" name="valid_from[]" placeholder="Select valid from" value="{{ ($item->valid_from != NULL) ? date('d F Y',strtotime($item->valid_from)) : '' }}" autocomplete ="off">
+                                <label class="" for="valid_from"></label>
+                            </div>
+                        </div> 
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                @if($key == 0)
+                                <label>Valid Thru</label>
+                                @endif
+                                <input type="text" class="form-control valid_thru date-picker" name="valid_thru[]" placeholder="Select valid thru" value="{{ ($item->valid_thru != NULL) ? date('d F Y',strtotime($item->valid_thru)) : '' }}" autocomplete ="off">
+                                <label class="" for="valid_from"></label>
+                            </div>
+                        </div> 
+                        <div class="col-md-3">
+                            <div class="form-group mb-0">
+                            @if($key == 0)
+                            <label>Documents</label>
+                            @endif
+                                <input type="file" class="form-control document_file" name="document_file[]" >
+                                <label class="custom" for="document_file"></label>
+                                <input type="hidden" class="edit_file" name="edit_file[]" value="{{ $item->document_file }}">
+                            </div>
                         </div>
+                        <div class="col-md-2">
+                            @if($key == 0)
+                        <label>Action</label>
+                        @endif
+                        <button type="button" class="btn btn-{{ ($key > 0) ? 'danger' : 'primary'}} d-block {{ ($key > 0) ? 'remove' : 'add_more'}}" ><i class="icon-copy fa fa-{{ ($key > 0) ? 'minus' : 'plus'}}" aria-hidden="true"></i></button>
                     </div> 
                 </div>
+                @endforeach
+            @else
+            <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group mb-0">
+                                    <label>Name Document</label>
+                                <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name" >
+                                <label id="name_document-error" class="custom" for="name_document">@error('name_document') {{ $message }} @enderror</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                <label>Valid From</label>
+                                <input type="text" class="form-control valid_from date-picker" name="valid_from[]" placeholder="Select valid from" autocomplete ="off">
+                                <label class="" for="valid_from"></label>
+                            </div>
+                        </div> 
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                <label>Valid Thru</label>
+                                <input type="text" class="form-control valid_thru date-picker" name="valid_thru[]" placeholder="Select valid thru" autocomplete ="off">
+                                <label class="" for="valid_from"></label>
+                            </div>
+                        </div> 
+                        <div class="col-md-3">
+                            <div class="form-group mb-0">
+                            <label>Documents</label>
+                                <input type="file" class="form-control document_file" name="document_file[]" >
+                                <label class="custom" for="document_file"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                        <label>Action</label>
+                        <button type="button" class="btn btn-primary d-block add_more" ><i class="icon-copy fa fa-plus" aria-hidden="true"></i></button>
+                    </div> 
+                </div>
+
+            @endif
+            
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-12 col-md-2 col-form-label">Date Of Expiry</label>
-                <input class="form-control date-picker" name="date_of_expiry" placeholder="Select Date" value="{{ (isset($editData[0]->kycData)) ? date('d F Y',strtotime($editData[0]->kycData[0]->date_of_expiry)) : '' }}" type="text">
-        </div>
-        <div class="form-group">
-            <div class="col-md-8">
-                <label>Natinal Id</label>
-                <input type="hidden" name="old_image" value="{{ (isset($editData[0]->kycData)) ? $editData[0]->kycData[0]->nationalIdImage : '' }}">
-                <input type="file" name="editnationalIdImage" class="form-control-file form-control height-auto">
-            </div>
-        </div>
-        @if((isset($editData[0]->kycData)))
-            <div style="width: 200px;hieght:200px">
-                <img src="{{ url('uploads/national_id/'.$editData[0]->kycData[0]->nationalIdImage) }}" alt="" srcset="">
-            </div>
-        @endif
-        
-    </div>
         <div class="form-group ">
             <div class="btn-list">
                 <button type="submit" id="btnSubmit" class="btn btn-success">Add</button>
@@ -132,4 +190,36 @@
             </div>
         </div>
     </form>
+</div>
+
+<div style="display:none" id="appended">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            
+                            <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name">
+                            <label id="name_document-error" class="custom" for="name_document"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control date-picker" name="valid_from[]" placeholder="Select valid from" autocomplete ="off">
+                        </div>
+                    </div> 
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control date-picker" name="valid_thru[]" placeholder="Select valid thru" autocomplete ="off">
+                        </div>
+                    </div> 
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <input type="file" class="form-control document_file" name="document_file[]">
+                            <label class="custom" for="document_file"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger remove d-block" ><i class="icon-copy fa fa-minus" aria-hidden="true"></i></button>
+                    </div> 
+                </div>
+            </div>
 </div>

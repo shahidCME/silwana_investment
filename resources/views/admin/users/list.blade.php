@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <!-- <tr>
                     <td class="table-plus">Gloria F. Mead</td>
                     <td>25</td>
                     <td>Sagittarius</td>
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>

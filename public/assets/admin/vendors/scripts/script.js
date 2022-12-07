@@ -184,7 +184,7 @@ jQuery(document).ready(function () {
         e.clearSelection();
     });
 
-    // date picker
+    // date 
     $(".date-picker").datepicker({
         language: "en",
         autoClose: true,

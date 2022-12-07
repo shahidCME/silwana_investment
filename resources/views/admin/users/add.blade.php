@@ -1,3 +1,8 @@
+<style>
+    label.custom{
+        color:red;
+    }
+    </style>
 <div class="pd-20 card-box mb-30">
     <div class="clearfix">
         <div class="pull-left">
@@ -77,46 +82,54 @@
         </div>
         <div class="form-group">
             <label>DOB</label>
-            <input class="form-control date-picker" name="dob" placeholder="Select Date" type="text">
+            <input class="form-control date-picker_dob" name="dob" placeholder="Select Date" type="text" autocomplete="off">
         </div>
         
         <div class="form-group">
             {{-- <label class="weight-600">KYC Document</label> --}}
             <div class="custom-control custom-checkbox mb-5">
-                    <input type="checkbox" name="is_kyc" value="1" class="custom-control-input" id="customCheck1">
+                    <input type="checkbox" name="is_kyc" value="1" class="custom-control-input is_kyc" id="customCheck1">
                     <label class="custom-control-label" for="customCheck1">KYC Details</label>
                 </div>
         </div>
-        <div id="kycForm" style="display: none">
-            <div class="form-group">
+        <div id="kycForm" style="display: none" >
+            <div class="form-group" id="append_html">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>National Id Number</label>
-                            <input class="form-control" name="national_id" type="text" placeholder="Enter name">
-                            <label id="national_id-error" class="error" for="national_id">@error('nanational_idme') {{ $message }} @enderror</label>
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <label>Name Document</label>
+                            <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name">
+                            <label id="name_document-error" class="custom" for="name_document">@error('name_document') {{ $message }} @enderror</label>
                         </div>
                     </div>
-                    <div class="col-md-4 ">
-                        <div class="form-group">
-                            <div class="form-group">
-                            <label>Address</label>
-                            <textarea class="form-control" name="address"></textarea>
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <label>Valid From</label>
+                            <input type="text" class="form-control valid_from date-picker" name="valid_from[]" placeholder="Select valid from">
+                            <label class="" for="valid_from"></label>
                         </div>
+                    </div> 
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <label>Valid Thru</label>
+                            <input type="text" class="form-control valid_thru date-picker" name="valid_thru[]" placeholder="Select valid thru">
+                            <label class="" for="valid_from"></label>
+                        </div>
+                    </div> 
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <label>Documents</label>
+                            <input type="file" class="form-control document_file" name="document_file[]">
+                            <label class="custom" for="document_file"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Action</label>
+                        <button type="button" class="btn btn-primary add_more d-block" value="Add"><i class="icon-copy fa fa-plus" aria-hidden="true"></i></button>
                     </div> 
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label>Date Of Expiry</label>
-                <input class="form-control date-picker" name="date_of_expiry" placeholder="Select Date of expiry"  type="text">
-        </div>
-        <div class="form-group">
-            <label>Natinal Id</label>
-            <input type="file" name="nationalIdImage" class="form-control-file form-control height-auto">
-        </div>
-
-    </div>
         <div class="form-group ">
             <div class="btn-list">
                 <button type="submit" id="btnSubmit" class="btn btn-success">Add</button>
@@ -124,4 +137,36 @@
             </div>
         </div>
     </form>
+</div>
+
+<div style="display:none" id="appended">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            
+                            <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name">
+                            <label id="name_document-error" class="custom" for="name_document"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control date-picker" name="valid_from[]" placeholder="Select valid from">
+                        </div>
+                    </div> 
+                    <div class="col-md-2">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control date-picker" name="valid_thru[]" placeholder="Select valid thru">
+                        </div>
+                    </div> 
+                    <div class="col-md-3">
+                        <div class="form-group mb-0">
+                            <input type="file" class="form-control document_file" name="document_file[]">
+                            <label class="custom" for="document_file"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger remove d-block" ><i class="icon-copy fa fa-minus" aria-hidden="true"></i></button>
+                    </div> 
+                </div>
+            </div>
 </div>

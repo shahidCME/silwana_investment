@@ -51,7 +51,7 @@ Route::post('editSchema',[SchemaController::class,'editSchema']);
 Route::post('updateSchema',[SchemaController::class,'updateSchema']);
 Route::post('deleteSchema',[SchemaController::class,'deleteSchema']);
 
-Route::post('getInvestment',[InvestmentController::class,'index']);
+Route::post('getInvestment',[InvestmentController::class,'index']); 
 Route::post('addInvestment',[InvestmentController::class,'add']);
 Route::post('editInvestment',[InvestmentController::class,'edit']);
 Route::post('updateInvestment',[InvestmentController::class,'update']);
