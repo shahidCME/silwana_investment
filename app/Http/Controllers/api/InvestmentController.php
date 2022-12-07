@@ -574,7 +574,7 @@ class InvestmentController extends Controller
             ];
             return response()->json($responce);
         }
-        $uid = decrypt($req->investment_id);
+        $uid = $req->investment_id;
         $res = Investment::where('id',$uid)->update(['status'=>'9','contractCancelComment'=>$req->contractCancelComment,'updated_at'=>dbDateFormat()]);
         if($res){
             $responce = [
