@@ -33,6 +33,7 @@ class DashboardController extends Controller
                 $data['totalFinancePerson'] = Admin::where('role','3')->count();
                 $data['totalApprover'] = Admin::where('role','4')->count();
                 $data['totalSchema'] = Schema::count();
+                $data['cancelledInvestment'] = Investment::where('status','9')->count();;
 
             }else{
                 $validator = Validator::make($request->all(), [
