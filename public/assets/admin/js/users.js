@@ -16,7 +16,10 @@ $(document).ready(function () {
                 url:base_url + "getCustomerDataTable",
                 method:"POST",
             },
-            order: [ [0, 'false'] ],
+            columnDefs: [
+                { orderable: false, targets: 0 }
+              ],
+            // order: [[1, 'asc']],
             columns: [
                 { data: "first name" },
                 { data: "last name" },
@@ -170,6 +173,11 @@ $("#userForm").validate({
             required: true,
             date : true
         },
+        national_id : { required : true },
+        date_of_expiry: { 
+            required: true,
+            date : true
+        },
         mobile:{
             required : true,
             number : true
@@ -214,7 +222,8 @@ $("#userForm").validate({
         gender : {
             required : "Please select gender"
         },
-        date_of_expiry: { required: "Please select document date of expiry" },
+        national_id : { required : "Enter national id number" },
+        date_of_expiry: { required: "Please select national id valid thru date" },
         nationalIdImage: {
             required: "Please select national id file",
             extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed",

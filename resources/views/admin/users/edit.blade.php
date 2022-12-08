@@ -86,6 +86,14 @@
                 <input class="form-control date-picker_dob" name="dob" placeholder="Select Date" value="{{ date('d F Y',strtotime($editData[0]->dob)) }}" type="text">
         </div>
         <div class="form-group">
+            <label>National Id Number</label>
+            <input class="form-control" name="national_id" placeholder="enter national id number" type="text" autocomplete="off" value="{{ ($editData[0]->national_id != '') ? $editData[0]->national_id : '' }}">
+        </div>
+        <div class="form-group">
+            <label>National Id Valid Thru</label>
+            <input class="form-control date-picker_dob" name="date_of_expiry" placeholder="select date valid thru" type="text" autocomplete="off" value="{{ ($editData[0]->date_of_expiry != '') ? date('d F Y',strtotime($editData[0]->date_of_expiry)) : '' }}">
+        </div>
+        <div class="form-group">
             {{-- <label class="weight-600">KYC Document</label> --}}
             <div class="custom-control custom-checkbox mb-5">
                     <input type="checkbox" name="is_kyc" value="1" class="custom-control-input is_kyc" id="customCheck1" {{ ($editData[0]->kyc == true) ? 'checked' : '' }} >

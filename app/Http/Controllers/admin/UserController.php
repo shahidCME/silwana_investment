@@ -37,12 +37,6 @@ class UserController extends Controller
             }
             $query->orderBy('id','desc');
             $data = $query->get();
-            // foreach($data as $key =>$value){
-            //     $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
-            //     if(!empty($kyc->all())){
-            //         $value->nationalIdImage = $kyc[0]->nationalIdImage;
-            //     }
-            // }
             // dd($data);
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('first name', function($row){
@@ -127,6 +121,8 @@ class UserController extends Controller
             $res->password = bcrypt($req->password); 
             $res->gender = $req->gender; 
             $res->mobile = $req->mobile; 
+            $res->national_id = $req->national_id; 
+            $res->date_of_expiry = dbDateFormat($req->date_of_expiry,true); 
             $res->status = $req->status; 
             $res->dob = dbDateFormat($req->dob,true); 
             $res->created_at = dbDateFormat(); 

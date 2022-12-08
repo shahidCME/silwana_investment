@@ -97,6 +97,7 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/roi/{id}', [InvestmentController::class, 'getRoi']);
     Route::post('/roi/{id}', [InvestmentController::class, 'getRoi']);
     Route::get('/cancelledRoi/{id}', [InvestmentController::class, 'cancelledRoi']);
+    Route::get('/contract/{id}', [InvestmentController::class, 'contract']);
 
     // End Investnebt Module
     Route::get('/profile', [ChangeController::class, 'index']);

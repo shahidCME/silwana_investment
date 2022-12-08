@@ -31,6 +31,8 @@ class User extends Authenticatable
             'country_id'=> $postData['country'],
             'nationality'=> $postData['nationality'],
             'gender' => $postData['gender'],
+            'national_id' => $postData['national_id'], 
+            'date_of_expiry' => dbDateFormat($postData['date_of_expiry'],true), 
             'dob' => dbDateFormat($postData['dob'],true),
             'status'=>$postData['status'],
             'updated_at' => dbDateFormat(), 

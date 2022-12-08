@@ -84,6 +84,14 @@
             <label>DOB</label>
             <input class="form-control date-picker_dob" name="dob" placeholder="Select Date" type="text" autocomplete="off">
         </div>
+        <div class="form-group">
+            <label>National Id Number</label>
+            <input class="form-control" name="national_id" placeholder="enter national id number" type="text" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label>National Id Valid Thru</label>
+            <input class="form-control date-picker_dob" name="date_of_expiry" placeholder="select date valid thru" type="text" autocomplete="off">
+        </div>
         
         <div class="form-group">
             {{-- <label class="weight-600">KYC Document</label> --}}

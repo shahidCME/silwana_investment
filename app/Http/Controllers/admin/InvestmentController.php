@@ -69,6 +69,7 @@ class InvestmentController extends Controller
                     $editurl = "InvestmentEdit/".$encryptedId;
                     $deleteurl = "InvestmentDelete/".$encryptedId;
                     $view = "InvestmentDocument/".$encryptedId;
+                    $conract = "contract/".$encryptedId;
                     $roi = "roi/".$encryptedId;
                    $btn = '<div class="dropdown" style="display:inline">
                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
@@ -77,6 +78,7 @@ class InvestmentController extends Controller
                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                        <a class="dropdown-item" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
                        <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
+                       <a class="dropdown-item" href="'.url($conract).'"><i class="dw dw-eye"></i> Contract</a>
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
                        <a class="dropdown-item '.$cancel.' CancelContract" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
@@ -293,21 +295,23 @@ class InvestmentController extends Controller
                 $other_document = 'other_document_'.time().'.'.$ext;
                 $file->move(public_path('uploads/other_document'),$other_document);
             }
+
+            $investData = Investment::where('id', decrypt($req->update_id))->get();
             $res = Investment::updateRecords($req->all(),$filename,$invest_document,$other_document);
             if(	$req->status=='1'){
                 // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
                 }
-                if($req->edit_contract_pdf != '' && file_exists(public_path('uploads/contract_pdf'.$req->edit_contract_pdf))){
-                    unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
-                }
+                // if($req->edit_contract_pdf != '' && file_exists(public_path('uploads/contract_pdf'.$req->edit_contract_pdf))){
+                //     unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
+                // }
                 $id = decrypt($req->update_id);
                 $query=DB:: table('investments as i');
                 $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('countries as c', 'c.id', '=', 'u.country_id')
-                    ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','k.date_of_expiry','k.national_id','c.nationality');
+                    // ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','u.date_of_expiry','u.national_id','c.nationality');
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->groupBy('i.id')->get();
@@ -357,6 +361,52 @@ class InvestmentController extends Controller
                     $pdf = PDF::loadView('admin.contractTemplate.'.strtolower($req->contract), $data);
                     $filename = strtolower($req->contract).'_'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
+
+                    
+                    $availableAmount = $investData[0]->amount;
+                    $availableStartData = $investData[0]->start_date;
+                    if(($investData[0]->contract_pdf == NULL) || ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true))){
+                        DB::table('contract_files')->insert(
+                            [
+                                'investment_id'=> $id,
+                                'user_id' =>$viewData[0]->user_id,
+                                'start_date' => dbDateFormat($req->start_date,true),
+                                'end_date'   => $data['viewData'][0]->contract_end_date,
+                                'contract_pdf'=>$filename,
+                                'created_at' => dbDateFormat(),
+                                'updated_at' => dbDateFormat() 
+                                ]  
+                            );
+                    }else{
+                        // echo '2';die;
+                        $willUpdateFiles = DB::table('contract_files')->where('start_date',$investData[0]->start_date)->get();
+                        // dd($willUpdateFiles->all());
+                        if(!empty($willUpdateFiles->all())){
+                            if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
+                                unlink(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf));
+                            }
+                        } 
+                        if(!empty($willUpdateFiles->all())){
+                            DB::table('contract_files')->where('start_date',$investData[0]->start_date)->update(
+                                [
+                                    'contract_pdf'=>$filename,
+                                    'updated_at' => dbDateFormat() 
+                                    ]  
+                                );
+                        }else{
+                            DB::table('contract_files')->insert(
+                                [
+                                    'investment_id'=> $id,
+                                    'user_id' =>$viewData[0]->user_id,
+                                    'start_date' => dbDateFormat($req->start_date,true),
+                                    'end_date'   => $data['viewData'][0]->contract_end_date,
+                                    'contract_pdf'=>$filename,
+                                    'created_at' => dbDateFormat(),
+                                    'updated_at' => dbDateFormat() 
+                                    ]  
+                                );
+                        }
+                    }
                     DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
             }
               // $filename = $req->old_image;
@@ -514,5 +564,16 @@ class InvestmentController extends Controller
             $data['page']  = 'admin.investment.roi';
             $data['js'] = ['investment','validateFile'];
             return view('admin/main_layout',$data);
+    }
+
+    public function contract($eid){
+        $id = decrypt($eid);
+        $record = DB::table('contract_files')->where(['investment_id'=>$id])->get();
+        // dd($record);
+        $data['contract'] = $record;
+        $data['title'] = 'Investment Contract';
+        $data['page']  = 'admin.investment.contractList';
+        $data['js'] = ['investment'];
+        return view('admin/main_layout',$data);
     }
 }

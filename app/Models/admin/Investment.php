@@ -33,9 +33,10 @@ class Investment extends Model
     //     return $res;
     // }
 
-
+    
     public function updateRecords($postData,$filename,$invest_document,$other_document){
         $id = decrypt($postData['update_id']);
+        $investData = Investment::where('id', $id)->get();
         $updateData = [
             'user_id' => $postData['customer'],
             'schema_id'=> $postData['schema'],
@@ -52,21 +53,20 @@ class Investment extends Model
         ];
         // dd($updateData);
         Investment::where('id', $id)->update($updateData);
-        $investData = Investment::where('id', $id)->get();
         $availableStartData = $investData[0]->start_date;
 
         DB::table('roi')->where(['investment_id' =>$id,'status'=>'0'])->delete(); 
 
         $roi = DB::table('roi')->where(['investment_id' =>$id,'status'=>'1'])->get()->toArray();
         $completedRecord = count($roi);
-        
-        if($availableStartData != $postData['start_date']){
+        if($availableStartData != dbDateFormat($postData['start_date'],true)){
             $completedRecord = 0;
+        
         }
 
         for ($i=1; $i <= ($postData['tenure']-$completedRecord)  ; $i++) { 
 
-            if($availableStartData == $postData['start_date']){
+            if($availableStartData == dbDateFormat($postData['start_date'],true)){
             
                 if(!empty($roi)){
                     $date_of_return = $roi[$completedRecord-1]->date_of_return;
