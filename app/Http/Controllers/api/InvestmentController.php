@@ -247,11 +247,8 @@ class InvestmentController extends Controller
             return response()->json($responce);
         }
 
-            $editdata = Investment::where('id',$req->investment_id)->get();
-            // if(!empty($editdata)){
-            //     $invest_document = $editdata[0]->investment_doc;
-            //     $other_document = $editdata[0]->other_doc;
-            // }
+            $investData = Investment::where('id',$req->investment_id)->get();
+            
             if($req->hasfile('contract_reciept')){
                 if($filename != NULL && file_exists(public_path('uploads/contract_reciept/'.$filename)) ){
                     unlink(public_path('uploads/contract_reciept/'.$filename));
@@ -261,7 +258,7 @@ class InvestmentController extends Controller
                 $filename = 'contract_reciept_'.time().'.'.$ext;
                 $file->move(public_path('uploads/contract_reciept'),$filename);
             }else{
-                $filename = $editdata[0]->contract_reciept;
+                $filename = $investData[0]->contract_reciept;
             }
             
             
@@ -275,7 +272,7 @@ class InvestmentController extends Controller
                 $invest_document = 'invest_document_'.time().'.'.$ext;
                 $file->move(public_path('uploads/invest_document'),$invest_document);
             }else{
-                $invest_document = $editdata[0]->investment_doc;
+                $invest_document = $investData[0]->investment_doc;
             }
 
 
@@ -288,7 +285,7 @@ class InvestmentController extends Controller
                 $other_document = 'other_document_'.time().'.'.$ext;
                 $file->move(public_path('uploads/other_document'),$other_document);
             }else{
-                $other_document = $editdata[0]->other_doc;
+                $other_document = $investData[0]->other_doc;
             }
             $id = $req->investment_id;
             $updateData = [
@@ -306,9 +303,10 @@ class InvestmentController extends Controller
                 'updated_at' => dbDateFormat(), 
             ];
             // dd($updateData);
+            // $investData = Investment::where('id', $id)->get();
             $result = Investment::where('id', $id)->update($updateData);
             
-            $investData = Investment::where('id', $id)->get();
+            
             $availableStartData = $investData[0]->start_date;
 
             
@@ -360,33 +358,40 @@ class InvestmentController extends Controller
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
                 }
-                if($editdata[0]->contract_pdf != '' && file_exists(public_path('uploads/contract_pdf/'.$editdata[0]->contract_pdf))){
-                    unlink(public_path('uploads/contract_pdf/'.$editdata[0]->contract_pdf));
-                }
+                // if($investData[0]->contract_pdf != '' && file_exists(public_path('uploads/contract_pdf/'.$investData[0]->contract_pdf))){
+                //     unlink(public_path('uploads/contract_pdf/'.$investData[0]->contract_pdf));
+                // }
                 // $id = decrypt($req->update_id);
                 $query=DB:: table('investments as i');
                 $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('countries as c', 'c.id', '=', 'u.country_id')
-                    ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','k.date_of_expiry','k.national_id','c.nationality');
+                    // ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','u.date_of_expiry','u.national_id','c.nationality');
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->groupBy('i.id')->get();
                     $data['viewData'] = $viewData;
                     $data['arabic'] = [];
+                    $start_date = strtotime($req->start_date);
                     if($req->return_type == '0'){
                         // dd($req->start_date);
                         $start_date = strtotime($req->start_date);
                         $year = (12/$req->tenure);
                         $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
-                        $data['viewData'][0]->contract_start_date = date('d/m/Y',strtotime($req->start_date));
-                        $data['viewData'][0]->contract_end_date = date('d/m/Y',strtotime($end_date));
+                        $data['viewData'][0]->contract_start_date = $req->start_date;
+                        $data['viewData'][0]->contract_end_date = $end_date;
                     }else{
                         $start_date = strtotime('Y-m-d',$req->start_date);
                         $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",$start_date));
-                        $data['viewData'][0]->contract_start_date = date('d/m/Y',strtotime($req->start_date));
-                        $data['viewData'][0]->contract_end_date = date('d/m/Y',strtotime($contract_end_date));
+                        $data['viewData'][0]->contract_start_date = $req->start_date;
+                        $data['viewData'][0]->contract_end_date = $contract_end_date;
                     }
+                    $contractEndDate = 
+                    $contractStartDateFraction = explode("-",date("d-F-Y",$start_date));
+                    $data['viewData'][0]->day   =  $day = $contractStartDateFraction[0];
+                    $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
+                    $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
+                    $viewData[0]->amountArabic = convertNumberToWord($viewData[0]->amount);
                     if($req->lang == '1'){
                         $tr = new GoogleTranslate();
                         $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
@@ -403,11 +408,59 @@ class InvestmentController extends Controller
                         $data['arabic']['contract_end_date'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->contract_end_date);
                         $data['arabic']['contract_start_date'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->contract_start_date);
                     }
-                    // dd($data['arabic']);
+                    // dd($req->contract);
                     $pdf = PDF::loadView('admin.contractTemplate.'. strtolower($req->contract), $data);
                     $filename = strtolower($req->contract).'_'.time().'.pdf';
                     $pdf->save(public_path('uploads/contract_pdf/').$filename);
-                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
+
+
+
+                    $availableAmount = $investData[0]->amount;
+                    $availableStartData = $investData[0]->start_date;
+                    if(($investData[0]->contract_pdf == NULL) || ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true))){
+                     
+                        DB::table('contract_files')->insert(
+                            [
+                                'investment_id'=> $id,
+                                'user_id' =>$viewData[0]->user_id,
+                                'start_date' => dbDateFormat($req->start_date,true),
+                                'end_date'   => $data['viewData'][0]->contract_end_date,
+                                'contract_pdf'=>$filename,
+                                'created_at' => dbDateFormat(),
+                                'updated_at' => dbDateFormat() 
+                                ]  
+                            );
+                    }else{
+                        // echo '2';die;
+                        $willUpdateFiles = DB::table('contract_files')->where(['start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->get();
+                        // dd($willUpdateFiles->all());
+                        if(!empty($willUpdateFiles->all())){
+                            if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
+                                unlink(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf));
+                            }
+                        } 
+                        if(!empty($willUpdateFiles->all())){
+                            DB::table('contract_files')->where('start_date',$investData[0]->start_date)->update(
+                                [
+                                    'contract_pdf'=>$filename,
+                                    'updated_at' => dbDateFormat() 
+                                    ]  
+                                );
+                        }else{
+                            DB::table('contract_files')->insert(
+                                [
+                                    'investment_id'=> $id,
+                                    'user_id' =>$viewData[0]->user_id,
+                                    'start_date' => dbDateFormat($req->start_date,true),
+                                    'end_date'   => $data['viewData'][0]->contract_end_date,
+                                    'contract_pdf'=>$filename,
+                                    'created_at' => dbDateFormat(),
+                                    'updated_at' => dbDateFormat() 
+                                    ]  
+                                );
+                        }
+                    }
+                DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
             }
             if($result){
                 $responce = [

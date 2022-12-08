@@ -46,6 +46,7 @@ function getNotification($isLimit=''){
     }
     $query->orderBy('id','DESC');
     $data = $query->get();
+    
     return $data;
 }
 function getNationalities(){

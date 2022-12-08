@@ -35,7 +35,7 @@ class UserController extends Controller
                 $where = array(['admin_id','=',$Session['id']]);
                 $query->where($where);
             }
-            $query->orderBy('id','desc');
+            $query->orderBy('id','desc');   
             $data = $query->get();
             // dd($data);
             return Datatables::of($data)->addIndexColumn()
@@ -202,7 +202,8 @@ class UserController extends Controller
             if(isset($req->is_kyc)){
                 DB::table('user_kyc')->where('user_id',decrypt($req->update_id))->delete();
 
-                for($key = 0 ; $key <= (count($req->name_document))-1; $key++) {        
+                for($key = 0 ; $key <= (count($req->name_document))-1; $key++) {
+                            
                    $filename = (isset($req->edit_file)) ? $req->edit_file[$key] : ''; 
                     if($req->hasfile('document_file')){
                         $file = $req->file('document_file')[$key];

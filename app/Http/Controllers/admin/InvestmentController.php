@@ -144,8 +144,6 @@ class InvestmentController extends Controller
             ]);
       
             $image1 ='';
-            $investDoc ='';
-            $otherDoc ='';
             if($req->hasfile('contract_reciept')){
                 if (!file_exists(public_path('uploads/contract_reciept'))) {
                     mkdir(public_path('uploads/contract_reciept'), 0777, true);
@@ -154,26 +152,6 @@ class InvestmentController extends Controller
                 $ext = $file->getClientOriginalExtension();
                 $image1 = 'contract_reciept_'.time().'.'.$ext;
                 $file->move(public_path('uploads/contract_reciept'),$image1);
-            }
-            if($req->hasfile('invest_document')){
-                // echo '3';die;
-                if (!file_exists(public_path('uploads/invest_document'))) {
-                    mkdir(public_path('uploads/invest_document'), 0777, true);
-                }
-                $file = $req->file('invest_document');
-                $ext = $file->getClientOriginalExtension();
-                $investDoc = 'invest_document_'.time().'.'.$ext;
-                $file->move(public_path('uploads/invest_document'),$investDoc);
-              
-            }
-            if($req->hasfile('other_document')){
-                if (!file_exists(public_path('uploads/other_document'))) {
-                    mkdir(public_path('uploads/other_document'), 0777, true);
-                }
-                $file = $req->file('other_document');
-                $ext = $file->getClientOriginalExtension();
-                $otherDoc = 'other_document_'.time().'.'.$ext;
-                $file->move(public_path('uploads/other_document'),$otherDoc);
             }
             $res = new Investment();
             $res->status = $req->status; 
@@ -189,8 +167,6 @@ class InvestmentController extends Controller
             $res->start_date = dbDateFormat($req->start_date,true); 
             $res->return_percentage = $req->return_percentage; 
             $res->contract_reciept = ($image1 != '') ? $image1 : ''; 
-            $res->investment_doc = ($investDoc!='') ? $investDoc : ''; 
-            $res->other_doc = (!isset($otherDoc)) ? '' : $otherDoc; 
             $res->created_at = dbDateFormat(); 
             $res->updated_at = dbDateFormat(); 
             $res->save();
@@ -379,19 +355,18 @@ class InvestmentController extends Controller
                             );
                     }else{
                         // echo '2';die;
-                        $willUpdateFiles = DB::table('contract_files')->where('start_date',$investData[0]->start_date)->get();
-                        // dd($willUpdateFiles->all());
+                        $willUpdateFiles = DB::table('contract_files')->where(['start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->get();
                         if(!empty($willUpdateFiles->all())){
+
                             if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
                                 unlink(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf));
                             }
-                        } 
-                        if(!empty($willUpdateFiles->all())){
-                            DB::table('contract_files')->where('start_date',$investData[0]->start_date)->update(
+                            
+                            DB::table('contract_files')->where(['start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->update(
                                 [
                                     'contract_pdf'=>$filename,
                                     'updated_at' => dbDateFormat() 
-                                    ]  
+                                ]  
                                 );
                         }else{
                             DB::table('contract_files')->insert(
@@ -468,15 +443,6 @@ class InvestmentController extends Controller
     public function getRoi($eid='',Request $req){
         if($eid != ''){
             $id = decrypt($eid);
-            // $invest = DB::table('investments')->where('id',$id)->get();
-            // if($invest[0]->return_type == '0'){
-            //     $time = strtotime($invest[0]->start_date);
-            //     $final = date("Y-m-d", strtotime("+1 month", $time));
-            // }else{
-            //     $time = strtotime($invest[0]->start_date);
-            //     $final = date("Y-m-d", strtotime("+1 year", $time));
-            // }
-            // Elq();
             $record = DB::table('roi')->where('investment_id',$id)->get();
             // Plq();
             $data['investment_id'] = $eid;
@@ -486,7 +452,7 @@ class InvestmentController extends Controller
             $data['js'] = ['investment','validateFile'];
         }
         if($req->all()){
-           
+           dd($req->all());
             if (!file_exists(public_path('uploads/payment_trasfer_reciept'))) {
                 mkdir(public_path('uploads/payment_trasfer_reciept'), 0777, true);
             }
@@ -506,10 +472,11 @@ class InvestmentController extends Controller
                 $schema = schema::where('id',$investment[0]->schema_id)->get();
                     $user = USER::where('id',$investment[0]->user_id)->get();
                     $fname = $user[0]->fname;  
-                    $insertData = ['for_role'=>'1','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                    $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
                     $this->insertNotification($insertData);
-                $insertData = ['for_role'=>'2','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                $this->insertNotification($insertData);
+                   // for user
+                    $insertData = ['for_role'=>'2','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                    $this->insertNotification($insertData);
                 
                 return redirect('roi/'.$req->investment_id)->with('Mymessage', flashMessage('success','File Submitted Successfully'));
             }else{

@@ -24,6 +24,7 @@ class Dashboard extends Controller
 
     function user_dashboard(){
         $user_id = admin_login()['id']; 
+        // dd(admin_login());
         $data['totalInvestment'] = Investment::where('user_id',$user_id)->sum('amount');
         $data['page'] = 'admin/user_dashboard'; 
         $data['numberOfInvestment'] = Investment::where('user_id',$user_id)->count();

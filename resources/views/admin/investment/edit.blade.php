@@ -97,7 +97,7 @@
                     <select class="custom-select2 form-control"  name="contract"  style="width: 100%; height: 38px">
                         <option value="">Select Contract</option>
                         @foreach (getContractTemplate() as $template => $item)
-                        <option value="{{ $template }}"  {{ ($editData[0]->contract_type != NULL && $editData[0]->contract_type == $template ) ? 'selected': '' }}>{{$item}}</option>
+                        <option value="{{ $template }}"  {{ ( $editData[0]->contract_type != NULL && strtolower($editData[0]->contract_type) == $template ) ? 'selected': '' }}>{{$item}}</option>
                         @endforeach
                     </select>
                     <label id="contract-error" class="error" for="contract"></label>

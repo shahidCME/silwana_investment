@@ -39,10 +39,10 @@ class UserController extends Controller
             $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
             if(!empty($kyc->all())){
                 $value->is_kyc = '1';
-                $value->nationalIdImage = url('public/national_id/'.$kyc[0]->nationalIdImage);
-                $value->national_id = $kyc[0]->national_id;
-                $value->address = $kyc[0]->address;
-                $value->date_of_expiry = $kyc[0]->date_of_expiry;
+                $value->name_document = $kyc[0]->name_document;
+                $value->valid_from = $kyc[0]->valid_from;
+                $value->valid_thru = $kyc[0]->valid_thru;
+                $value->document_file = url('public/national_id/'.$kyc[0]->document_file);
             }
         }
         $responce = [
@@ -65,6 +65,7 @@ class UserController extends Controller
     }
 
     public function addUser(Request $request){
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'admin_id' => 'required',
             'fname' => 'required',
@@ -74,7 +75,9 @@ class UserController extends Controller
             'dob' => 'required|date_format:"Y-m-d"',
             'status' => 'required',
             'country_id'=>'required',
-            'nationality' => 'required'
+            'nationality' => 'required',
+            'national_id' => 'required',
+            'date_of_expiry' => 'required|date_format:"Y-m-d"'
         ]);
         if ($validator->fails()) {
             $responce = [
@@ -94,6 +97,8 @@ class UserController extends Controller
             $res->status = $request->status; 
             $res->country_id = $request->country_id; 
             $res->nationality = $request->nationality;
+            $res->national_id = $request->national_id;
+            $res->date_of_expiry = $request->date_of_expiry;
             $res->dob = dbDateFormat($request->dob,true); 
             $res->created_at = dbDateFormat(); 
             $res->updated_at = dbDateFormat(); 
@@ -101,10 +106,10 @@ class UserController extends Controller
             $last_id = $res->id;
             if(isset($request->is_kyc) && $request->is_kyc == 1){
                 $validator = Validator::make($request->all(), [
-                    'national_id' => 'required',
-                    'address' => 'required',
-                    'nationalIdImage' => 'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
-                    'date_of_expiry' => 'required|date_format:"Y-m-d"'
+                    'name_document.*' => 'required',
+                    'document_file.*' => 'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
+                    'valid_from.*' => 'required|date_format:"Y-m-d"',
+                    'valid_thru.*' => 'required|date_format:"Y-m-d"'
                 ]);
                 if ($validator->fails()) {
                     $responce = [
@@ -114,22 +119,26 @@ class UserController extends Controller
                     return response()->json($responce);
                 }
                 $filename= '';
-                if($request->hasfile('nationalIdImage')){
-                    $file = $request->file('nationalIdImage');
-                    $ext = $file->getClientOriginalExtension();
-                    $filename = 'national_id_'.time().'.'.$ext;
-                    $file->move(public_path('uploads/national_id'),$filename);
+                for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {        
+                    if($request->hasfile('document_file')){
+                        $file = $request->file('document_file')[$key];
+                        $ext = $file->getClientOriginalExtension();
+                        $filename = 'document_file_'.time().'.'.$ext;
+                        $file->move(public_path('uploads/kyc_document'),$filename);
+                    }  
                     // $image_path = $request->file('nationalIdImage')->store('kycPicture', 'public');
+                        $valid_from = $request->valid_from[$key];
+                        $valid_thru = $request->valid_thru[$key];
+                        DB::table('user_kyc')->insert([
+                            'user_id'=>$last_id,
+                            'name_document'=> $request->name_document[$key],
+                            'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
+                            'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
+                            'document_file'=>$filename,
+                            'created_at' => dbDateFormat(),
+                            'updated_at' => dbDateFormat()
+                        ]);
                 }
-                DB::table('user_kyc')->insert([
-                    'user_id'=>$last_id,
-                    'national_id'=> $request->national_id,
-                    'address'=>$request->address,
-                    "date_of_expiry"=>$request->date_of_expiry,
-                    'nationalIdImage'=>$filename,
-                    'created_at' => dbDateFormat(),
-                    'updated_at' => dbDateFormat()
-                ]);
             }
             if ($last_id) {
                 $responce = [
@@ -164,10 +173,10 @@ class UserController extends Controller
             $userKyc = DB::table('user_kyc')->where('user_id',$value->id,'deleted_at',NULL)->get();
             if(!empty($userKyc->all())){
                 $value->is_kyc = '1';
-                $value->national_id = $userKyc[0]->national_id;
-                $value->address = $userKyc[0]->address;
-                $value->date_of_expiry = $userKyc[0]->date_of_expiry;
-                $value->nationalIdImage = url('uploads/national_id/'.$userKyc[0]->nationalIdImage);
+                foreach ($userKyc as $key => $value) {
+                    $value->document_file = url('public/national_id/'.$value->document_file);
+                }
+                $data[0]->kycData = $userKyc;
             }else{
                 $value->is_kyc = '0';
             }
@@ -188,7 +197,9 @@ class UserController extends Controller
             'mobile' => 'required|numeric',
             'dob'    => 'required|date_format:"Y-m-d"',
             'country_id'=>'required',
-            'nationality' => 'required'
+            'nationality' => 'required',
+            'national_id' => 'required',
+            'date_of_expiry' => 'required|date_format:"Y-m-d"'
         ]);
         if ($validator->fails()) {
             $responce = [
@@ -207,45 +218,41 @@ class UserController extends Controller
             if(isset($request->status)){
                 $res->status = $request->status; 
             } 
+            $res->national_id = $request->national_id;
+            $res->date_of_expiry = $request->date_of_expiry;
             $res->dob = dbDateFormat($request->dob,true); 
             $res->updated_at = dbDateFormat(); 
             $result = $res->save(); 
+            
             $userKcy = DB::table('user_kyc')->where('user_id',$request->user_id)->get();
-            // dd($userKcy);
+
             if(isset($request->is_kyc) && $request->is_kyc == 1 ){
-                // $filename = $request->old_image;
-                if($request->hasfile('nationalIdImage')){
-                    if(!empty($userKcy->all()) && file_exists(public_path('uploads/national_id/'.$userKcy[0]->nationalIdImage)) ){
-                        unlink(public_path('uploads/national_id/'.$userKcy[0]->nationalIdImage));
-                    }
-                    $file = $request->file('nationalIdImage');
-                    $ext = $file->getClientOriginalExtension();
-                    $filename = 'national_id_'.time().'.'.$ext;
-                    $file->move(public_path('uploads/national_id'),$filename);
-                }
-                if(!empty($userKcy->all())){
-                    $updateData = [
-                        'national_id'=>$request->national_id,
-                        'address'=>$request->address,
-                        'nationalIdImage'=>(isset($filename) && $filename != '') ? $filename : $userKcy[0]->nationalIdImage,
-                        'updated_at' => dbDateFormat()
-                    ];
-                    DB::table('user_kyc')->where('user_id', $request->user_id)->update($updateData);
-                }else{
-                    DB::table('user_kyc')->insert([
-                        'user_id'=>$request->user_id,
-                        'national_id'=> $request->national_id,
-                        'address'=>$request->address,
-                        "date_of_expiry"=>$request->date_of_expiry,
-                        'nationalIdImage'=>(isset($filename)) ? $filename : $userKcy[0]->nationalIdImage ,
-                        'created_at'=>dbDateFormat(),
-                        'updated_at'=>dbDateFormat()
-                    ]);
+                DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
+                for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
+                    if($request->hasfile('document_file')){
+                        $file = $request->file('document_file')[$key];
+                        $ext = $file->getClientOriginalExtension();
+                        $filename = 'document_file_'.time().'.'.$ext;
+                        $file->move(public_path('uploads/kyc_document'),$filename);
+                    }  
+                        $valid_from = $request->valid_from[$key];
+                        $valid_thru = $request->valid_thru[$key];
+                        DB::table('user_kyc')->insert([
+                            'user_id'=>$request->user_id,
+                            'name_document'=> $request->name_document[$key],
+                            'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
+                            'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
+                            'document_file'=>$filename,
+                            'created_at' => dbDateFormat(),
+                            'updated_at' => dbDateFormat()
+                        ]);
                 }
             }else{
-                // dd(decrypt($request->update_id)  );
-                if($userKcy[0]->nationalIdImage != '' && file_exists(public_path('uploads/national_id/'.$userKcy[0]->nationalIdImage))){
-                    unlink(public_path('uploads/national_id/'.$userKcy[0]->nationalIdImage));
+                $kycData = DB::table('user_kyc')->where('user_id', $request->user_id)->get();
+                for($key = 0 ; $key <= (count($kycData))-1; $key++) {
+                    if(file_exists(public_path('uploads/kyc_document/'.$kycData[$key]->document_file))){
+                        unlink(public_path('uploads/kyc_document/'.$kycData[$key]->document_file));
+                    }
                 }
                 DB::table('user_kyc')->where('user_id',$request->user_id)->delete(); 
             }
