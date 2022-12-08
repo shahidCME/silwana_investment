@@ -78,7 +78,7 @@ class InvestmentController extends Controller
                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                        <a class="dropdown-item" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
                        <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
-                       <a class="dropdown-item" href="'.url($conract).'"><i class="dw dw-eye"></i> Contract</a>
+                       <a class="dropdown-item" href="'.url($conract).'"><i class="dw dw-file"></i> Contract</a>
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
                        <a class="dropdown-item '.$cancel.' CancelContract" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
