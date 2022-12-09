@@ -77,11 +77,11 @@
                 <label class="custom-control-label" for="status1">Rejecte</label>
             </div>
             <div class="custom-control custom-radio mb-5">
-                <input type="radio" id="status2" name="status" value="1" class="custom-control-input" checked>
+                <input type="radio" id="status2" name="status" value="1" class="custom-control-input" >
                 <label class="custom-control-label" for="status2">Approve</label>
             </div>
             <div class="custom-control custom-radio mb-5">
-                <input type="radio" id="status3" name="status" value="2" class="custom-control-input" >
+                <input type="radio" id="status3" name="status" value="2" class="custom-control-input" checked>
                 <label class="custom-control-label" for="status3">Pending</label>
             </div>
         </div>
