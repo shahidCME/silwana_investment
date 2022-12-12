@@ -1,5 +1,18 @@
 @extends('admin.includes.layouts')
 @section('content')
+<<style>
+  @media (max-width:1655px){
+    .card-box > div{
+        max-width:100%;
+        height:100%
+        
+    }
+    .card-box .font-24{
+        font-size:18px;
+        
+    }
+  }
+</style>
 <div class="title pb-20">
     <h2 class="h3 mb-0">App Overview</h2>
 </div>
@@ -45,7 +58,7 @@
                 <div class="widget-data">
                     <div class="weight-700 font-24 text-dark">{{$totalFinancePerson }}</div>
                     <div class="font-14 text-secondary weight-500">
-                        Total finance person
+                        Total finance
                     </div>
                 </div>
                 <div class="widget-icon">

@@ -20,11 +20,11 @@
                 {{ $viewData[0]->lname  }}
             </dd>
             
-            <dt class="col-sm-3">Schema Name</dt>
+            <dt class="col-sm-3">Investment plan</dt>
             <dd class="col-sm-9">
                 {{ $viewData[0]->schema  }}
             </dd>
-            <dt class="col-sm-3">Schema details</dt>
+            <dt class="col-sm-3">Investment Plan Details</dt>
             <dd class="col-sm-9">
                 <dl class="row">
                     {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
