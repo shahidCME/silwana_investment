@@ -22,7 +22,7 @@ class SchemaController extends Controller
         $data['page'] = "admin.schema.list";
         $data['js'] = ['schema'];
         $data['addButton'] = url('addSchema');
-        $data['title'] = "Schema list";
+        $data['title'] = "Investment plans";
         return view('admin/main_layout',$data);
     }
     
@@ -68,7 +68,7 @@ class SchemaController extends Controller
         $data['page'] =  'admin.schema.add';
         $data['action'] = url('addSchema');
         $data['js'] = array('validateFile','schema');
-        $data['title'] = 'Add Schema';
+        $data['title'] = 'Add Investment plan';
         $data['cancelBtn'] = url('Schema');
 
         if($req->all()){
@@ -119,7 +119,7 @@ class SchemaController extends Controller
             $data['update_id'] = $eid;
         }
         $data['page'] = 'admin.schema.edit';
-        $data['title'] = 'Eidt Schema ';
+        $data['title'] = 'Edit Investment plan ';
         $data['js'] = array('validateFile','schema');
         $data['action'] = url('SchemaEdit');
         $data['cancelBtn'] = url('Schema');

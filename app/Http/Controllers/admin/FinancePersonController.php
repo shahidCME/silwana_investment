@@ -19,7 +19,7 @@ class FinancePersonController extends Controller
      function index(){
         $data['page'] = 'admin.financePerson.list';
         $data['js'] = array('financePerson');
-        $data['title'] = "Finance Person List";
+        $data['title'] = "Finance List";
         $data['addBtn'] = url('addFinancePerson');
         return view('admin/main_layout',$data);
     }
@@ -69,7 +69,7 @@ class FinancePersonController extends Controller
         $data['page'] =  'admin.financePerson.add';
         $data['action'] = url('addFinancePerson');
         $data['js'] = array('validateFile');
-        $data['title'] = 'Add Finance Person';
+        $data['title'] = 'Add Finance';
         if($req->all()){
             $res = Admin::addFinancePerson($req->all());
             if($res){
@@ -90,7 +90,7 @@ class FinancePersonController extends Controller
             $data['update_id'] = $eid;
         }
         $data['page'] = 'admin.financePerson.edit';
-        $data['title'] = 'Eidt Finance Person';
+        $data['title'] = 'Eidt Finance ';
         $data['action'] = url('financePersonEdit');
         if($req->all()){
             $res = Admin :: updateFinanceRecords($req->all());

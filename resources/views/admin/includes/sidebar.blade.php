@@ -30,7 +30,7 @@
 						<li>
 							<a href="{{ url('financePerson') }}" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-bank"></span
-								><span class="mtext">Finance Person</span>
+								><span class="mtext">Finance</span>
 							</a>
 						</li>
 						<li>
@@ -44,7 +44,7 @@
 						<li>
 							<a href="{{ url('customer') }}" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-person-square"></span
-								><span class="mtext">Customers</span>
+								><span class="mtext">Client</span>
 							</a>
 						</li>
 						@endif
@@ -52,7 +52,7 @@
 						<li>
 							<a href="{{ url('Schema') }}" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-person-square"></span
-								><span class="mtext">Schema</span>
+								><span class="mtext">Investment plans</span>
 							</a>
 						</li>
 						@endif

@@ -23,7 +23,7 @@ class UserController extends Controller
         $data['page'] = "admin.users.list";
         $data['js'] = ['users'];
         $data['addCustomer'] = url('addCustomer');
-        $data['title'] = "Customer list";
+        $data['title'] = "Client list";
         return view('admin/main_layout',$data);
     }
     
@@ -90,7 +90,7 @@ class UserController extends Controller
         $data['page'] =  'admin.users.add';
         $data['action'] = url('addCustomer');
         $data['js'] = array('validateFile','users');
-        $data['title'] = 'Add Customer';
+        $data['title'] = 'Add Client';
         $data['countries'] = DB::table('countries')->get();
         if($req->all()){
             // dd($req->all());
@@ -179,7 +179,7 @@ class UserController extends Controller
         }
         // dd($data);
         $data['page'] = 'admin.users.edit';
-        $data['title'] = 'Eidt Customer ';
+        $data['title'] = 'Eidt Client ';
         $data['js'] = array('validateFile','users');
         $data['action'] = url('customerEdit');
         $data['countries'] = DB::table('countries')->get();
