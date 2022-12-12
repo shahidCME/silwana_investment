@@ -536,9 +536,19 @@ p {
   .dataTables_wrapper{
      overflow: hidden;
   }
-  .dataTables_wrapper .table{
+  .dataTables_wrapper .table{+
     width: 100%  !important;
   }  
+  .manage-action {
+    position: absolute !important;
+    will-change: transform !important;
+    top: 0px !important;
+    left: 0px !important;
+    transform: translate3d(-175px, -70px, 0px) !important;
+    height: 170px !important;
+    overflow: hidden !important;
+    overflow-y: scroll !important;
+}
 }
 
 

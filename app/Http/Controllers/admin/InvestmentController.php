@@ -75,7 +75,7 @@ class InvestmentController extends Controller
                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                        <i class="dw dw-more"></i>
                    </a>
-                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list manage-action">
                        <a class="dropdown-item" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
                        <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
                        <a class="dropdown-item" href="'.url($conract).'"><i class="dw dw-file"></i> Contract</a>
