@@ -4352,3 +4352,7 @@ label.error {
   z-index: 9;
   top: 11%;
 }
+.badge.badge-warning{
+  background-color: #CCA44C !important;
+  border-color: #CCA44C !important;
+}

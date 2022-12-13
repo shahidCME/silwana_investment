@@ -17,14 +17,12 @@
             <label id="type-error" class="error" for="type">@error('type') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
-            <label class="col-sm-12 col-md-2 col-form-label">Start date</label>
+            <label>Start Date</label>
             <input class="form-control date-picker" name="start_date" placeholder="Select Date" type="text" autocomplete="off">
         </div>
-        <div class="form-group">
-            <div class="col-md-8 ">
+        <div class="form-group"> 
                 <label>Details</label>
                 <textarea class="form-control textarea_editor" name="details"></textarea>
-            </div> 
         </div>
         <div class="form-group">
             <div class="row">

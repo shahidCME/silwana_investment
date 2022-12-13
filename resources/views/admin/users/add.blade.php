@@ -64,7 +64,7 @@
                     </div>
                     <div class="custom-control custom-radio mb-5">
                         <input type="radio" id="gender3" name="gender" value="2" class="custom-control-input">
-                        <label class="custom-control-label" for="gender3">other</label>
+                        <label class="custom-control-label" for="gender3">Other</label>
                     </div>
                 </div>
                 <div class="col-md-4 ">

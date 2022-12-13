@@ -10,9 +10,9 @@
 
             <div class="col-md-6">
                 <div class="form-group">
-                <label>Select Customer</label>
+                <label>Select Client</label>
                 <select class="custom-select2 form-control"  name="customer"  style="width: 100%; height: 38px">
-                    <option value="">Select Customer</option>
+                    <option value="">Select Client</option>
                     @foreach ($getCustomer as $item)
                     <option value="{{ $item->id}}">{{ $item->fname.' '.$item->lname }}</option>
                     @endforeach
@@ -22,9 +22,9 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Select Schema</label>
+                    <label>Select Investment Plan</label>
                     <select class="custom-select2 form-control"  name="schema"  style="width: 100%; height: 38px">
-                        <option value="">Select Schema</option>
+                        <option value="">Select Plan</option>
                         @foreach ($getSchema as $schem)    
                         <option value="{{ $schem    ->id}}">{{ $schem->name}}</option>
                         @endforeach
@@ -48,12 +48,12 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label class="col-sm-6 col-md-6 col-form-label">Start date</label>
-                <input class="form-control date-picker" name="start_date" placeholder="Select Date" type="text" autocomplete="off">
+                <label>Start date</label>
+                <input class="form-control date-picker" name="start_date" placeholder="Select date" type="text" autocomplete="off">
                 <label id="start_date-error" class="error" for="start_date">@error('start_date') {{ $message }}  @enderror</label>
             </div>
             <div class="form-group">
-                <label>return percentage(%)</label>
+                <label>Return Percentage(%)</label>
                 <input class="form-control" name="return_percentage" type="text" placeholder="Enter return percentage" >
                 <label id="return_percentage-error" class="error" for="return_percentage">@error('rereturn_percentage') {{ $message }}  @enderror</label>
             </div>
@@ -62,11 +62,11 @@
             <label class="weight-600">Return type</label>
             <div class="custom-control custom-radio mb-5">
                 <input type="radio" id="returnType1" name="return_type" value="0" class="custom-control-input" checked>
-                <label class="custom-control-label" for="returnType1">monthly</label>
+                <label class="custom-control-label" for="returnType1">Monthly</label>
             </div>
             <div class="custom-control custom-radio mb-5">
                 <input type="radio" id="returnType2" name="return_type" value="1" class="custom-control-input" >
-                <label class="custom-control-label" for="returnType2">yearly</label>
+                <label class="custom-control-label" for="returnType2">Yearly</label>
             </div>
         </div>
         @if(admin_login()['role'] == '1' || admin_login()['role'] == '4')

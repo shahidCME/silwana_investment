@@ -161,8 +161,8 @@ $("#investmentForm").validate({
         }
     },
     messages: {
-        customer: { required: "Please select customer" },
-        schema: { required: "Please select schema" },
+        customer: { required: "Please select Client" },
+        schema: { required: "Please select Plan" },
         tenure: { required: "Please enter tenure" },
         amount:{
             required : "Please enter invesment amount"

@@ -14,7 +14,7 @@
                 <tr>
                     <th class="table-plus datatable-nosort">Customer Fullname</th>
                     <th>Sales person</th>
-                    <th>Schema</th>
+                    <th>Investment Plan</th>
                     <th>Start Date</th>
                     <th>Cancel Date</th>
                     <th>Amount</th>

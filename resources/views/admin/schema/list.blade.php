@@ -10,7 +10,7 @@
 									<tr>
 										<th class="table-plus datatable-nosort">Name</th>
 										<th>Type</th>
-										<th>Start data</th>
+										<th>Start Data</th>
 										<th>Image</th>
 										<th>Status</th>
 										<th class="datatable-nosort">Action</th>

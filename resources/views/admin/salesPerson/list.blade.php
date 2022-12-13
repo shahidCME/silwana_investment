@@ -9,9 +9,9 @@
 								<thead>
 									<tr>
 										<th class="table-plus datatable-nosort">Name</th>
-										<th>email</th>
-										<th>mobile</th>
-										<th>status</th>
+										<th>Email</th>
+										<th>Mobile</th>
+										<th>Status</th>
 										<th class="datatable-nosort">Action</th>
 									</tr>
 								</thead>
