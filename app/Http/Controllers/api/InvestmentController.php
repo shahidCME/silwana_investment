@@ -296,7 +296,7 @@ class InvestmentController extends Controller
                 'amount' => $req->amount,
                 'return_type' => $req->return_type,
                 'return_percentage' => $req->return_percentage,
-                'status' => (isset($req->status)) ? $req->status : '1',
+                'status' => (isset($req->status)) ? $req->status : '2',
                 'contract_reciept' => $filename,
                 'investment_doc' => $invest_document,
                 'other_doc' => $other_document,

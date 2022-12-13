@@ -96,7 +96,7 @@
 											{{-- <img src="{{ asset('assets/admin/') }}/vendors/images/img.jpg" alt="" /> --}}
 											<h3>{{ $item->title  }}</h3>
 											<p>
-												{{ $item->description }} On {{ date('d-F-Y',strtotime($item->created_at)) }}
+												{{ $item->description }} }}
 											</p>
 										</a>
 									</li>
