@@ -96,7 +96,7 @@
 											{{-- <img src="{{ asset('assets/admin/') }}/vendors/images/img.jpg" alt="" /> --}}
 											<h3>{{ $item->title  }}</h3>
 											<p>
-												{{ $item->description }} }}
+												{{ $item->description }}
 											</p>
 										</a>
 									</li>
