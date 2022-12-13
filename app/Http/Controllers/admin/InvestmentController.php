@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\admin\Investment;
 use App\Models\admin\Schema;
 use App\Models\admin\User;
+use App\Models\Device;
 use DB;
 use DataTables;
 use PDF;
