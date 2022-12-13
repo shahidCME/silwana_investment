@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Scheme Documente</label>
+            <label>Plan Document</label>
             <input type="file" name="schema_document" class="form-control-file form-control height-auto " />
         </div>
         <div class="form-group ">

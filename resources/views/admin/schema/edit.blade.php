@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Scheme Documente</label>
+            <label>Plan Document</label>
             <input type="hidden" name="old_document" value="{{ $editData[0]->documents }}">
             <input type="file" name="edit_schema_document" class="form-control-file form-control height-auto " />
         </div>

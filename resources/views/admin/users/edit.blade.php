@@ -155,7 +155,7 @@
             <div class="row">
                         <div class="col-md-3">
                             <div class="form-group mb-0">
-                                    <label>Name Document</label>
+                                    <label>Document Name</label>
                                 <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name" >
                                 <label id="name_document-error" class="custom" for="name_document">@error('name_document') {{ $message }} @enderror</label>
                             </div>

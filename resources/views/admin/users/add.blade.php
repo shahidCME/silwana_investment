@@ -86,11 +86,11 @@
         </div>
         <div class="form-group">
             <label>National Id Number</label>
-            <input class="form-control" name="national_id" placeholder="enter national id number" type="text" autocomplete="off">
+            <input class="form-control" name="national_id" placeholder="Enter national id number" type="text" autocomplete="off">
         </div>
         <div class="form-group">
             <label>National Id Valid Thru</label>
-            <input class="form-control date-picker_dob" name="date_of_expiry" placeholder="select date valid thru" type="text" autocomplete="off">
+            <input class="form-control date-picker_dob" name="date_of_expiry" placeholder="Select date valid thru" type="text" autocomplete="off">
         </div>
         
         <div class="form-group">
@@ -105,7 +105,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group mb-0">
-                            <label>Name Document</label>
+                            <label>Document Name</label>
                             <input class="form-control name_document" name="name_document[]" type="text" placeholder="Enter document name">
                             <label id="name_document-error" class="custom" for="name_document">@error('name_document') {{ $message }} @enderror</label>
                         </div>
@@ -126,7 +126,7 @@
                     </div> 
                     <div class="col-md-3">
                         <div class="form-group mb-0">
-                            <label>Documents</label>
+                            <label>Document</label>
                             <input type="file" class="form-control document_file" name="document_file[]">
                             <label class="custom" for="document_file"></label>
                         </div>

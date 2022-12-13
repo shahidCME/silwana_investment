@@ -34,7 +34,7 @@ class InvestmentController extends Controller
     public function getInvestmentDataTable(Request $request){
         if ($request->ajax()) {
             $Session = Session::get('admin_login');
-            
+
             $query = DB:: table('investments as i');
               $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
@@ -65,7 +65,8 @@ class InvestmentController extends Controller
             })
              ->addColumn('action', function($row){      
                     $role = (admin_login()['role'] == "3") ? 'd-none' : '';              
-                    $cancel = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';              
+                    $cancel = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';
+                    $notView = (admin_login()['role'] == "0") ? 'd-none' : '';
                     $encryptedId = encrypt($row->id);
                     $editurl = "InvestmentEdit/".$encryptedId;
                     $deleteurl = "InvestmentDelete/".$encryptedId;
@@ -77,18 +78,20 @@ class InvestmentController extends Controller
                        <i class="dw dw-more"></i>
                    </a>
                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list manage-action">
-                       <a class="dropdown-item" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
-                       <a class="dropdown-item" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
-                       <a class="dropdown-item" href="'.url($conract).'"><i class="dw dw-file"></i> Contract</a>
+                       <a class="dropdown-item '.$notView.'" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
+                       <a class="dropdown-item '.$notView.'" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
+                       <a class="dropdown-item '.$notView.'" href="'.url($conract).'"><i class="dw dw-file"></i> Contract</a>
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
                        <a class="dropdown-item '.$cancel.' CancelContract" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
                    </div>
-               </div>'; 
-               if($row->contract_pdf != ''){
-                    $d_url = url('uploads/contract_pdf/'.$row->contract_pdf);
-                    $btn .='<a href="'.$d_url.'" target="_blank" class="badge badge-success" ><i class="fa fa-download"></i></a>';
-                 }
+               </div>';
+               if(admin_login()['role'] != '0'){
+                   if($row->contract_pdf != ''){
+                       $d_url = url('uploads/contract_pdf/'.$row->contract_pdf);
+                       $btn .='<a href="'.$d_url.'" target="_blank" class="badge badge-success" ><i class="fa fa-download"></i></a>';
+                    }
+                } 
                     return $btn;
                 })
                 ->addColumn('status', function($row){
@@ -430,10 +433,25 @@ class InvestmentController extends Controller
                 $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
                     ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.details');
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.details','s.documents');
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->get();
+                        foreach ($viewData as $key => $value) {
+                            
+                            if($value->return_type == '0'){
+                                // dd($req->start_date);
+                            $start_date = strtotime($value->start_date);
+                            $year = (12/$value->tenure);
+                            $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                            $value->contract_end_date = $end_date;
+                        }else{
+                            $start_date = date('Y-m-d',strtotime($value->start_date));
+                            $contract_end_date = date('Y-m-d', strtotime("+".$value->tenure." year",strtotime($start_date)));
+                            $value->contract_end_date = $contract_end_date;
+                        }
+                    }
+
                     // dd($viewData);
         $data['viewData'] = $viewData;
         $data['page'] = 'admin.investment.investmentDocument';
