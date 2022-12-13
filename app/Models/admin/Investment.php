@@ -45,7 +45,7 @@ class Investment extends Model
             'amount' => $postData['amount'],
             'return_type' => $postData['return_type'],
             'return_percentage' => $postData['return_percentage'],
-            'status' => (isset($postData['status'])) ? $postData['status'] : '0',
+            'status' => (isset($postData['status'])) ? $postData['status'] : '2',
             'contract_reciept' => $filename,
             'investment_doc' => $invest_document,
             'other_doc' => $other_document,
