@@ -307,7 +307,7 @@ class InvestmentController extends Controller
                         $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
                         $data['viewData'][0]->contract_end_date = $contract_end_date;
                     }
-                      $contractStartDateFraction = explode("-",date("d-F-Y",$start_date));
+                      $contractStartDateFraction = explode("-",date("d-F-Y",strtotime($start_date)));
                       $data['viewData'][0]->day   =  $day = $contractStartDateFraction[0];
                       $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
                       $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
