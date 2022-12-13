@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\admin\Admin;
 use App\Models\admin\User;
+use App\Models\Device;
 use DB;
 use Mail;
 use Carbon\Carbon; 
@@ -23,6 +24,17 @@ class LoginController extends Controller
          // Check email
          $user = User::where('email', $fields['email'])->first();
          if($user != null){
+            Device :: where(['role'=>'2','user_id'=>$user->id])->delete();
+            $deviceData = [
+                'user_id'=>$user->id,
+                'device_id'=>$request->device_id,
+                'token'=>(isset($request->token) && $request->token != '') ? $request->token : NULL,
+                'role'=>2,
+                'type'=>$request->type,
+                'created_at'=>dbDateFormat(),
+                'updated_at'=>dbDateFormat(),
+            ];
+            Device::create($deviceData);
             if($user->status == '1'){
                 if(Hash::check($fields['password'], $user->password)) {
                     // $token = $user->createToken('token',['user'])->plainTextToken;
@@ -43,6 +55,17 @@ class LoginController extends Controller
             }
         }else{
             $admin = Admin::where('email', $fields['email'])->first();
+            Device :: where(['role'=>'1','user_id'=>$admin->id])->delete();
+            $deviceData = [
+                'user_id'=>$admin->id,
+                'device_id'=>$request->device_id,
+                'token'=>(isset($request->token) && $request->token != '') ? $request->token : NULL,
+                'role'=>1,
+                'type'=>$request->type,
+                'created_at'=>dbDateFormat(),
+                'updated_at'=>dbDateFormat(),
+            ];
+            Device::create($deviceData);
             if($admin != null){
                 if(Hash::check($fields['password'], $admin->password)) {
                     // $token = $admin->createToken('token',['admin'])->plainTextToken;
@@ -52,16 +75,28 @@ class LoginController extends Controller
                         'role' => $admin->role,
                         'id'=>$admin->id
                     ];
+                    // echo '1';die;
+                    // $notification_id = "dXMijcsNQbae8B8m9YKBa4:APA91bEs9me3vSJNevAiG8jAm2gzlX7DK06dAHAzxuzaeYqgV_tUZtfpZlq6wnY2YzYMIKdpg_jx9sC83SuzvboF1BtZrM8UgZZEj-hhx0zDTMLE9Ay5Y0IRFuPrFxVZVurjWe3YkUHH";
+                    // $title = "Greeting Notification";
+                    // $message = "Have good day!";
+                    // $id = '1';
+                    // $type = "a";
+                    
+                    // $res = send_notification_FCM($notification_id, $title, $message, $id,$type);
+
                      return response()->json($response);
                 }
 
              }
 
         }
+        
         $response = [
             'status'=>'0',
             'message'=>'Invalid Email and password'
         ];
+
+           
         return response()->json($response);
          
 
