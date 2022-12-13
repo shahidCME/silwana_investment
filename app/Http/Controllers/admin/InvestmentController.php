@@ -302,7 +302,7 @@ class InvestmentController extends Controller
                         $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
                         $data['viewData'][0]->contract_end_date = $end_date;
                     }else{
-                        $start_date = strtotime('Y-m-d',$req->start_date);
+                        $start_date = date('Y-m-d',strtotime($req->start_date));
                         $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",$start_date));
                         $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
                         $data['viewData'][0]->contract_end_date = $contract_end_date;
