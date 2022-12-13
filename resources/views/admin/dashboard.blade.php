@@ -1,6 +1,6 @@
 @extends('admin.includes.layouts')
 @section('content')
-<<style>
+<style>
   @media (max-width:1655px){
     .card-box > div{
         max-width:100%;
