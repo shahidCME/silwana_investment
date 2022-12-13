@@ -15,13 +15,13 @@
 			rel="icon"
 			type="image/png"
 			sizes="32x32"
-			href="{{ asset('assets/admin/') }}/vendors/images/favicon-32x32.png"
+			href="{{ asset('assets/admin/') }}/vendors/images/favicon_new.png"
 		/>
 		<link
 			rel="icon"
 			type="image/png"
 			sizes="16x16"
-			href="{{ asset('assets/admin/') }}/vendors/images/favicon-16x16.png"
+			href="{{ asset('assets/admin/') }}/vendors/images/favicon_new.png"
 		/>
 
 		<!-- Mobile Specific Metas -->
@@ -85,7 +85,7 @@
 			>
 				<div class="brand-logo">
 					<a href="{{ url('/')}}">
-						<img src="{{ asset('assets/admin/') }}/vendors/images/logo2.svg" alt="" />
+						<img src="{{ asset('assets/admin/') }}/vendors/images/logo2.png" alt="" />
 					</a>
 				</div>
 				{{-- <div class="login-menu">
