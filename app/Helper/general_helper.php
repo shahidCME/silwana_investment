@@ -343,6 +343,7 @@ function send_notification_FCM($notification_id, $title, $message, $id,$type) {
     curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
  
     $rest = curl_exec($crl);
+    dd($rest);
     if ($rest === false) {
         // throw new Exception('Curl error: ' . curl_error($crl));
         // print_r('Curl error: ' . curl_error($crl));
