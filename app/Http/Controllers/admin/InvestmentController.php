@@ -316,8 +316,9 @@ class InvestmentController extends Controller
                     if($req->return_type == '0'){
                         // dd($req->start_date);
                         $start_date = strtotime($req->start_date);
-                        $year = (12/$req->tenure);
-                        $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                        $year = $req->tenure;
+                        $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
+                        // ddd($end_date);
                         $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
                         $data['viewData'][0]->contract_end_date = $end_date;
                     }else{
@@ -331,7 +332,8 @@ class InvestmentController extends Controller
                       $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
                       $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
                       $viewData[0]->amountArabic = convertNumberToWord($viewData[0]->amount);
-                    if($req->lang == '1'){
+                    //   ddd($data['viewData'][0]->contract_end_date);
+                      if($req->lang == '1'){
                         
                         $tr = new GoogleTranslate();
                         $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
@@ -360,7 +362,17 @@ class InvestmentController extends Controller
                     
                     $availableAmount = $investData[0]->amount;
                     $availableStartData = $investData[0]->start_date;
-                    if(($investData[0]->contract_pdf == NULL) || ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true))){
+                    // dd($req->all());
+                    if(($investData[0]->contract_pdf == NULL) || ( ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true)) )){
+                        $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
+                       if(!empty($willUpdateFiles->all())){
+                            DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->update(
+                                [
+                                    'terminate_date'=>dbDateFormat($req->start_date,true),
+                                    'updated_at' => dbDateFormat() 
+                                ]  
+                                );
+                        }
                         DB::table('contract_files')->insert(
                             [
                                 'investment_id'=> $id,
@@ -373,15 +385,15 @@ class InvestmentController extends Controller
                                 ]  
                             );
                     }else{
-                        // echo '2';die;
-                        $willUpdateFiles = DB::table('contract_files')->where(['start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->get();
+                        $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
+                        // dd($willUpdateFiles->all());
                         if(!empty($willUpdateFiles->all())){
 
                             if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
                                 unlink(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf));
                             }
                             
-                            DB::table('contract_files')->where(['start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->update(
+                            DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->update(
                                 [
                                     'contract_pdf'=>$filename,
                                     'updated_at' => dbDateFormat() 
@@ -401,19 +413,7 @@ class InvestmentController extends Controller
                                 );
                         }
                     }
-                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
-                    // $device = Device::where(['user_id'=>$investment[0]->admin_id,'role'=>'1'])->get();
-                    // if(!empty($device->all())){
-                    //     $notification_id = $device[0]->token;
-                    //     $title = $returnType.' Return of '.$fname;
-                    //     $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');
-                    //     $id = $investment[0]->admin_id;
-                    //     $type = $device[0]->type;
-                    //     send_notification_FCM($notification_id, $title, $message, $id,$type);
-                    // }
-                    // $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    // $this->insertNotification($insertData);
-                    
+                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]); 
                     // for user
                     $plan = Schema::where('id',$viewData[0]->schema_id)->get();
                     $planName = $plan[0]->name;
@@ -504,6 +504,14 @@ class InvestmentController extends Controller
     public function getRoi($eid='',Request $req){
         if($eid != ''){
             $id = decrypt($eid);
+            
+            $query = DB:: table('investments as i');
+                $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
+                    ->select('u.*');
+                $query->where('i.id',$id);
+                $userData = $query->get();
+                $data['customer_name'] = $userData[0]->fname. ' '.$userData[0]->lname; 
+
             $record = DB::table('roi')->where('investment_id',$id)->get();
             // Plq();
             $data['investment_id'] = $eid;
@@ -618,8 +626,13 @@ class InvestmentController extends Controller
 
     public function contract($eid){
         $id = decrypt($eid);
+        $query = DB:: table('investments as i');
+        $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')->select('u.*');
+        $query->where('i.id',$id);
+        $userData = $query->get();
+        $data['customer_name'] = $userData[0]->fname. ' '.$userData[0]->lname; 
+
         $record = DB::table('contract_files')->where(['investment_id'=>$id])->get();
-        // dd($record);
         $data['contract'] = $record;
         $data['title'] = 'Investment Contract';
         $data['page']  = 'admin.investment.contractList';

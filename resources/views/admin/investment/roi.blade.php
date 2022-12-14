@@ -1,7 +1,8 @@
 <div class="card-box mb-30">
-    <div class="pd-20">
-        <h4 class="text-blue h4">{{ $title }}</>
-        </div>
+    <div class="pd-20 d-flex align-items-center">
+        <h4 class="text-blue h4 mb-0">{{ $title }}</h4>
+        <p class="ml-2 mb-0" style="font-size:20px;font-weight:bold"> -> {{ ucwords($customer_name) }}</p>    
+    </div>
     <div class="pb-20">
         <table class="table stripe hover nowrap " id="datatable" width="100%">
             <thead>

@@ -385,8 +385,8 @@ class InvestmentController extends Controller
                     if($req->return_type == '0'){
                         // dd($req->start_date);
                         $start_date = strtotime($req->start_date);
-                        $year = (12/$req->tenure);
-                        $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                        $year = $req->tenure;
+                        $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
                         $data['viewData'][0]->contract_start_date = $req->start_date;
                         $data['viewData'][0]->contract_end_date = $end_date;
                     }else{
@@ -426,8 +426,17 @@ class InvestmentController extends Controller
 
                     $availableAmount = $investData[0]->amount;
                     $availableStartData = $investData[0]->start_date;
-                    if(($investData[0]->contract_pdf == NULL) || ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true))){
-                     
+                    if(($investData[0]->contract_pdf == NULL) ||( ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true)))){
+                        $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
+                       
+                        if(!empty($willUpdateFiles->all())){
+                             DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->update(
+                                 [
+                                     'terminate_date'=>dbDateFormat($req->start_date,true),
+                                     'updated_at' => dbDateFormat() 
+                                 ]  
+                                 );
+                         }
                         DB::table('contract_files')->insert(
                             [
                                 'investment_id'=> $id,
@@ -441,7 +450,7 @@ class InvestmentController extends Controller
                             );
                     }else{
                         // echo '2';die;
-                        $willUpdateFiles = DB::table('contract_files')->where(['start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->get();
+                        $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
                         // dd($willUpdateFiles->all());
                         if(!empty($willUpdateFiles->all())){
                             if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
@@ -449,7 +458,7 @@ class InvestmentController extends Controller
                             }
                         } 
                         if(!empty($willUpdateFiles->all())){
-                            DB::table('contract_files')->where('start_date',$investData[0]->start_date)->update(
+                            DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->update(
                                 [
                                     'contract_pdf'=>$filename,
                                     'updated_at' => dbDateFormat() 
