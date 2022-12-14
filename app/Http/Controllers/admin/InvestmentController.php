@@ -52,8 +52,8 @@ class InvestmentController extends Controller
             foreach ($data as $key => $value) {            
                 if($value->return_type == '0'){
                     $start_date = strtotime($value->start_date);
-                    $year = (12/$value->tenure);
-                    $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                    $year = $value->tenure;
+                    $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
                     $value->contract_end_date = $end_date;
                 }else{
                     $start_date = date('Y-m-d',strtotime($value->start_date));
@@ -61,7 +61,7 @@ class InvestmentController extends Controller
                     $value->contract_end_date = $contract_end_date;
                 }
             }
-            // dd($data);
+            dd($data);
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('customer fullname',function($row){
                 return $row->customerFname .' '.$row->customerLname;
