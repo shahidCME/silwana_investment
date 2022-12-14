@@ -49,7 +49,19 @@ class InvestmentController extends Controller
             $query->where('i.status','!=','9');
             $query->orderBy('id','desc');
             $data = $query->get();
-            
+            foreach ($data as $key => $value) {            
+                if($value->return_type == '0'){
+                    $start_date = strtotime($value->start_date);
+                    $year = (12/$value->tenure);
+                    $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                    $value->contract_end_date = $end_date;
+                }else{
+                    $start_date = date('Y-m-d',strtotime($value->start_date));
+                    $contract_end_date = date('Y-m-d', strtotime("+".$value->tenure." year",strtotime($start_date)));
+                    $value->contract_end_date = $contract_end_date;
+                }
+            }
+            // dd($data);
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('customer fullname',function($row){
                 return $row->customerFname .' '.$row->customerLname;
@@ -59,6 +71,9 @@ class InvestmentController extends Controller
             })
             ->addColumn('start date',function($row){
                 return date('d F Y',strtotime($row->start_date));
+            })
+            ->addColumn('end date',function($row){
+                return date('d F Y',strtotime($row->contract_end_date));
             })
             ->addColumn('return type',function($row){
                 return ($row->return_type =='0') ? "Monthly" : "Yearly";
@@ -106,7 +121,7 @@ class InvestmentController extends Controller
                    
                     return $sttus;
                 })
-                ->rawColumns(['return type','start date','sales person','customer name','status','action'])
+                ->rawColumns(['return type','start date','end date','sales person','customer name','status','action'])
                 ->make(true);
         }
 
@@ -400,10 +415,10 @@ class InvestmentController extends Controller
                     // $this->insertNotification($insertData);
                     
                     // for user
+                    $plan = Schema::where('id',$viewData[0]->schema_id)->get();
+                    $planName = $plan[0]->name;
                     $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
                     if(!empty($device->all())){
-                        $plan = Schema::where('id',$viewData[0]->schema_id)->get();
-                        $planName = $plan[0]->name;
                         $notification_id = $device[0]->token;
                         $title = $planName;
                         $message =  'Application for '.$planName. ' is approved';
@@ -411,6 +426,7 @@ class InvestmentController extends Controller
                         $type = $device[0]->type;
                         send_notification_FCM($notification_id, $title, $message, $id,$type);
                     }
+                    $message =  'Application for '.$planName. ' is approved';
                     $insertData = ['for_role'=>'2','user_id'=>$viewData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
                     $this->insertNotification($insertData);
                 }

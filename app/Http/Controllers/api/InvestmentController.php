@@ -52,6 +52,15 @@ class InvestmentController extends Controller
                 $value->schemaImage     = ($value->schemaImage != '') ? url('uploads/schema/'.$value->schemaImage) : "";
                 $value->schemaDocuments = ($value->schemaDocuments != '' ) ? url('uploads/schema_doc/'.$value->schemaDocuments) : "";
                 $value->amount_in_word  = convertNumberToWord($value->amount);
+                // $files = DB::table('contract_files')->where('user_id',$value->user_id)->get();
+                $url = url("uploads/contract_pdf/");
+                $files = DB::table('contract_files as cf')->select("cf.*",
+                    DB::raw("CONCAT($url,cf.contract_pdf) as contract_pdf")
+                )->where('cf.investment_id',$value->id)->get();
+                $value->contract_files = [];
+                if(!empty($files->all())){
+                    $value->contract_files = $files;
+                }
             }
             $responce = [
                 'status'=>'1',
@@ -461,6 +470,20 @@ class InvestmentController extends Controller
                         }
                     }
                 DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
+                $plan = Schema::where('id',$viewData[0]->schema_id)->get();
+                $planName = $plan[0]->name;
+                $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
+                if(!empty($device->all())){
+                    $notification_id = $device[0]->token;
+                    $title = $planName;
+                    $message =  'Application for '.$planName. ' is approved';
+                    $id = $viewData[0]->user_id;
+                    $type = $device[0]->type;
+                    send_notification_FCM($notification_id, $title, $message, $id,$type);
+                }
+                $message =  'Application for '.$planName. ' is approved';
+                $insertData = ['for_role'=>'2','user_id'=>$viewData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                $this->insertNotification($insertData);
             }
             if($result){
                 $responce = [
