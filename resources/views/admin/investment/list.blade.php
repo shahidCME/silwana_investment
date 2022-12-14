@@ -14,7 +14,7 @@
                     <th>Sales person</th>
                     <th>Investment Plan</th>
                     <th>Start Date</th>
-                    <!-- <th>End Date</th> -->
+                    <th>End Date</th>
                     <th>Amount</th>
                     <th>Return Type</th>
                     <th>Status</th>

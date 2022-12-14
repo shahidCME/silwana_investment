@@ -72,9 +72,9 @@ class InvestmentController extends Controller
             ->addColumn('start date',function($row){
                 return date('d F Y',strtotime($row->start_date));
             })
-            // ->addColumn('end date',function($row){
-            //     return date('d F Y',strtotime($row->contract_end_date));
-            // })
+            ->addColumn('end date',function($row){
+                return date('d F Y',strtotime($row->contract_end_date));
+            })
             ->addColumn('return type',function($row){
                 return ($row->return_type =='0') ? "Monthly" : "Yearly";
             })
@@ -121,7 +121,7 @@ class InvestmentController extends Controller
                    
                     return $sttus;
                 })
-                ->rawColumns(['return type','start date','sales person','customer name','status','action'])
+                ->rawColumns(['return type','start date','end date','sales person','customer name','status','action'])
                 ->make(true);
         }
 
