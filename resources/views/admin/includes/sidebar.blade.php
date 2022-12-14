@@ -2,7 +2,7 @@
 				<a href="{{ (admin_login()['role'] !='2' ) ? url('dashboard') : url('userDashboard') }}">
 					<img src="{{ asset('assets/admin/') }}/vendors/images/deskapp-logo.svg" alt="" class="dark-logo" />
 					<img
-						src="{{ asset('assets/admin/') }}/vendors/images/logo2.svg"
+						src="{{ asset('assets/admin/') }}/vendors/images/web_header_wt.png"
 						alt=""
 						class="light-logo"
 					/>
