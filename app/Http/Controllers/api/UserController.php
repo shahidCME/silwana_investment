@@ -39,11 +39,15 @@ class UserController extends Controller
             $kyc = DB::table('user_kyc')->where('user_id',$value->id)->get();
             if(!empty($kyc->all())){
                 $value->is_kyc = '1';
-                $value->name_document = $kyc[0]->name_document;
-                $value->valid_from = $kyc[0]->valid_from;
-                $value->valid_thru = $kyc[0]->valid_thru;
-                $value->document_file = url('public/national_id/'.$kyc[0]->document_file);
+                foreach ($kyc as $k => $v) {
+                    // $value->name_document = $kyc[0]->name_document;
+                    // $value->valid_from = $kyc[0]->valid_from;
+                    // $value->valid_thru = $kyc[0]->valid_thru;
+                    $v->document_file = url('public/national_id/'.$v->document_file);
+                }
             }
+            $value->kyc_doc = $kyc; 
+
         }
         $responce = [
             'status' => '1',
