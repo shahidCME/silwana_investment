@@ -615,6 +615,12 @@ class InvestmentController extends Controller
 
     public function cancelledRoi($eid){
             $id = decrypt($eid);
+            $query = DB:: table('investments as i');
+                $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
+                    ->select('u.*');
+                $query->where('i.id',$id);
+                $userData = $query->get();
+                $data['customer_name'] = $userData[0]->fname. ' '.$userData[0]->lname; 
             $record = DB::table('roi')->where(['investment_id'=>$id,'status'=>'1'])->get();
             $data['investment_id'] = $eid;
             $data['roi'] = $record;
