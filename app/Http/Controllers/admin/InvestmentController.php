@@ -406,7 +406,7 @@ class InvestmentController extends Controller
                         $planName = $plan[0]->name;
                         $notification_id = $device[0]->token;
                         $title = $planName;
-                        $message =  'Application for '.$planName. 'is approved';
+                        $message =  'Application for '.$planName. ' is approved';
                         $id = $viewData[0]->user_id;
                         $type = $device[0]->type;
                         send_notification_FCM($notification_id, $title, $message, $id,$type);

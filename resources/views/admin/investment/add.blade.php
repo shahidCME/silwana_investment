@@ -48,7 +48,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>Start date</label>
+                <label>Start Date</label>
                 <input class="form-control date-picker" name="start_date" placeholder="Select date" type="text" autocomplete="off">
                 <label id="start_date-error" class="error" for="start_date">@error('start_date') {{ $message }}  @enderror</label>
             </div>
@@ -59,7 +59,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <label class="weight-600">Return type</label>
+            <label class="weight-600">Return Type</label>
             <div class="custom-control custom-radio mb-5">
                 <input type="radio" id="returnType1" name="return_type" value="0" class="custom-control-input" checked>
                 <label class="custom-control-label" for="returnType1">Monthly</label>
