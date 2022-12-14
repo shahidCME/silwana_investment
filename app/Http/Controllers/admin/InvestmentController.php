@@ -61,7 +61,7 @@ class InvestmentController extends Controller
                     $value->contract_end_date = $contract_end_date;
                 }
             }
-            dd($data);
+            // dd($data);
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('customer fullname',function($row){
                 return $row->customerFname .' '.$row->customerLname;
