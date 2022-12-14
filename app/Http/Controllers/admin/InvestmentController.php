@@ -401,6 +401,7 @@ class InvestmentController extends Controller
                     
                     // for user
                     $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
+                    dd($device);
                     if(!empty($device->all())){
                         $plan = Schema::where('id',$viewData[0]->schema_id)->get();
                         $planName = $plan[0]->name;
