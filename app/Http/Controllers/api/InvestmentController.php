@@ -597,10 +597,36 @@ class InvestmentController extends Controller
             $schema = schema::where('id',$investment[0]->schema_id)->get();
                 $user = USER::where('id',$investment[0]->user_id)->get();
                 $fname = $user[0]->fname;  
-                $insertData = ['for_role'=>'1','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                $device = Device::where(['user_id'=>$investment[0]->admin_id,'role'=>'1'])->get();
+                if(!empty($device->all())){
+                    $notification_id = $device[0]->token;
+                    $title = $returnType.' Return of '.$fname;
+                    $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');
+                    $id = $investment[0]->admin_id;
+                    $type = $device[0]->type;
+                    send_notification_FCM($notification_id, $title, $message, $id,$type);
+                }
+                $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
                 $this->insertNotification($insertData);
-                $insertData = ['for_role'=>'2','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                
+                // for user
+                $device = Device::where(['user_id'=>$investment[0]->user_id,'role'=>'2'])->get();
+                if(!empty($device->all())){
+                    $notification_id = $device[0]->token;
+                    $title = $returnType.' Return of '.$fname;
+                    $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');;
+                    $id = $investment[0]->admin_id;
+                    $type = $device[0]->type;
+                    send_notification_FCM($notification_id, $title, $message, $id,$type);
+                }
+                $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
                 $this->insertNotification($insertData);
+
+                // $insertData = ['for_role'=>'1','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                // $this->insertNotification($insertData);
+                // $insertData = ['for_role'=>'2','user_id'=>$investment[0]->user_id,'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on ','created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                // $this->insertNotification($insertData);
+                
                 $responce = [
                     'status'=>'1',
                     'message'=>"File Submitted Successfully",

@@ -387,7 +387,33 @@ class InvestmentController extends Controller
                         }
                     }
                     DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]);
-            }
+                    // $device = Device::where(['user_id'=>$investment[0]->admin_id,'role'=>'1'])->get();
+                    // if(!empty($device->all())){
+                    //     $notification_id = $device[0]->token;
+                    //     $title = $returnType.' Return of '.$fname;
+                    //     $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');
+                    //     $id = $investment[0]->admin_id;
+                    //     $type = $device[0]->type;
+                    //     send_notification_FCM($notification_id, $title, $message, $id,$type);
+                    // }
+                    // $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                    // $this->insertNotification($insertData);
+                    
+                    // for user
+                    $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
+                    if(!empty($device->all())){
+                        $plan = Schema::where('id',$viewData[0]->schema_id)->get();
+                        $planName = $plan[0]->name;
+                        $notification_id = $device[0]->token;
+                        $title = $planName;
+                        $message =  'Application for '.$planName. 'is approved';
+                        $id = $viewData[0]->user_id;
+                        $type = $device[0]->type;
+                        send_notification_FCM($notification_id, $title, $message, $id,$type);
+                    }
+                    $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                    $this->insertNotification($insertData);
+                }
               // $filename = $req->old_image;
             if($res){
                 // $this->notification($req->all());
