@@ -411,8 +411,8 @@ class InvestmentController extends Controller
                         $type = $device[0]->type;
                         send_notification_FCM($notification_id, $title, $message, $id,$type);
                     }
-                    $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    $this->insertNotification($insertData);
+                    // $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return','description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                    // $this->insertNotification($insertData);
                 }
               // $filename = $req->old_image;
             if($res){
