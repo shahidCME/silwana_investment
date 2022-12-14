@@ -43,7 +43,7 @@ class UserController extends Controller
                     // $value->name_document = $kyc[0]->name_document;
                     // $value->valid_from = $kyc[0]->valid_from;
                     // $value->valid_thru = $kyc[0]->valid_thru;
-                    $v->document_file = url('public/kyc_document/'.$v->document_file);
+                    $v->document_file = url('uploads/kyc_document/'.$v->document_file);
                 }
             }
             $value->kyc_doc = $kyc; 
