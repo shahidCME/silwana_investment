@@ -539,7 +539,7 @@ p {
   .dataTables_wrapper .table{+
     width: 100%  !important;
   }  
-  .manage-action {
+  /* .manage-action {
     position: absolute !important;
     will-change: transform !important;
     top: 0px !important;
@@ -548,7 +548,7 @@ p {
     height: 170px !important;
     overflow: hidden !important;
     overflow-y: scroll !important;
-}
+} */
 }
 
 
