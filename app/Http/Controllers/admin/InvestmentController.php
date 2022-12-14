@@ -400,10 +400,7 @@ class InvestmentController extends Controller
                     // $this->insertNotification($insertData);
                     
                     // for user
-                    Elq();
                     $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
-                    Plq();
-                    dd($device);
                     if(!empty($device->all())){
                         $plan = Schema::where('id',$viewData[0]->schema_id)->get();
                         $planName = $plan[0]->name;
