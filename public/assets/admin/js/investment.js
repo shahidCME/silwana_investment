@@ -41,7 +41,7 @@ $(document).ready(function () {
             { data: "sales person"},
             { data: "schema"},
             { data: "start date"},
-            // { data: "end date"},
+            { data: "end date"},
             { data: "amount"},
             { data: "return type"},
             { data: "status" },
