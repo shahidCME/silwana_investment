@@ -622,11 +622,14 @@ class InvestmentController extends Controller
                 $userData = $query->get();
                 $data['customer_name'] = $userData[0]->fname. ' '.$userData[0]->lname; 
             $record = DB::table('roi')->where(['investment_id'=>$id,'status'=>'1'])->get();
+            $sum = DB::table('roi')->where(['investment_id'=>$id,'status'=>'1'])->sum('return_amount');
+            $data['totalPaidRoi'] =  $sum;
             $data['investment_id'] = $eid;
             $data['roi'] = $record;
             $data['title'] = 'Return of Investment';
             $data['page']  = 'admin.investment.roi';
             $data['js'] = ['investment','validateFile'];
+            $data['cancelledRoi'] = '1';
             return view('admin/main_layout',$data);
     }
 

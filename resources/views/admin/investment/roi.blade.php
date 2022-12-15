@@ -35,6 +35,12 @@
                     </td>
                 </tr>
                     @endforeach
+            @if (!empty($roi) && isset($cancelledRoi))
+                <tr >
+                    <th colspan ="2" style="text-align: right;">Total :</th>
+                    <th colspan ="3"><?=(isset($totalPaidRoi)) ? $totalPaidRoi : '0'?></th>
+                </tr>    
+            @endif
             </tbody>
         </table>
     </div>
