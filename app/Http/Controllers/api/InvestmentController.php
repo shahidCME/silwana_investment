@@ -54,11 +54,12 @@ class InvestmentController extends Controller
                 $value->amount_in_word  = convertNumberToWord($value->amount);
                 // $files = DB::table('contract_files')->where('user_id',$value->user_id)->get();
                 $url = url("uploads/contract_pdf/");
-                $files = DB::table('contract_files as cf')->select("cf.*",
-                    DB::raw("CONCAT($url,cf.contract_pdf) as contract_pdf")
-                )->where('cf.investment_id',$value->id)->get();
+                $files = DB::table('contract_files as cf')->where('cf.investment_id',$value->id)->get();
                 $value->contract_files = [];
                 if(!empty($files->all())){
+                    foreach ($files as $k => $v) {
+                        $v->contract_pdf = $url.$v->contract_pdf; 
+                    }
                     $value->contract_files = $files;
                 }
             }
