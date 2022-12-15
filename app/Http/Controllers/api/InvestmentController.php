@@ -630,11 +630,11 @@ class InvestmentController extends Controller
             $schema = schema::where('id',$investment[0]->schema_id)->get();
                 $user = USER::where('id',$investment[0]->user_id)->get();
                 $fname = $user[0]->fname;  
+                $title = $returnType.' Return of '.$fname;
+                $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');
                 $device = Device::where(['user_id'=>$investment[0]->admin_id,'role'=>'1'])->get();
                 if(!empty($device->all())){
                     $notification_id = $device[0]->token;
-                    $title = $returnType.' Return of '.$fname;
-                    $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');
                     $id = $investment[0]->admin_id;
                     $type = $device[0]->type;
                     send_notification_FCM($notification_id, $title, $message, $id,$type);
@@ -643,11 +643,11 @@ class InvestmentController extends Controller
                 $this->insertNotification($insertData);
                 
                 // for user
+                $title = $returnType.' Return of '.$fname;
+                $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');;
                 $device = Device::where(['user_id'=>$investment[0]->user_id,'role'=>'2'])->get();
                 if(!empty($device->all())){
                     $notification_id = $device[0]->token;
-                    $title = $returnType.' Return of '.$fname;
-                    $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');;
                     $id = $investment[0]->admin_id;
                     $type = $device[0]->type;
                     send_notification_FCM($notification_id, $title, $message, $id,$type);

@@ -20,6 +20,7 @@ class CreateContactFile extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('contract_pdf')->nullable();
+            $table->date('terminate_date')->nullable()->default(NULL);
             $table->softDeletes();
             $table->timestamps();
         });
