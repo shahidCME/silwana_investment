@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\admin\Investment;
 use App\Models\admin\User;
 use App\Models\admin\Schema;
+use App\Models\Device;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use PDF;
@@ -605,6 +606,7 @@ class InvestmentController extends Controller
             'roi_id'=> 'required|numeric',
             'payment_trasfer_reciept'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf'
         ]);
+        // dd($req->all());
         if ($validator->fails()) {
             $responce = [
                 'status'=>'0',
@@ -623,6 +625,7 @@ class InvestmentController extends Controller
             $file->move(public_path('uploads/payment_trasfer_reciept'),$fileName);
         }
         $result = DB::table('roi')->where('id',$req->roi_id)->update(['payment_trasfer_reciept'=>$fileName,'status'=>'1','updated_at'=>dbDateFormat()]);
+        
         if($result){
             $investment_id = $req->investment_id;
             $investment = DB::table('investments')->where('id',$investment_id)->get();
@@ -633,12 +636,14 @@ class InvestmentController extends Controller
                 $title = $returnType.' Return of '.$fname;
                 $message = $returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y');
                 $device = Device::where(['user_id'=>$investment[0]->admin_id,'role'=>'1'])->get();
+
                 if(!empty($device->all())){
                     $notification_id = $device[0]->token;
                     $id = $investment[0]->admin_id;
                     $type = $device[0]->type;
                     send_notification_FCM($notification_id, $title, $message, $id,$type);
                 }
+
                 $insertData = ['for_role'=>'1','user_id'=>admin_login()['id'],'title'=>$returnType.' Return of '.$fname,'description'=>$returnType.' return of investment in '.$schema[0]->name.' is transferred on '.date('d F Y'),'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
                 $this->insertNotification($insertData);
                 
