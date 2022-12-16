@@ -152,14 +152,18 @@ class Login extends Controller
             'token' => $request->token
             ])
             ->first();
-            dd($updatePassword);
+        $status = 0;
         if($updatePassword){
             $is_available = Admin :: where('email',$request->email)->get();
             if(count($is_available) > 0){
                 $status = Admin::where('email', $request->email)
                 ->update(['password' => Hash::make($request->password)]);
             }else{
-                $status = User::where('email',$request->email)->update(['password' => Hash::make($request->password)]);
+                $is_available = User :: where('email',$request->email)->get();
+                dd($is_available);
+                if(count($is_available) > 0){
+                    $status = User::where('email',$request->email)->update(['password' => Hash::make($request->password)]);
+                }
             }
             if($status){
                 DB::table('password_resets')->where(['email'=> $request->email])->delete(); 
