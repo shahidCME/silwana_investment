@@ -86,46 +86,41 @@ class Login extends Controller
         $data['action'] = URL::to('forgetPassword');
         $data['js'] = array('login');
         if($request->all()){
-            // echo '1';die;
             $request->validate([
                 'email'=>'required|email'
             ]);
-            // dd($request->all());
-
            $record = Admin :: where('email',$request->email)->get();
-
            if(count($record) > 0){
             $token = Str::random(64);
+                DB::table('password_resets')->insert([
+                    'email' => $request->email, 
+                    'token' => $token, 
+                    'created_at' => Carbon::now()
+                ]);
 
-            // DB::table('password_resets')->insert([
-            //     'email' => $request->email, 
-            //     'token' => $token, 
-            //     'created_at' => Carbon::now()
-            //   ]);
-
-              Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
-                $message->to($request->email);
-                $message->subject('Reset Password');
-            });
-            return redirect('/forgetPassword')->with('Mymessage', flashMessage('success','We have e-mailed your password reset link!'));
+                Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
+                    $message->to($request->email);
+                    $message->subject('Reset Password');
+                });
+                return redirect('/forgetPassword')->with('Mymessage', flashMessage('success','We have e-mailed your password reset link!'));
            }else{
             $record = User :: where('email',$request->email)->get();
-            $token = Str::random(64);
-
-            DB::table('password_resets')->insert([
-                'email' => $request->email, 
-                'token' => $token, 
-                'created_at' => Carbon::now()
-              ]);
-            //   return View::Make('admin.email_template.forgetPassword',['token' => $token]);
-            Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
-                $message->to($request->email);
-                $message->subject('Reset Password');
-            });
-            return redirect('/forgetPassword')->with('Mymessage', flashMessage('success','We have e-mailed your password reset link!'));
+            if(count($record) > 0){
+                $token = Str::random(64);
+                DB::table('password_resets')->insert([
+                    'email' => $request->email, 
+                    'token' => $token, 
+                    'created_at' => Carbon::now()
+                  ]);
+                  Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
+                      $message->to($request->email);
+                      $message->subject('Reset Password');
+                  });
+                  return redirect('/forgetPassword')->with('Mymessage', flashMessage('success','We have e-mailed your password reset link!'));
+            }
 
            }
-        return redirect('/forgetPassword')->with('Mymessage', flashMessage('danger','Something Went Wrong! Try again'));
+            return redirect('/forgetPassword')->with('Mymessage', flashMessage('danger','Something Went Wrong! Try again'));
         }
 
         return view('admin.forget_password',$data);
