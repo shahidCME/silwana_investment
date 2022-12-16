@@ -27,7 +27,6 @@
             <dt class="col-sm-3">Investment Plan Details</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         {!! $viewData[0]->details !!}
                     </dd>
@@ -53,7 +52,6 @@
             <dt class="col-sm-3">Amount</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         {{ $viewData[0]->amount  }} 
                     </dd>
@@ -70,7 +68,6 @@
             <dt class="col-sm-3">Return Type</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         {{ ($viewData[0]->return_type =='0') ? 'Monthly' : 'Yearly'  }}
                     </dd>
@@ -80,7 +77,6 @@
             <dt class="col-sm-3"> Contract pdf</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         <a target="_blank" href="{{ url('uploads/contract_pdf/'.$viewData[0]->contract_pdf) }}" class="btn btn-dark btn-lg" >
                             <i class="fa fa-download"></i>
@@ -107,7 +103,6 @@
             <dt class="col-sm-3"> Contract Reciept</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         <a target="_blank" href="{{ url('uploads/contract_reciept/'.$viewData[0]->contract_reciept) }}" class="btn btn-dark btn-lg" >
                             <i class="fa fa-download"></i>
@@ -121,7 +116,6 @@
             <dt class="col-sm-3"> Investment document</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         <a href="{{ url('uploads/invest_document/'.$viewData[0]->investment_doc) }}" class="btn btn-dark btn-lg" download>
                             <i class="fa fa-download"></i>
@@ -135,7 +129,6 @@
             <dt class="col-sm-3"> Other document</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
                         <a href="{{ url('uploads/invest_document/'.$viewData[0]->other_doc) }}" class="btn btn-dark btn-lg" download>
                             <i class="fa fa-download"></i>

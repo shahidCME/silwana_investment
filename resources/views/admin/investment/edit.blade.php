@@ -51,7 +51,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Start Date</label>
-                <input class="form-control date-picker" name="start_date" placeholder="Select Date" type="text" value="{{ date('d F Y',strtotime($editData[0]->start_date))}}" autocomplete="off">
+                <input class="form-control date-picker-edit" name="start_date" placeholder="Select Date" type="text" value="{{ date('d F Y',strtotime($editData[0]->start_date))}}" autocomplete="off">
                 <label id="start_date-error" class="error" for="start_date">@error('start_date') {{ $message }}  @enderror</label>
             </div>
             <div class="form-group">

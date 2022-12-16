@@ -39,6 +39,11 @@
               {{ date('d F Y',strtotime($viewData[0]->start_date))}}
             </dd>
 
+            <dt class="col-sm-3 text-truncate">End Date</dt>
+            <dd class="col-sm-9">
+              {{ date('d F Y',strtotime($viewData[0]->contract_end_date))}}
+            </dd>
+
             <dt class="col-sm-3 text-truncate">Return Percentage(%)</dt>
             <dd class="col-sm-9">
               {{ $viewData[0]->return_percentage }}
@@ -70,6 +75,32 @@
                     </dd>
                 </dl>
             </dd>
+            @if($viewData[0]->contract_pdf != '')
+            <dt class="col-sm-3"> Contract pdf</dt>
+            <dd class="col-sm-9">
+                <dl class="row">
+                    <dd class="col-sm-8">
+                        <a target="_blank" href="{{ url('uploads/contract_pdf/'.$viewData[0]->contract_pdf) }}" class="btn btn-dark btn-lg" >
+                            <i class="fa fa-download"></i>
+                            Download
+                        </a>
+                    </dd>
+                </dl>
+            </dd>
+            @endif
+            @if($viewData[0]->documents != '')
+            <dt class="col-sm-3"> Investment Plan Document</dt>
+            <dd class="col-sm-9">
+                <dl class="row">
+                    <dd class="col-sm-8">
+                        <a target="_blank" href="{{ url('uploads/schema_doc/'.$viewData[0]->documents) }}" class="btn btn-dark btn-lg" >
+                            <i class="fa fa-download"></i>
+                            Download
+                        </a>
+                    </dd>
+                </dl>
+            </dd>
+            @endif
             @if($viewData[0]->contract_pdf != '')
             <dt class="col-sm-3"> Contract pdf</dt>
             <dd class="col-sm-9">

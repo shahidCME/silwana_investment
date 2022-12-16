@@ -484,8 +484,8 @@ class InvestmentController extends Controller
                             if($value->return_type == '0'){
                                 // dd($req->start_date);
                             $start_date = strtotime($value->start_date);
-                            $year = (12/$value->tenure);
-                            $end_date = date('Y-m-d', strtotime("+".$year.' year',$start_date));
+                            $year = $value->tenure;
+                            $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
                             $value->contract_end_date = $end_date;
                         }else{
                             $start_date = date('Y-m-d',strtotime($value->start_date));

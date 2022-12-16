@@ -133,6 +133,10 @@ Route::get('/', function () {
         $data['js'] = array('login');
         return view('admin.login',$data);
     });
+
+    Route::get('/privacy-policy', function () {
+            return view('privacy-policy');
+        })->name('privacy-policy');
     Route::post('login_check', [Login::class, 'index']);
     Route::get('logout', [Login::class, 'logout']);
     

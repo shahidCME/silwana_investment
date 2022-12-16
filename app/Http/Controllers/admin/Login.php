@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\admin\Admin;
 use App\Models\admin\User;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
@@ -85,7 +86,7 @@ class Login extends Controller
         $data['action'] = URL::to('forgetPassword');
         $data['js'] = array('login');
         if($request->all()){
-
+            // echo '1';die;
             $request->validate([
                 'email'=>'required|email'
             ]);
@@ -96,13 +97,13 @@ class Login extends Controller
            if(count($record) > 0){
             $token = Str::random(64);
 
-            DB::table('password_resets')->insert([
-                'email' => $request->email, 
-                'token' => $token, 
-                'created_at' => Carbon::now()
-              ]);
+            // DB::table('password_resets')->insert([
+            //     'email' => $request->email, 
+            //     'token' => $token, 
+            //     'created_at' => Carbon::now()
+            //   ]);
 
-            Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
+              Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
                 $message->to($request->email);
                 $message->subject('Reset Password');
             });
@@ -116,7 +117,7 @@ class Login extends Controller
                 'token' => $token, 
                 'created_at' => Carbon::now()
               ]);
-
+            //   return View::Make('admin.email_template.forgetPassword',['token' => $token]);
             Mail::send('admin.email_template.forgetPassword', ['token' => $token], function($message) use($request){
                 $message->to($request->email);
                 $message->subject('Reset Password');
@@ -151,6 +152,7 @@ class Login extends Controller
             'token' => $request->token
             ])
             ->first();
+            dd($updatePassword);
         if($updatePassword){
             $is_available = Admin :: where('email',$request->email)->get();
             if(count($is_available) > 0){

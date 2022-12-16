@@ -72,6 +72,34 @@
 			})(window, document, "script", "dataLayer", "GTM-NXZMQSS");
 		</script>
 		<!-- End Google Tag Manager -->
+		<style>
+		.footer-wrap {
+			width: 100%;
+			text-align: center;
+			font-weight: 500;
+			position: relative;
+			top: 87px;
+		}
+		.footer-wrap a {
+            text-decoration: none !important;
+			color: #666666 !important;
+			transition: 0.3s;
+		}
+		.footer-wrap a:hover{
+            text-decoration: none !important;
+			color: black !important;
+		}
+
+		@media screen and (min-width: 1110px) and (max-width: 1950px) {
+			.footer-wrap {
+			width: 100%;
+			text-align: center;
+			font-weight: 500;
+			position: relative;
+			top: 83px;
+		}
+		}
+		</style>
 	</head>
 	<body class="login-page">
 		<?php 
@@ -159,6 +187,10 @@
         </div>
     </div>
 </div>
+<div class="footer-wrap pd-20 pt-100 card-box">
+		© Copyright 2022 Silwana Infotech. <br>
+ 			<a href="{{route('privacy-policy')}}" >Privacy Policy</a>
+		</div>
 <!-- welcome modal start -->
 	
 		<!-- welcome modal end -->

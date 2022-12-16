@@ -31,8 +31,7 @@ class MyinvestmentController extends Controller
             $query->where('i.status','!=','9');
             $query->where('i.deleted_at',null);
             $data = $query->get();
-            // Plq();
-            // dd($data);
+            $viewData = $query->get();
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('customer fullname',function($row){
                 return $row->customerFname .' '.$row->customerLname;
@@ -82,10 +81,22 @@ class MyinvestmentController extends Controller
                 $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
                     ->leftJoin('schemas as s', 's.id', '=', 'i.schema_id')
                     ->leftJoin('admins as a', 'a.id', '=', 'i.admin_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.details');
+                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname', 's.name as schema','a.fname','a.lname','s.details','s.documents');
                     $query->where('i.id',$id);
                     $query->where('i.deleted_at',null);
                     $viewData = $query->get();
+                    foreach ($viewData as $key => $value) {
+                        if($value->return_type == '0'){
+                            $start_date = strtotime($value->start_date);
+                            $year = $value->tenure;
+                            $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
+                            $value->contract_end_date = $end_date;
+                        }else{
+                            $start_date = date('Y-m-d',strtotime($value->start_date));
+                            $contract_end_date = date('Y-m-d', strtotime("+".$value->tenure." year",strtotime($start_date)));
+                            $value->contract_end_date = $contract_end_date;
+                        }
+                    }
                     // dd($viewData);
         $data['viewData'] = $viewData;
         $data['page'] = 'users.investmentDetails';
