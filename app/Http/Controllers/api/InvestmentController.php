@@ -45,6 +45,10 @@ class InvestmentController extends Controller
                 $id = $request->admin_id;
                 $query->where('i.admin_id',$id);
             }
+            if($request->role == '2'){
+                $id = $request->admin_id;
+                $query->where('i.user_id',$id);
+            }
             $query->where('i.deleted_at',null);
             $query->orderBy('i.id','desc');
             $data = $query->get();
