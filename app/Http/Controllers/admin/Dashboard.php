@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\admin\Investment;
 use App\Models\admin\Admin;
 use App\Models\admin\User;
+use App\Models\admin\Schema;
 use DB;
 class Dashboard extends Controller
 {
@@ -17,7 +18,9 @@ class Dashboard extends Controller
         $data['totalUser'] = User::count();
         $data['totalSalePerson'] = Admin::where('role','0')->count();
         $data['totalFinancePerson'] = Admin::where('role','3')->count();
-        // dd($data['totalSalePerson']);
+        $data['totalApprover'] = Admin::where('role','4')->count();
+        $data['totalSchema'] = Schema::count();
+        $data['totalCancelledInvestment'] = Investment::where('status','9')->count();
         $data['appointment']= '45';
         return view('admin/dashboard',$data);
     }

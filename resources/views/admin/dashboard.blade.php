@@ -29,7 +29,8 @@
                 </div>
                 <div class="widget-icon">
                     <div class="icon" data-color="#00eccf">
-                        <i class="icon-copy dw dw-user"></i>
+                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_customer.svg" alt="">
+                        <!-- <i class="icon-copy dw dw-user"></i> -->
                     </div>
                 </div>
             </div>
@@ -46,7 +47,8 @@
                 </div>
                 <div class="widget-icon">
                     <div class="icon" data-color="#ff5b5b">
-                        <span class="icon-copy ti-heart"></span>
+                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_sales_person.svg" alt="">
+                        <!-- <span class="icon-copy ti-heart"></span> -->
                     </div>
                 </div>
             </div>
@@ -63,10 +65,7 @@
                 </div>
                 <div class="widget-icon">
                     <div class="icon">
-                        <i
-                        class="icon-copy fa fa-money"
-                        aria-hidden="true"
-                        ></i>
+                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_finance_person.svg" alt="">
                     </div>
                 </div>
             </div>
@@ -81,7 +80,40 @@
                 </div>
                 <div class="widget-icon">
                     <div class="icon" data-color="#09cc06">
-                        <i class="icon-copy fa fa-money" aria-hidden="true"></i>
+                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_investor.svg" alt="">
+                        <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="card-box height-100-p widget-style3">
+            <div class="d-flex flex-wrap">
+                <div class="widget-data">
+                    <div class="weight-700 font-24 text-dark">{{ $totalSchema }}</div>
+                    <div class="font-14 text-secondary weight-500">Investment Plan</div>
+                </div>
+                <div class="widget-icon">
+                    <div class="icon" data-color="#09cc06">
+                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_scheme.svg" alt="">
+                        <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="card-box height-100-p widget-style3">
+            <div class="d-flex flex-wrap">
+                <div class="widget-data">
+                    <div class="weight-700 font-24 text-dark">{{ $totalCancelledInvestment }}</div>
+                    <div class="font-14 text-secondary weight-500">Cancelled Investment</div>
+                </div>
+                <div class="widget-icon">
+                    <div class="icon" data-color="#09cc06">
+                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_cancel_Investment.svg" alt="">
+                        <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
                     </div>
                 </div>
             </div>
