@@ -231,7 +231,7 @@ class InvestmentController extends Controller
             $data['update_id'] = $eid;
         }
         $data['page'] = 'admin.investment.edit';
-        $data['title'] = 'Eidt Investment ';
+        $data['title'] = 'Edit Investment ';
         $data['js'] = array('validateFile','investment');
         $data['action'] = url('InvestmentEdit');
         if($req->all()){

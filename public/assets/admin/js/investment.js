@@ -52,6 +52,12 @@ $(document).ready(function () {
 });
 
 $("#datatable").DataTable();
+// $(".date-picker").datepicker({
+//     language: "en",
+//     autoClose: true,
+//     dateFormat: "dd MM yyyy",
+//     // minDate: new Date(),
+// });
 
 // $(".date-picker-add").datepicker({
 //     language: "en",
