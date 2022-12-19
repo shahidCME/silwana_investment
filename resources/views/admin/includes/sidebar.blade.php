@@ -23,8 +23,8 @@
 						@if(admin_login()['role'] == '1')
 						<li>
 							<a href="{{ url('salesPerson') }}" class="dropdown-toggle no-arrow">
-								<span class="micon bi bi-bank"></span
-								><span class="mtext">Sales Person</span>
+								<span class="micon bi bi-diagram-3"></span
+								><span class="mtext">Sales</span>
 							</a>
 						</li>
 						<li>
@@ -44,14 +44,14 @@
 						<li>
 							<a href="{{ url('customer') }}" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-person-square"></span
-								><span class="mtext">Client</span>
+								><span class="mtext">Investors</span>
 							</a>
 						</li>
 						@endif
 						@if(admin_login()['role'] == '1')
 						<li>
 							<a href="{{ url('Schema') }}" class="dropdown-toggle no-arrow">
-								<span class="micon bi bi-person-square"></span
+								<span class="micon bi bi-file-earmark-text"></span
 								><span class="mtext">Investment plans</span>
 							</a>
 						</li>

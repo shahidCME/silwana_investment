@@ -10,15 +10,15 @@
         <table class="table stripe hover nowrap " id="InvestmentTable" width="100%">
             <thead>
                 <tr>
-                    <th class="table-plus datatable-nosort">Customer Fullname</th>
-                    <th>Sales person</th>
-                    <th>Investment Plan</th>
+                    <th class="table-plus datatable-nosort">Client</th>
+                    <th>Sales</th>
+                    <th>Investment</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Amount</th>
-                    <th>Return Type</th>
+                    <th>Roi</th>
                     <th>Status</th>
-                    <th class="datatable-nosort">Action/Contract pdf </th>
+                    <th class="datatable-nosort">Action/Contract/pdf </th>
                 </tr>
             </thead>
             <tbody>

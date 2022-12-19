@@ -17,7 +17,8 @@
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input class="form-control" name="email"  type="email" placeholder="Enter email">
+            <input class="form-control" name="email"  type="email" placeholder="Enter email" value="{{ old('email') }}">
+            <label id="email-error" class="error" for="email">@error('email') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
             <label>Password</label>

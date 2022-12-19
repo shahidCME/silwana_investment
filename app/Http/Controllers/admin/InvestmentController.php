@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Validation\Rule; 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 use App\Models\admin\Investment;
 use App\Models\admin\Schema;
@@ -63,10 +63,10 @@ class InvestmentController extends Controller
             }
             // dd($data);
             return Datatables::of($data)->addIndexColumn()
-            ->addColumn('customer fullname',function($row){
+            ->addColumn('client',function($row){
                 return $row->customerFname .' '.$row->customerLname;
             })
-            ->addColumn('sales person',function($row){
+            ->addColumn('sales',function($row){
                 return $row->fname.' '.$row->lname;
             })
             ->addColumn('start date',function($row){
@@ -75,7 +75,7 @@ class InvestmentController extends Controller
             ->addColumn('end date',function($row){
                 return date('d F Y',strtotime($row->contract_end_date));
             })
-            ->addColumn('return type',function($row){
+            ->addColumn('roi',function($row){
                 return ($row->return_type =='0') ? "Monthly" : "Yearly";
             })
              ->addColumn('action', function($row){      
@@ -98,7 +98,7 @@ class InvestmentController extends Controller
                        <a class="dropdown-item '.$notView.'" href="'.url($conract).'"><i class="dw dw-file"></i> Contract</a>
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
-                       <a class="dropdown-item '.$cancel.' CancelContract" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
+                       <a class="dropdown-item '.$cancel.' CancelContract" href="javascript:" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
                    </div>
                </div>';
                if(admin_login()['role'] != '0'){
@@ -121,7 +121,7 @@ class InvestmentController extends Controller
                    
                     return $sttus;
                 })
-                ->rawColumns(['return type','start date','end date','sales person','customer name','status','action'])
+                ->rawColumns(['roi','start date','end date','sales person','customer name','status','action'])
                 ->make(true);
         }
 
@@ -152,8 +152,7 @@ class InvestmentController extends Controller
                 'schema' => 'required',
                 'amount' => 'required',
                 'return_percentage' => 'required',
-                'start_date' => 'required',
-                
+                'start_date' => 'required',                
             ], [
                 'customer.required' => 'Please select customer',
                 'schema.required' => 'Please select schema',

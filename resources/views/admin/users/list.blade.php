@@ -8,8 +8,7 @@
         <table class="table stripe hover nowrap" id="userTable" width="100%">
             <thead>
                 <tr>
-                    <th class="table-plus datatable-nosort">First Name</th>
-                    <th>Last Name</th>
+                    <th class="table-plus datatable-nosort">Name</th>
                     <th>Email</th>
                     <th>Mobile</th>
                     <th>Status</th>

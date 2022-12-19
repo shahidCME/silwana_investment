@@ -14,61 +14,83 @@
   }
 </style>
 <div class="title pb-20">
-    <h2 class="h3 mb-0">App Overview</h2>
+    <h2 class="h3 mb-0">Investment Summary</h2>
 </div>
 
 <div class="row pb-10">
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{$totalUser}}</div>
-                    <div class="font-14 text-secondary weight-500">
-                        Customer
+        <a href="{{ url ('customer') }}">
+            <div class="card-box height-100-p widget-style3">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">{{$totalUser}}</div>
+                        <div class="font-14 text-secondary weight-500">Investors List </div>
                     </div>
-                </div>
-                <div class="widget-icon">
-                    <div class="icon" data-color="#00eccf">
-                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_customer.svg" alt="">
-                        <!-- <i class="icon-copy dw dw-user"></i> -->
+                    <div class="widget-icon">
+                        <div class="icon" data-color="#00eccf">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_customer.svg" alt="">
+                            <!-- <i class="icon-copy dw dw-user"></i> -->
+                        </div>
                     </div>
                 </div>
             </div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="card-box height-100-p widget-style3">
+            <a href="{{ url('salesPerson') }}">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">{{ $totalSalePerson }}</div>
+                        <div class="font-14 text-secondary weight-500">
+                            Sales Team
+                        </div>
+                    </div>
+                    <div class="widget-icon">
+                        <div class="icon" data-color="#ff5b5b">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_sales_person.svg" alt="">
+                            <!-- <span class="icon-copy ti-heart"></span> -->
+                        </div>
+                    </div>
+                </div>
+            </a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="card-box height-100-p widget-style3">
+            <a href="{{ url('financePerson') }}">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">{{$totalFinancePerson }}</div>
+                        <div class="font-14 text-secondary weight-500">
+                            Finance Team
+                        </div>
+                    </div>
+                    <div class="widget-icon">
+                        <div class="icon">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_finance_person.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{ $totalSalePerson }}</div>
-                    <div class="font-14 text-secondary weight-500">
-                        Total sales person
+            <a href="{{ url('approver') }}">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">{{ $totalApprover }}</div>
+                        <div class="font-14 text-secondary weight-500">Approver Team</div>
+                    </div>
+                    <div class="widget-icon">
+                        <div class="icon" data-color="#09cc06">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_approver.svg" alt="">
+                            <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+                        </div>
                     </div>
                 </div>
-                <div class="widget-icon">
-                    <div class="icon" data-color="#ff5b5b">
-                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_sales_person.svg" alt="">
-                        <!-- <span class="icon-copy ti-heart"></span> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{$totalFinancePerson }}</div>
-                    <div class="font-14 text-secondary weight-500">
-                        Total finance
-                    </div>
-                </div>
-                <div class="widget-icon">
-                    <div class="icon">
-                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_finance_person.svg" alt="">
-                    </div>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
@@ -76,7 +98,7 @@
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
                     <div class="weight-700 font-24 text-dark">AED {{ $totalInvestment }}</div>
-                    <div class="font-14 text-secondary weight-500">Investment</div>
+                    <div class="font-14 text-secondary weight-500">Total Investment</div>
                 </div>
                 <div class="widget-icon">
                     <div class="icon" data-color="#09cc06">
@@ -89,6 +111,7 @@
     </div>
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
+        <a href="{{ url('Schema') }}">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
                     <div class="weight-700 font-24 text-dark">{{ $totalSchema }}</div>
@@ -101,22 +124,25 @@
                     </div>
                 </div>
             </div>
+        </a>
         </div>
     </div>
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{ $totalCancelledInvestment }}</div>
-                    <div class="font-14 text-secondary weight-500">Cancelled Investment</div>
-                </div>
-                <div class="widget-icon">
-                    <div class="icon" data-color="#09cc06">
-                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_cancel_Investment.svg" alt="">
-                        <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+            <a href="{{ url('cancelledInvestment') }}">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">{{ $totalCancelledInvestment }}</div>
+                        <div class="font-14 text-secondary weight-500">Contracts Cancel</div>
+                    </div>
+                    <div class="widget-icon">
+                        <div class="icon" data-color="#09cc06">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_cancel_Investment.svg" alt="">
+                            <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>

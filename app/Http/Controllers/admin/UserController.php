@@ -23,7 +23,7 @@ class UserController extends Controller
         $data['page'] = "admin.users.list";
         $data['js'] = ['users'];
         $data['addCustomer'] = url('addCustomer');
-        $data['title'] = "Client list";
+        $data['title'] = "Investors";
         return view('admin/main_layout',$data);
     }
     
@@ -39,11 +39,8 @@ class UserController extends Controller
             $data = $query->get();
             // dd($data);
             return Datatables::of($data)->addIndexColumn()
-                ->addColumn('first name', function($row){
-                    return $row->fname;
-                })
-                ->addColumn('last name', function($row){
-                    return $row->lname;
+                ->addColumn('name', function($row){
+                    return $row->fname .' '. $row->lname;
                 })
                 ->addColumn('action', function($row){
                     $encryptedId = encrypt($row->id);
@@ -66,9 +63,11 @@ class UserController extends Controller
                 return $btn;
                 })
                 ->addColumn('status', function($row){
-                    return ($row->status == '1') ? '<button type="button" class="badge badge-success">Active</button>' : '<button type="button" class="badge badge-danger   ">Inactive</button>';
+                    $encryptedId = encrypt($row->id);
+                    $statusUrl = "customerStatus/".$encryptedId;
+                    return ($row->status == '1') ? '<a href="'.$statusUrl.'" type="button" class="badge badge-success">Active</a>' : '<a a href="'.$statusUrl.'" type="button" class="badge badge-danger   ">Inactive</a>';
                 })
-                ->rawColumns(['first name','last name','status','action'])
+                ->rawColumns(['name','status','action'])
                 ->make(true);
         }
 
@@ -90,7 +89,7 @@ class UserController extends Controller
         $data['page'] =  'admin.users.add';
         $data['action'] = url('addCustomer');
         $data['js'] = array('validateFile','users');
-        $data['title'] = 'Add Client';
+        $data['title'] = 'Add Investors';
         $data['countries'] = DB::table('countries')->get();
         if($req->all()){
             // dd($req->all());
@@ -179,7 +178,7 @@ class UserController extends Controller
         }
         // dd($data);
         $data['page'] = 'admin.users.edit';
-        $data['title'] = 'Eidt Client ';
+        $data['title'] = 'Edit Investors ';
         $data['js'] = array('validateFile','users');
         $data['action'] = url('customerEdit');
         $data['countries'] = DB::table('countries')->get();
@@ -262,6 +261,22 @@ class UserController extends Controller
             $record = ['status'=>'0'];
         }
         echo json_encode($record);
+    }
+
+    public function customerStatus($eid){
+        $id = decrypt($eid);
+        $data= User :: where('id',$id)->get();   
+        if($data[0]->status == '1'){
+            $setStatus = '0';
+        }else{
+            $setStatus = '1';
+        }
+        $res = User::where('id',$id)->update(['status'=>$setStatus]);
+        if($res){
+            return redirect('customer')->with('Mymessage', flashMessage('success','Status Updated Successfully'));
+        }else{
+            return redirect('customer')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+        }
     }
 
 }

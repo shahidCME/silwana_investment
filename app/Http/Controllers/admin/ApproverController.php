@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule; 
 use App\Models\admin\Admin;
 use DB;
 use DataTables;
@@ -19,7 +20,7 @@ class ApproverController extends Controller
      function index(){
         $data['page'] = 'admin.approver.list';
         $data['js'] = array('approver');
-        $data['title'] = "Approver List";
+        $data['title'] = "Approver Team";
         $data['addBtn'] = url('addApprover');
         return view('admin/main_layout',$data);
     }
@@ -54,7 +55,9 @@ class ApproverController extends Controller
                     return $row->fname.' '.$row->lname;
                 })
                 ->addColumn('status', function($row){
-                    return ($row->status == '1') ? '<button type="button" class="btn btn-success btn-sm">Active</button>' : '<button type="button" class="btn btn-danger btn-sm">Inactive</button>';
+                    $encryptedId = encrypt($row->id);
+                    $statusUrl = "approverStatus/".$encryptedId;
+                    return ($row->status == '1') ? '<a href="'.$statusUrl.'" type="button" class="btn btn-success btn-sm">Active</a>' : '<a href="'.$statusUrl.'" type="button" class="btn btn-danger btn-sm">Inactive</a>';
                 })
                 ->rawColumns(['status','name','action'])
                 ->make(true);
@@ -71,6 +74,18 @@ class ApproverController extends Controller
         $data['js'] = array('validateFile');
         $data['title'] = 'Add Approver';
         if($req->all()){
+            $validatedData = $req->validate([
+                'fname' => 'required',
+                'lname' => 'required',
+                'email' => ['required','email', 
+                    Rule::unique('admins')->whereNull('deleted_at')
+                ],
+                'mobile' => 'required',
+            ], [
+                'fname.required' => 'Please enter first name',
+                'lname.required' => 'Please enter last name',
+                'mobile.required'=>'Mobile is required'
+            ]);
             $res = Admin::insertRecords($req->all());
             if($res){
                 return redirect('approver')->with('Mymessage', flashMessage('success','Record Inserted Successfully'));
@@ -90,9 +105,21 @@ class ApproverController extends Controller
             $data['update_id'] = $eid;
         }
         $data['page'] = 'admin.approver.edit';
-        $data['title'] = 'Edit Approver Person';
+        $data['title'] = 'Edit Approver';
         $data['action'] = url('approverEdit');
         if($req->all()){
+            $validatedData = $req->validate([
+                'fname' => 'required',
+                'lname' => 'required',
+                'email' => ['required','email', 
+                    Rule::unique('admins')->whereNull('deleted_at')->ignore(decrypt($req->update_id))
+                ],
+                'mobile' => 'required',
+            ], [
+                'fname.required' => 'Please enter first name',
+                'lname.required' => 'Please enter last name',
+                'mobile.required'=>'Mobile is required'
+            ]);
             $res = Admin :: updateRecords($req->all());
             if($res){
                 return redirect('approver')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
@@ -109,6 +136,23 @@ class ApproverController extends Controller
         $res= Admin :: deleteRecord($id);
         if($res){
             return redirect('approver')->with('Mymessage', flashMessage('success','Record Deleted Successfully'));
+        }else{
+            return redirect('approver')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+        }
+    }
+
+    public function approverStatus($eid){
+        $id = decrypt($eid);
+        $data= Admin :: where('id',$id)->get();
+        
+        if($data[0]->status == '1'){
+            $setStatus = '0';
+        }else{
+            $setStatus = '1';
+        }
+        $res = Admin::where('id',$id)->update(['status'=>$setStatus]);
+        if($res){
+            return redirect('approver')->with('Mymessage', flashMessage('success','Status Updated Successfully'));
         }else{
             return redirect('approver')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
         }

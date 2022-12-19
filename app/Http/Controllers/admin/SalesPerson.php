@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Admin;
+use Illuminate\Validation\Rule; 
 use DB;
 use DataTables;
 
@@ -19,7 +20,7 @@ class SalesPerson extends Controller
      
         $data['page'] = 'admin.salesPerson.list';
         $data['js'] = array('salesPerson');
-        $data['title'] = "Sales Person list";
+        $data['title'] = "Sales Team";
         return view('admin/main_layout',$data);
     }
 
@@ -53,7 +54,9 @@ class SalesPerson extends Controller
                     return $row->fname.' '.$row->lname;
                 })
                 ->addColumn('status', function($row){
-                    return ($row->status == '1') ? '<button type="button" class="btn btn-success btn-sm">Active</button>' : '<button type="button" class="btn btn-danger btn-sm">Inactive</button>';
+                    $encryptedId = encrypt($row->id);
+                    $statusUrl = "salesStatus/".$encryptedId;
+                    return ($row->status == '1') ? '<a href="'.url($statusUrl).'" type="button" class="btn btn-success btn-sm">Active</a>' : '<a href="'.url($statusUrl).'" type="button" class="btn btn-danger btn-sm">Inactive</a>';
                 })
                 ->rawColumns(['status','name','action'])
                 ->make(true);
@@ -68,8 +71,22 @@ class SalesPerson extends Controller
         $data['page'] =  'admin.salesPerson.add';
         $data['action'] = url('add_sales_person');
         $data['js'] = array('validateFile');
-        $data['title'] = 'Add Sales Person';
+        $data['title'] = 'Add Sales Team';
         if($req->all()){
+            $validatedData = $req->validate([
+                'fname' => 'required',
+                'lname' => 'required',
+                'email' => ['required','email', 
+                    Rule::unique('admins')->whereNull('deleted_at')
+                ],
+                'mobile' => 'required',
+            ], [
+                'fname.required' => 'Please enter first name',
+                'lname.required' => 'Please enter last name',
+                'mobile.required'=>'Mobile is required'
+            ]);
+
+
             $res = Admin::insertRecords($req->all());
             if($res){
                 return redirect('salesPerson')->with('Mymessage', flashMessage('success','Record Inserted Successfully'));
@@ -89,10 +106,23 @@ class SalesPerson extends Controller
             $data['update_id'] = $eid;
         }
         $data['page'] = 'admin.salesPerson.edit';
-        $data['title'] = 'Eidt Sales Person';
+        $data['title'] = 'Edit Sales Team';
         $data['action'] = url('salesPersonEdit');
         if($req->all()){
             // dd($req->all());
+            $validatedData = $req->validate([
+                'fname' => 'required',
+                'lname' => 'required',
+                'email' => ['required','email', 
+                    Rule::unique('admins')->whereNull('deleted_at')->ignore(decrypt($req->update_id))
+                ],
+                'mobile' => 'required',
+            ], [
+                'fname.required' => 'Please enter first name',
+                'lname.required' => 'Please enter last name',
+                'mobile.required'=>'Mobile is required'
+            ]);
+
             $res = Admin :: updateRecords($req->all());
             if($res){
                 return redirect('salesPerson')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
@@ -115,5 +145,21 @@ class SalesPerson extends Controller
         }
     }
 
+    public function salesStatus($eid){
+        $id = decrypt($eid);
+        $data= Admin :: where('id',$id)->get();
+        
+        if($data[0]->status == '1'){
+            $setStatus = '0';
+        }else{
+            $setStatus = '1';
+        }
+        $res = Admin::where('id',$id)->update(['status'=>$setStatus]);
+        if($res){
+            return redirect('salesPerson')->with('Mymessage', flashMessage('success','Status Updated Successfully'));
+        }else{
+            return redirect('salesPerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+        }
+    }
 
 }

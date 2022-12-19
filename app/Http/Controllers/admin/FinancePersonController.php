@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule; 
 use App\Models\admin\Admin;
 use DB;
 use DataTables;
@@ -19,7 +21,7 @@ class FinancePersonController extends Controller
      function index(){
         $data['page'] = 'admin.financePerson.list';
         $data['js'] = array('financePerson');
-        $data['title'] = "Finance List";
+        $data['title'] = "Finance Team";
         $data['addBtn'] = url('addFinancePerson');
         return view('admin/main_layout',$data);
     }
@@ -54,7 +56,9 @@ class FinancePersonController extends Controller
                     return $row->fname.' '.$row->lname;
                 })
                 ->addColumn('status', function($row){
-                    return ($row->status == '1') ? '<button type="button" class="btn btn-success btn-sm">Active</button>' : '<button type="button" class="btn btn-danger btn-sm">Inactive</button>';
+                    $encryptedId = encrypt($row->id);
+                    $statusUrl = "financeStatus/".$encryptedId;
+                    return ($row->status == '1') ? '<a href="'.url($statusUrl).'" type="button" class="btn btn-success btn-sm">Active</a>' : '<a href="'.url($statusUrl).'" type="button" class="btn btn-danger btn-sm">Inactive</a>';
                 })
                 ->rawColumns(['status','name','action'])
                 ->make(true);
@@ -71,6 +75,19 @@ class FinancePersonController extends Controller
         $data['js'] = array('validateFile');
         $data['title'] = 'Add Finance';
         if($req->all()){
+            $validatedData = $req->validate([
+                'fname' => 'required',
+                'lname' => 'required',
+                'email' => ['required','email', 
+                    Rule::unique('admins')->whereNull('deleted_at')
+                ],
+                'mobile' => 'required',
+            ], [
+                'fname.required' => 'Please enter first name',
+                'lname.required' => 'Please enter last name',
+                'mobile.required'=>'Mobile is required'
+            ]);
+
             $res = Admin::addFinancePerson($req->all());
             if($res){
                 return redirect('financePerson')->with('Mymessage', flashMessage('success','Record Inserted Successfully'));
@@ -93,6 +110,19 @@ class FinancePersonController extends Controller
         $data['title'] = 'Eidt Finance ';
         $data['action'] = url('financePersonEdit');
         if($req->all()){
+            // dd($req->all());
+            $validatedData = $req->validate([
+                'fname' => 'required',
+                'lname' => 'required',
+                'email' => ['required','email', 
+                    Rule::unique('admins')->whereNull('deleted_at')->ignore(decrypt($req->update_id))
+                ],
+                'mobile' => 'required',
+            ], [
+                'fname.required' => 'Please enter first name',
+                'lname.required' => 'Please enter last name',
+                'mobile.required'=>'Mobile is required'
+            ]);
             $res = Admin :: updateFinanceRecords($req->all());
             if($res){
                 return redirect('financePerson')->with('Mymessage', flashMessage('success','Record Updated Successfully'));
@@ -110,6 +140,23 @@ class FinancePersonController extends Controller
         $error = '<div class="alert alert-success">Record Deleted Successfully</div>';
         if($res){
             return redirect('financePerson')->with('Mymessage', flashMessage('success','Record Deleted Successfully'));
+        }else{
+            return redirect('financePerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+        }
+    }
+
+    public function financeStatus($eid){
+        $id = decrypt($eid);
+        $data= Admin :: where('id',$id)->get();
+        
+        if($data[0]->status == '1'){
+            $setStatus = '0';
+        }else{
+            $setStatus = '1';
+        }
+        $res = Admin::where('id',$id)->update(['status'=>$setStatus]);
+        if($res){
+            return redirect('financePerson')->with('Mymessage', flashMessage('success','Status Updated Successfully'));
         }else{
             return redirect('financePerson')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
         }

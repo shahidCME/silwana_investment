@@ -21,8 +21,7 @@ $(document).ready(function () {
               ],
             // order: [[1, 'asc']],
             columns: [
-                { data: "first name" },
-                { data: "last name" },
+                { data: "name" },
                 { data: "email" },
                 { data: "mobile" },
                 { data: "status" },

@@ -39,6 +39,8 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/salesPersonEdit/{id}', [SalesPerson::class, 'edit']);
     Route::post('/salesPersonEdit', [SalesPerson::class, 'edit']);
     Route::get('/salesPersonDelete/{id}', [SalesPerson::class, 'delete']);
+    Route::get('/salesStatus/{id}', [SalesPerson::class, 'salesStatus']);
+
     // End Sales Module
 
     // Start FinancePerson Module
@@ -49,6 +51,7 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/financePersonEdit/{id}', [FinancePersonController::class, 'edit']);
     Route::post('/financePersonEdit', [FinancePersonController::class, 'edit']);
     Route::get('/financePersonDelete/{id}', [FinancePersonController::class, 'delete']);
+    Route::get('/financeStatus/{id}', [FinancePersonController::class, 'financeStatus']);
     // End FinancePerson Module
     
     // Start Approver Module
@@ -59,6 +62,7 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/approverEdit/{id}', [ApproverController::class, 'edit']);
     Route::post('/approverEdit', [ApproverController::class, 'edit']);
     Route::get('/approverDelete/{id}', [ApproverController::class, 'delete']);
+    Route::get('/approverStatus/{id}', [ApproverController::class, 'approverStatus']);
     // End Approver Module
 
     // Start Customer Module
@@ -69,6 +73,7 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/customerDelete/{id}', [UserController::class, 'delete']);
     Route::get('/customerEdit/{id}', [UserController::class, 'edit']);
     Route::post('/customerEdit', [UserController::class, 'edit']);
+    Route::get('/customerStatus/{id}', [UserController::class, 'customerStatus']);
     Route::get('/kyc_doc/{id}', [UserController::class, 'kyc_doc']);
     Route::get('/gerNationality', [UserController::class, 'gerNationality']);
     // End start Customer Module
