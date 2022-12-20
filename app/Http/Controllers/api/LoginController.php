@@ -165,9 +165,9 @@ class LoginController extends Controller
             return response()->json($responce);
         }
         if($request->is_user == '0'){ 
-            $profile = Admin::select('fname','lname','mobile')->where('id',$request['id'])->get();
+            $profile = Admin::select('fname','lname','mobile','country_code')->where('id',$request['id'])->get();
         }else{
-            $profile = User::select('fname','lname','mobile','gender','dob')->where('id',$request['id'])->get();
+            $profile = User::select('fname','lname','mobile','gender','dob','country_code')->where('id',$request['id'])->get();
         }
         if(!empty($profile->all())){
             $responce = [
@@ -192,6 +192,7 @@ class LoginController extends Controller
                 'id'=>'required|numeric',
                 'fname'=>'required',
                 'lname'=>'required',
+                'country_code'=>'required',
                 'mobile'=>'required',
             ]);
           
@@ -201,6 +202,7 @@ class LoginController extends Controller
                 'fname'=>'required',
                 'lname'=>'required',
                 'dob'=>'required|date_format:"Y-m-d"',
+                'country_code'=>'required',
                 'mobile'=>'required',
                 'gender'=>'required',
             ]);
@@ -216,13 +218,20 @@ class LoginController extends Controller
         }
         $updateStatus = false;
         if($request->is_user == '0'){
-            $willUpdate = ['fname'=>$request['fname'],'lname'=>$request['lname'],'mobile'=>$request['mobile'],'updated_at'=>dbDateFormat()]; 
+            $willUpdate = [
+                'fname'=>$request['fname'],
+                'lname'=>$request['lname'],
+                'country_code'=>$request['country_code'],
+                'mobile'=>$request['mobile'],
+                'updated_at'=>dbDateFormat()
+            ]; 
             $updateStatus = Admin::where('id',$request['id'])->update($willUpdate);
         }else{
             $willUpdate = [
                 'fname'=>$request['fname'],
                 'lname'=>$request['lname'],
                 'dob'=>dbDateFormat($request['dob'],true),
+                'country_code'=>$request['country_code'],
                 'mobile'=>$request['mobile'],
                 'gender'=>$request['gender'],
                 'updated_at'=>dbDateFormat()
