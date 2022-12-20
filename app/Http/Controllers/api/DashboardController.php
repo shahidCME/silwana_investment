@@ -68,5 +68,40 @@ class DashboardController extends Controller
         }
         return response()->json($responce);
 
-    } 
+    }
+    
+    public function getNotification(Request $request){
+        $validator = Validator::make($request->all(), [
+            'role'    => 'required|numeric',
+            'user_id' => 'required|numeric'
+        ]);
+        if ($validator->fails()) {
+            $responce = [
+                'status'=>'0',
+                'errors'=>$validator->errors()
+            ];
+            return response()->json($responce);
+        }
+
+        $limit = 10;
+        $offset = 0;
+        $query = DB::table('notifications')->select('*');
+        $query->where(['for_role'=>$request->role,'user_id'=>$request->user_id]);
+        if($request['offset'] > 0 ){
+            $off= $limit * $request['offset'];
+            $query->skip($off);
+        }
+        $query->take($limit);
+        $query->orderBy('id','desc');
+        // Elq();
+        $notification = $query->get();
+        // Plq();
+        $responce = [
+            'status'=>'1',
+            'message'=>'Notification list',
+            'data'=>$notification,
+        ];
+        return response()->json($responce);
+        // dd($salesPerson);
+    }
 }

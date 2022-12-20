@@ -20,7 +20,7 @@ use App\Http\Controllers\api\DashboardController;
 |
 */
 Route::post('Dashboard',[DashboardController::class,'index']);
-
+Route::post('getNotification',[DashboardController::class,'getNotification']);
 
 Route::post('login',[LoginController::class,'index']);
 Route::get('/logout',[LoginController::class,'logout']);
