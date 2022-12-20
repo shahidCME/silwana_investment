@@ -9,7 +9,12 @@
     }
     .card-box .font-24{
         font-size:18px;
-        
+    }
+
+    .card-box a,
+    .card-box a > div
+    {
+       height:100%;
     }
   }
 </style>
