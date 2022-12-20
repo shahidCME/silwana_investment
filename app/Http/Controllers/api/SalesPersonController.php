@@ -65,6 +65,7 @@ class SalesPersonController extends Controller
             'mobile'=>'required',
             'role'=>'required',
             'status'=>'required',
+            'country_code'=>'required'
         ]);
         if ($validator->fails()) {
             $responce = [
@@ -79,6 +80,7 @@ class SalesPersonController extends Controller
             'lname' => $request['lname'],
             'email'=> $request['email'],
             'password'=> bcrypt(123456),
+            'country_code'=> $request['country_code'],
             'mobile'=> $request['mobile'],
             'role' => $request['role'],
             'status' => $request['status'],
@@ -130,6 +132,7 @@ class SalesPersonController extends Controller
             'mobile'=>'required',
             'role'=>'required',
             'status'=>'required',
+            'country_code'=>'required'
         ]);
         if ($validator->fails()) {
             $responce = [

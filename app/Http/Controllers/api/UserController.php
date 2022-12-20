@@ -76,6 +76,7 @@ class UserController extends Controller
             'lname' => 'required',
             'email' => ['required', Rule::unique('users')->whereNull('deleted_at')],
             'mobile' => 'required|numeric',
+            'country_code' => 'required',
             'dob' => 'required|date_format:"Y-m-d"',
             'status' => 'required',
             'country_id'=>'required',
@@ -97,7 +98,8 @@ class UserController extends Controller
             $res->email = $request->email; 
             $res->password = bcrypt(123456); 
             $res->gender = $request->gender; 
-            $res->mobile = $request->mobile; 
+            $res->mobile = $request->mobile;
+            $res->country_code = $request->country_code;
             $res->status = $request->status; 
             $res->country_id = $request->country_id; 
             $res->nationality = $request->nationality;
@@ -199,6 +201,7 @@ class UserController extends Controller
             'lname'  => 'required',
             'gender' => 'required',
             'mobile' => 'required|numeric',
+            'country_code' => 'required',
             'dob'    => 'required|date_format:"Y-m-d"',
             'country_id'=>'required',
             'nationality' => 'required',
@@ -219,6 +222,7 @@ class UserController extends Controller
             $res->country_id = $request->country_id;
             $res->nationality = $request->nationality;
             $res->mobile = $request->mobile;
+            $res->country_code = $request->country_code;
             if(isset($request->status)){
                 $res->status = $request->status; 
             } 

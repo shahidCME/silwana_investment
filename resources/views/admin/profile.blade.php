@@ -22,16 +22,16 @@
                         @endforeach
                     </select>
                 <label id="country_code-error" class="error" for="country_code">@error('country_code') {{ $message }} @enderror</label>
-        </div>
+            </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label class="col-sm-6 col-md-6 col-form-label">Last Name</label>
+                <label>Last Name</label>
                 <input class="form-control" name="lname" placeholder=" Last name" type="text" autocomplete="off" value="{{ $profileData[0]->lname }}">
                 <label id="lname-error" class="error" for="lname">@error('lname') {{ $message }}  @enderror</label>
             </div>
             <div class="form-group">
-                <label>mobile number</label>
+                <label>Mobile Number</label>
                 <input class="form-control" name="mobile" type="text" placeholder="Mobile number" value="{{ $profileData[0]->mobile }}">
                 <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }}  @enderror</label>
             </div>

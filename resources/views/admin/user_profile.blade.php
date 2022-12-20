@@ -14,7 +14,7 @@
                 <label id="fname-error" class="error" for="fname">@error('fname') {{ $message}} @enderror</label>
             </div>
             <div class="form-group">
-                <label class="col-sm-6 col-md-6 col-form-label">DOB</label>
+                <label >DOB</label>
                 <input class="form-control date-picker" name="dob" placeholder="Select Date" type="text" autocomplete="off" value="{{ date('d F Y',strtotime($profileData[0]->dob)) }}">
                 <label id="dob-error" class="error" for="dob">@error('dob') {{ $message }}  @enderror</label>
             </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-6">
         <div class="form-group">
-                <label>mobile number</label>
+                <label>Mobile Number</label>
                 <input class="form-control" name="mobile" type="text" placeholder="mobile number" value="{{ $profileData[0]->mobile }}">
                 <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }}  @enderror</label>
             </div>

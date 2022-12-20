@@ -253,7 +253,8 @@ $("#profileForm").validate({
             number : true,
             minlength : 6,
             maxlength : 10
-        }
+        },
+        country_code: { required:true }
     },
     messages: {
         fname: {
@@ -264,6 +265,9 @@ $("#profileForm").validate({
         },
         mobile : {
             required : "Please enter mobile number"
+        },
+        country_code : {
+            required : "Please select country code"
         }
     },
     submitHandler: function (form) {
