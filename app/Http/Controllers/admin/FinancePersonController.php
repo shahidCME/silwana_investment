@@ -52,6 +52,9 @@ class FinancePersonController extends Controller
                </div>'; 
                          return $btn;
                 })
+                ->addColumn('mobile', function($row){
+                    return (($row->country_code != NULL ) ? $row->country_code.'-' : '').$row->mobile;
+                })
                 ->addColumn('name', function($row){
                     return $row->fname.' '.$row->lname;
                 })
@@ -60,7 +63,7 @@ class FinancePersonController extends Controller
                     $statusUrl = "financeStatus/".$encryptedId;
                     return ($row->status == '1') ? '<a href="'.url($statusUrl).'" type="button" class="btn btn-success btn-sm">Active</a>' : '<a href="'.url($statusUrl).'" type="button" class="btn btn-danger btn-sm">Inactive</a>';
                 })
-                ->rawColumns(['status','name','action'])
+                ->rawColumns(['status','mobile','name','action'])
                 ->make(true);
         }
 
@@ -82,10 +85,12 @@ class FinancePersonController extends Controller
                     Rule::unique('admins')->whereNull('deleted_at')
                 ],
                 'mobile' => 'required',
+                'country_code'=>'required'
             ], [
                 'fname.required' => 'Please enter first name',
                 'lname.required' => 'Please enter last name',
-                'mobile.required'=>'Mobile is required'
+                'mobile.required'=>'Mobile is required',
+                'country_code.required'=>'Please select country code'
             ]);
 
             $res = Admin::addFinancePerson($req->all());
@@ -118,10 +123,12 @@ class FinancePersonController extends Controller
                     Rule::unique('admins')->whereNull('deleted_at')->ignore(decrypt($req->update_id))
                 ],
                 'mobile' => 'required',
+                'country_code' => 'required',
             ], [
                 'fname.required' => 'Please enter first name',
                 'lname.required' => 'Please enter last name',
-                'mobile.required'=>'Mobile is required'
+                'mobile.required'=>'Mobile is required',
+                'country_code.required'=>'Please select country code'
             ]);
             $res = Admin :: updateFinanceRecords($req->all());
             if($res){

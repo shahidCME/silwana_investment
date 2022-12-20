@@ -62,12 +62,15 @@ class UserController extends Controller
                 // }
                 return $btn;
                 })
+                ->addColumn('mobile', function($row){
+                    return (($row->country_code != NULL ) ? $row->country_code.'-' : '').$row->mobile;
+                })
                 ->addColumn('status', function($row){
                     $encryptedId = encrypt($row->id);
                     $statusUrl = "customerStatus/".$encryptedId;
                     return ($row->status == '1') ? '<a href="'.$statusUrl.'" type="button" class="badge badge-success">Active</a>' : '<a a href="'.$statusUrl.'" type="button" class="badge badge-danger   ">Inactive</a>';
                 })
-                ->rawColumns(['name','status','action'])
+                ->rawColumns(['name','mobile','status','action'])
                 ->make(true);
         }
 
@@ -100,10 +103,12 @@ class UserController extends Controller
                     Rule::unique('users')->whereNull('deleted_at')
                 ],
                 'mobile' => 'required',
+                'country_code'=>'required'
             ], [
                 'fname.required' => 'Please enter first name',
                 'lname.required' => 'Please enter last name',
-                'mobile.required'=>'Mobile is required'
+                'mobile.required'=>'Mobile is required',
+                'country_code.required'=>'Please select country code'
             ]);
 
 
@@ -119,6 +124,7 @@ class UserController extends Controller
             $res->email = $req->email; 
             $res->password = bcrypt($req->password); 
             $res->gender = $req->gender; 
+            $res->country_code = $req->country_code; 
             $res->mobile = $req->mobile; 
             $res->national_id = $req->national_id; 
             $res->date_of_expiry = dbDateFormat($req->date_of_expiry,true); 
@@ -191,10 +197,12 @@ class UserController extends Controller
                         Rule::unique('users')->ignore(decrypt($req->update_id)),
                     ],
                 'mobile' => 'required',
+                'country_code'=>'required'
             ], [
                 'fname.required' => 'Please enter first name',
                 'lname.required' => 'Please enter last name',
-                'mobile.required'=>'Mobile is required'
+                'mobile.required'=>'Mobile is required',
+                'country_code.required'=>'Please select country code'
             ]);
             $res = User::updateRecords($req->all()); 
 
@@ -203,8 +211,9 @@ class UserController extends Controller
 
                 for($key = 0 ; $key <= (count($req->name_document))-1; $key++) {
                             
-                   $filename = (isset($req->edit_file)) ? $req->edit_file[$key] : ''; 
-                    if($req->hasfile('document_file')){
+                   $filename = (isset($req->edit_file[$key])) ? $req->edit_file[$key] : ''; 
+
+                    if($req->hasfile('document_file') &&  $filename == ''){
                         $file = $req->file('document_file')[$key];
                         $ext = $file->getClientOriginalExtension();
                         $filename = 'document_file_'.time().'.'.$ext;

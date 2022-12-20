@@ -21,12 +21,13 @@ class User extends Authenticatable
     }
 
     public function updateRecords($postData){
-        // dd($postData);
+        
         $id = decrypt($postData['update_id']);
         $updateData = [
             'fname' => $postData['fname'],
             'lname' => $postData['lname'],
             'email'=> $postData['email'],
+            'country_code'=> $postData['country_code'],
             'mobile'=> $postData['mobile'],
             'country_id'=> $postData['country'],
             'nationality'=> $postData['nationality'],

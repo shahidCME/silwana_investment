@@ -26,12 +26,22 @@
                 <label id="lname-error" class="error" for="lname">@error('lname') {{ $message}} @enderror</label>
             </div>
             <div class="form-group">
+                <label>Select Country Code</label>
+                    <select class="custom-select2 form-control"  name="country_code"  style="width: 100%; height: 38px">
+                        <option value="">Select country code</option>
+                        @foreach (GetDialcodelist() as $code => $country_name)
+                        <option value="{{ $code }}" {{ ($code == $profileData[0]->country_code) ? "SELECTED" : "" }}>{{$country_name}}</option>
+                        @endforeach
+                    </select>
+                <label id="country_code-error" class="error" for="country_code">@error('country_code') {{ $message }} @enderror</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+        <div class="form-group">
                 <label>mobile number</label>
                 <input class="form-control" name="mobile" type="text" placeholder="mobile number" value="{{ $profileData[0]->mobile }}">
                 <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }}  @enderror</label>
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="form-group">
                 <label class="weight-600">Gender</label>
                 <div class="custom-control custom-radio mb-5">

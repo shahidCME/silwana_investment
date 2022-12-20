@@ -37,6 +37,7 @@ class Admin extends Authenticatable
             'email'=> $postData['email'],
             'password'=> bcrypt($postData['password']),
             'mobile'=> $postData['mobile'],
+            'country_code'=> $postData['country_code'],
             'role' => $postData['role'],
             'status' => $postData['status'],
             'created_at' => dbDateFormat(),
@@ -51,11 +52,13 @@ class Admin extends Authenticatable
     }
 
     public function updateRecords($postData){
+        // dd($postData);
         $id = decrypt($postData['update_id']);
         $updateData = [
             'fname' => $postData['fname'],
             'lname' => $postData['lname'],
             'email'=> $postData['email'],
+            'country_code'=> $postData['country_code'],
             'mobile'=> $postData['mobile'],
             'role' => $postData['role'],
             'status' => $postData['status'],
@@ -76,6 +79,7 @@ class Admin extends Authenticatable
             'lname' => $postData['lname'],
             'email'=> $postData['email'],
             'password'=> bcrypt($postData['password']),
+            'country_code'=> $postData['country_code'],
             'mobile'=> $postData['mobile'],
             'role' => '3',
             'status' => $postData['status'],
@@ -91,6 +95,7 @@ class Admin extends Authenticatable
             'fname' => $postData['fname'],
             'lname' => $postData['lname'],
             'email'=> $postData['email'],
+            'country_code'=> $postData['country_code'],
             'mobile'=> $postData['mobile'],
             'status' => $postData['status'],
             'updated_at' => dbDateFormat(), 

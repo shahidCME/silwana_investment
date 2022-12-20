@@ -190,7 +190,7 @@ $("#userForm").validate({
         address :{
             required : true
         },
-        // country: { required: true },
+        country_code: { required: true },
         date_of_expiry: { required: true },
         nationalIdImage: { 
             required: true, 
@@ -215,6 +215,7 @@ $("#userForm").validate({
         dob: { 
             required: "Please select date of birth " 
         },
+        country_code: { required: "Please select country code" },
         mobile:{
             required : "Please enter mobile"
         },

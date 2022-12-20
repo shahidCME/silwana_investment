@@ -65,8 +65,8 @@ $("#salesPerson").validate({
         },
         status : {
             required : true
-        }
-        // country: { required: true },
+        },
+        country_code: { required: true },
         // userprofile: { required: true, accept: "jpg,png,jpeg,gif" },
         // edituserprofile: { accept: "jpg,png,jpeg,gif" },
         // "hobby[]": { required: true },
@@ -89,8 +89,8 @@ $("#salesPerson").validate({
         },
         status : {
             required : "Please select status"
-        }
-        // country: { required: "Please select country" },
+        },
+        country_code: { required: "Please select country code" },
         // userprofile: {
         //     required: "Please select userprofile",
         //     accept: "Only image type jpg/png/jpeg/gif is allowed",

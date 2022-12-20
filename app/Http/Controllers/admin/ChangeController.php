@@ -16,10 +16,10 @@ class ChangeController extends Controller
         $data['action'] = url('/profile');
         $data['cancelBtn'] = url('/dashboard');
         $sessionData = admin_login();
-        $data['profileData'] = Admin::select('fname','lname','mobile')->where('id',$sessionData['id'])->get();
+        $data['profileData'] = Admin::select('fname','lname','mobile','country_code')->where('id',$sessionData['id'])->get();
         if($req->all()){
             // dd($req['fname']);
-            $willUpdate = ['fname'=>$req['fname'],'lname'=>$req['lname'],'mobile'=>$req['mobile']]; 
+            $willUpdate = ['fname'=>$req['fname'],'lname'=>$req['lname'],'mobile'=>$req['mobile'],'country_code'=>$req['country_code']]; 
             $updateStatus = Admin::where('id',$sessionData['id'])->update($willUpdate);
             if($updateStatus){
                 $d = session()->get('admin_login');
@@ -40,7 +40,7 @@ class ChangeController extends Controller
         $data['action'] = url('/userProfile');
         $data['cancelBtn'] = url('/userDashboard');
         $sessionData = admin_login();
-        $data['profileData'] = User::select('fname','lname','mobile','gender','dob')->where('id',$sessionData['id'])->get();
+        $data['profileData'] = User::select('fname','lname','mobile','gender','dob','country_code')->where('id',$sessionData['id'])->get();
         // dd($data['profileData']->all());
         if($req->all()){
             $willUpdate = [
@@ -48,7 +48,8 @@ class ChangeController extends Controller
                 'lname'=>$req['lname'],
                 'dob'=>dbDateFormat($req['dob'],true),
                 'mobile'=>$req['mobile'],
-                'gender'=>$req['gender']
+                'gender'=>$req['gender'],
+                'country_code'=>$req['country_code']
             ]; 
             $updateStatus = User::where('id',$sessionData['id'])->update($willUpdate);
             if($updateStatus){

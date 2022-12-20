@@ -51,6 +51,9 @@ class ApproverController extends Controller
                </div>'; 
                          return $btn;
                 })
+                ->addColumn('mobile', function($row){
+                    return (($row->country_code != NULL ) ? $row->country_code.'-' : '').$row->mobile;
+                })
                 ->addColumn('name', function($row){
                     return $row->fname.' '.$row->lname;
                 })
@@ -59,7 +62,7 @@ class ApproverController extends Controller
                     $statusUrl = "approverStatus/".$encryptedId;
                     return ($row->status == '1') ? '<a href="'.$statusUrl.'" type="button" class="btn btn-success btn-sm">Active</a>' : '<a href="'.$statusUrl.'" type="button" class="btn btn-danger btn-sm">Inactive</a>';
                 })
-                ->rawColumns(['status','name','action'])
+                ->rawColumns(['status','mobile','name','action'])
                 ->make(true);
         }
 
@@ -81,10 +84,12 @@ class ApproverController extends Controller
                     Rule::unique('admins')->whereNull('deleted_at')
                 ],
                 'mobile' => 'required',
+                'country_code' => 'required',
             ], [
                 'fname.required' => 'Please enter first name',
                 'lname.required' => 'Please enter last name',
-                'mobile.required'=>'Mobile is required'
+                'mobile.required'=>'Mobile is required',
+                'country_code.required'=>'Please select country code'
             ]);
             $res = Admin::insertRecords($req->all());
             if($res){
@@ -115,10 +120,12 @@ class ApproverController extends Controller
                     Rule::unique('admins')->whereNull('deleted_at')->ignore(decrypt($req->update_id))
                 ],
                 'mobile' => 'required',
+                'country_code' => 'required',
             ], [
                 'fname.required' => 'Please enter first name',
                 'lname.required' => 'Please enter last name',
-                'mobile.required'=>'Mobile is required'
+                'mobile.required'=>'Mobile is required',
+                'country_code.required'=>'Please select country code'
             ]);
             $res = Admin :: updateRecords($req->all());
             if($res){

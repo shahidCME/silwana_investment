@@ -47,6 +47,16 @@
             <label id="nationality-error" class="error" for="nationality">@error('nationality') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
+            <label>Select Country Code</label>
+            <select class="custom-select2 form-control"  name="country_code"  style="width: 100%; height: 38px">
+                <option value="">Select country code</option>
+                @foreach (GetDialcodelist() as $code => $country_name)
+                <option value="{{ $code }}" {{ ($code == $editData[0]->country_code) ? "SELECTED" : "" }}>{{$country_name}}</option>
+                @endforeach
+            </select>
+            <label id="country_code-error" class="error" for="country_code">@error('country_code') {{ $message }} @enderror</label>
+        </div>
+        <div class="form-group">
             <label>Mobile</label>
             <input class="form-control" name="mobile"  value="{{ $editData[0]->mobile }}" type="text" placeholder="Enter mobile">
             <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }} @enderror</label>
