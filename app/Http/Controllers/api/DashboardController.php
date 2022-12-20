@@ -73,7 +73,8 @@ class DashboardController extends Controller
     public function getNotification(Request $request){
         $validator = Validator::make($request->all(), [
             'role'    => 'required|numeric',
-            'user_id' => 'required|numeric'
+            'user_id' => 'required|numeric',
+            'offset'  => 'required'
         ]);
         if ($validator->fails()) {
             $responce = [
@@ -93,9 +94,9 @@ class DashboardController extends Controller
         }
         $query->take($limit);
         $query->orderBy('id','desc');
-        Elq();
+        // Elq();
         $notification = $query->get();
-        Plq();
+        // Plq();
         $responce = [
             'status'=>'1',
             'message'=>'Notification list',
