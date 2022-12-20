@@ -93,9 +93,9 @@ class DashboardController extends Controller
         }
         $query->take($limit);
         $query->orderBy('id','desc');
-        // Elq();
+        Elq();
         $notification = $query->get();
-        // Plq();
+        Plq();
         $responce = [
             'status'=>'1',
             'message'=>'Notification list',
