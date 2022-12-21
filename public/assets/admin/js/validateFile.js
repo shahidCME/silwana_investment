@@ -115,7 +115,7 @@ $("#investmentForm").validate({
         schema: { required: true },
         tenure: { 
             required: true,
-            number : true
+            digits : true
         },
         amount: { 
             required: true,
@@ -123,7 +123,6 @@ $("#investmentForm").validate({
         },
         return_type:{
             required : true,
-            digit: true
         },
         start_date:{
             required : true,
