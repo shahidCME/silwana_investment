@@ -123,7 +123,7 @@ $("#investmentForm").validate({
         },
         return_type:{
             required : true,
-            digits: true
+            digit: true
         },
         start_date:{
             required : true,
