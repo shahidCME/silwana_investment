@@ -606,7 +606,7 @@ class InvestmentController extends Controller
         $data['page']  = 'admin.investment.cancelledInvestment';
         $data['js'] = ['cancelInvestment'];
         $data['cancelledInvestment'] = $record;
-        $data['title'] = 'cancelled Investment';
+        $data['title'] = 'Cancelled Investment';
         
         return view('admin/main_layout',$data);
 

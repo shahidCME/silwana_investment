@@ -1,10 +1,7 @@
 
 			<div class="header-left">
 				<div class="menu-icon bi bi-list"></div>
-				<div
-					class="search-toggle-icon bi bi-search"
-					data-toggle="header_search"
-				></div>
+				<div class="search-toggle-icon bi bi-search d-none" data-toggle="header_search" ></div>
 				<div class="header-search">
 					{{-- <form>
 						<div class="form-group mb-0">

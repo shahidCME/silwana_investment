@@ -12,8 +12,8 @@
         <table class="table stripe hover nowrap" id="datatable"  width="100%">
             <thead>
                 <tr>
-                    <th class="table-plus datatable-nosort">Customer Fullname</th>
-                    <th>Sales person</th>
+                    <th class="table-plus datatable-nosort">Client</th>
+                    <th>Sales</th>
                     <th>Investment Plan</th>
                     <th>Start Date</th>
                     <th>Cancel Date</th>
