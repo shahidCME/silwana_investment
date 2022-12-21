@@ -115,7 +115,8 @@ $("#investmentForm").validate({
         schema: { required: true },
         tenure: { 
             required: true,
-            digits : true
+            digits : true,
+            maxlength:2
         },
         amount: { 
             required: true,
