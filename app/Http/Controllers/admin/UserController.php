@@ -194,7 +194,7 @@ class UserController extends Controller
                 'fname' => 'required',
                 'lname' => 'required',
                 'email' => ['required','email',
-                        Rule::unique('users')->ignore(decrypt($req->update_id)),
+                        Rule::unique('users')->whereNull('deleted_at')->ignore(decrypt($req->update_id)),
                     ],
                 'mobile' => 'required',
                 'country_code'=>'required'
