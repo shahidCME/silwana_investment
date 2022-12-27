@@ -64,6 +64,8 @@ Route::post('contractCancel',[InvestmentController::class,'contractCancel']);
 Route::post('cancelledInvestment',[InvestmentController::class,'cancelledInvestment']);
 Route::post('cancelledRoi',[InvestmentController::class,'cancelledRoi']);
 
+Route::post('/payment_reciept', [InvestmentController::class, 'payment_reciept']);
+
 
 // Route::group(['middleware' => ['auth:sanctum','abilities:admin']], function () {
 //     Route::get('/getUsers', [UserController::class, 'index']);

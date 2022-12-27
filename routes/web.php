@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\SalesPerson;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\SchemaController;
 use App\Http\Controllers\admin\InvestmentController;
+use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\ChangeController;
 use App\Http\Controllers\admin\FinancePersonController;
 use App\Http\Controllers\admin\ApproverController;
@@ -98,11 +99,22 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::post('/InvestmentEdit', [InvestmentController::class, 'edit']);
     Route::get('/InvestmentDocument/{id}', [InvestmentController::class, 'investmentDocument']);
     Route::post('/contractCancel', [InvestmentController::class, 'contractCancel']);
+    Route::post('/payment_reciept', [InvestmentController::class, 'payment_reciept']);
     Route::get('/cancelledInvestment', [InvestmentController::class, 'cancelledInvestment']);
     Route::get('/roi/{id}', [InvestmentController::class, 'getRoi']);
     Route::post('/roi/{id}', [InvestmentController::class, 'getRoi']);
     Route::get('/cancelledRoi/{id}', [InvestmentController::class, 'cancelledRoi']);
     Route::get('/contract/{id}', [InvestmentController::class, 'contract']);
+    Route::post('/changeStatus', [InvestmentController::class, 'changeStatus']);
+
+    Route::get('/payment-contract/{id}', [InvestmentController::class, 'payment_contract']);
+
+
+
+
+    // Start Report Module
+    Route::get('/Report', [ReportController::class, 'index']);
+    Route::post('/getReportDataTable', [ReportController::class, 'getReportDataTable']);
 
     // End Investnebt Module
     Route::get('/profile', [ChangeController::class, 'index']);

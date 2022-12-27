@@ -366,6 +366,28 @@ $("#Roiform").validate({
     }
 });
 
+
+$("#investmentFile").validate({
+    rules: {
+        investment_payment_file : {
+            required : true,
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+        },
+    },
+    messages: {
+        investment_payment_file: {
+            required: "Please enter file",
+            extension : ' extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"'
+        },
+    },
+    submitHandler: function (form) {
+        $('body').attr('disabled','disabled');
+        $('#btnSubmit').attr('disabled','disabled');
+        $('#btnSubmit').value('please wait');
+            $(form).submit();
+    }
+});
+
 $("#contractCancelForm").validate({
     rules: {
         contractCancelComment : {

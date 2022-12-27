@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FinancePersonController extends Controller
 {
-    // public function __construct(){
-    //     $this->middleware('RestrictUrl');
-    // }
+    public function __construct(){
+        $this->middleware('RestrictUrl');
+    }
 
      function index(){
         $data['page'] = 'admin.financePerson.list';

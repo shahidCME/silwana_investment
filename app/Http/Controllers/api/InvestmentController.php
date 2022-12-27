@@ -368,7 +368,7 @@ class InvestmentController extends Controller
                 ];
                 DB::table('roi')->insert($willInsert);
             }
-            if(	$req->status=='1'){
+            if(	$req->status !='0'){
                 // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
@@ -498,7 +498,9 @@ class InvestmentController extends Controller
                 }
                 $message =  'Application for '.$planName. ' is approved';
                 $insertData = ['for_role'=>'2','user_id'=>$viewData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                $this->insertNotification($insertData);
+                if(	$req->status=='1'){
+                    $this->insertNotification($insertData);
+                }
             }
             if($result){
                 $responce = [
@@ -786,5 +788,67 @@ class InvestmentController extends Controller
             ];
         }
         return response()->json($responce);
+    }
+
+    public function payment_reciept(Request $request){
+        if($request->all()){
+            $validator = Validator::make($request->all(), [
+                'investment_id'  => 'required|numeric',
+                'investment_payment_file'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf'
+            ]);
+            if ($validator->fails()) {
+                $responce = [
+                    'status'=>'0',
+                    'errors'=>$validator->errors()
+                ];
+                return response()->json($responce);
+            }
+
+            $image1 ='';
+            if($request->hasfile('investment_payment_file')){
+                if (!file_exists(public_path('uploads/contract_reciept'))) {
+                    mkdir(public_path('uploads/contract_reciept'), 0777, true);
+                }
+                $file = $request->file('investment_payment_file');
+                $ext = $file->getClientOriginalExtension();
+                $image1 = 'investment_payment_file_'.time().'.'.$ext;
+                $file->move(public_path('uploads/contract_reciept'),$image1);
+            }
+            $uid = $req->investment_id;
+
+            $investData = Investment::where('id',uid)->get();
+            
+            $res = Investment::where('id',$uid)->update(['status'=>'1','contract_reciept'=>$image1,'updated_at'=>dbDateFormat()]);
+           
+            if($res){
+                $plan = Schema::where('id',$investData[0]->schema_id)->get();
+                $planName = $plan[0]->name;
+                $device = Device::where(['user_id'=>$investData[0]->user_id,'role'=>'2'])->get();
+                if(!empty($device->all())){
+                    $notification_id = $device[0]->token;
+                    $title = $planName;
+                    $message =  'Application for Investment Plan '.$planName.' '.$status;
+                    $id = $investData[0]->user_id;
+                    $type = $device[0]->type;
+                    send_notification_FCM($notification_id, $title, $message, $id,$type);
+                }
+                    $message =  'Application for Investment Plan '.$planName.' '.$status;
+                    $insertData = ['for_role'=>'2','user_id'=>$investData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                    $this->insertNotification($insertData);
+                    return redirect('Investment')->with('Mymessage', flashMessage('success','Investment Payment Inserted Successfully'));
+                    $responce = [
+                        'status'=>'1',
+                        'message'=>"Investment Payment Inserted Successfully",
+                    ];
+                }else{
+                    return redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+                    $responce = [
+                        'status'=>'0',
+                        'message'=>"Something Went Wrong",
+                    ];
+                }
+                return response()->json($responce);
+         }
+
     }
 }

@@ -37,17 +37,27 @@ class Investment extends Model
     public function updateRecords($postData,$filename,$invest_document,$other_document){
         $id = decrypt($postData['update_id']);
         $investData = Investment::where('id', $id)->get();
+        if($postData['return_type'] == '0'){
+            // dd($postData['start_date']);
+            $start_date = strtotime($postData['start_date']);
+            $month = $postData['tenure'];
+            $contract_end_date = date('Y-m-d', strtotime("+".$month.' month',$start_date));
+        }else{
+            $start_date = date('Y-m-d',strtotime($postData['start_date']));
+            $contract_end_date = date('Y-m-d', strtotime("+".$postData['tenure']." year",strtotime($start_date)));
+        }
         $updateData = [
             'user_id' => $postData['customer'],
             'schema_id'=> $postData['schema'],
             'tenure'=> $postData['tenure'],
             'start_date'=> dbDateFormat($postData['start_date'],true),
+            'contract_end_date'=>$contract_end_date,
             'amount' => $postData['amount'],
             'return_type' => $postData['return_type'],
             'return_percentage' => $postData['return_percentage'],
             'status' => (isset($postData['status'])) ? $postData['status'] : '2',
             'contract_reciept' => $filename,
-            'investment_doc' => $invest_document,
+            // 'investment_doc' => $invest_document,
             'other_doc' => $other_document,
             'updated_at' => dbDateFormat(), 
         ];

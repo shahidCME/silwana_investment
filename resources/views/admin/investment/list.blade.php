@@ -54,3 +54,41 @@
             </div>
         </div>
 </div>
+
+<div class="col-md-4 col-sm-12 mb-30" >
+    {{-- <div class="pd-20 card-box height-100-p">
+    </div> --}}
+        <div class="modal fade" id="Medium-modal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myLargeModalLabel">
+                           Investment Payment Files
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <form id="investmentFile" action="{{ url('payment_reciept');}}", method="post" enctype="multipart/form-data">
+                        @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Payment Reciept</label>
+                            <input type="file" name="investment_payment_file" class="form-control-file form-control height-auto">
+                        </div>
+                        <input type="hidden" name="invest_id" id="invest_id" >
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Signed Contract file</label>
+                            <input type="file" name="signed_contract_file" class="form-control-file form-control height-auto">
+                        </div>
+                        <input type="hidden" name="signed_contract_file" id="signed_contract_file" >
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" id="btnSubmit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+</div>

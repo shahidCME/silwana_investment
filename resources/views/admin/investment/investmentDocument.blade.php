@@ -100,7 +100,7 @@
             </dd>
             @endif
             @if($viewData[0]->contract_reciept != '')
-            <dt class="col-sm-3"> Contract Reciept</dt>
+            <dt class="col-sm-3"> Investment Payment Reciept</dt>
             <dd class="col-sm-9">
                 <dl class="row">
                     <dd class="col-sm-8">
@@ -112,12 +112,12 @@
                 </dl>
             </dd>
             @endif
-            @if($viewData[0]->investment_doc != '')
-            <dt class="col-sm-3"> Investment document</dt>
+            @if($viewData[0]->signed_contract_file != '')
+            <dt class="col-sm-3"> Signed Contract File</dt>
             <dd class="col-sm-9">
                 <dl class="row">
                     <dd class="col-sm-8">
-                        <a href="{{ url('uploads/invest_document/'.$viewData[0]->investment_doc) }}" class="btn btn-dark btn-lg" download>
+                        <a target="_blank"  href="{{ url('uploads/signed_contract_file/'.$viewData[0]->signed_contract_file) }}" class="btn btn-dark btn-lg">
                             <i class="fa fa-download"></i>
                             Download
                         </a>

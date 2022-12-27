@@ -19,19 +19,20 @@ use DataTables;
 use PDF;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
-class InvestmentController extends Controller
+class ReportController extends Controller
 {
     
     public function index()
     {
-        $data['page'] = "admin.investment.list";
-        $data['js'] = ['investment','validateFile'];
+        $data['page'] = "admin.report.list";
+        $data['js'] = ['report','validateFile'];
         $data['addButton'] = url('addInvestment');
-        $data['title'] = "Investment list";
+        $data['title'] = "Report";
+        $data['getCustomer'] = USER::get();
         return view('admin/main_layout',$data);
     }
     
-    public function getInvestmentDataTable(Request $request){
+    public function getReportDataTable(Request $request){
         if ($request->ajax()) {
             $Session = Session::get('admin_login');
 
@@ -47,21 +48,18 @@ class InvestmentController extends Controller
             $query->where('i.deleted_at',null);
             $query->where('u.deleted_at',null);
             $query->where('i.status','!=','9');
-            $query->orderBy('id','desc');
-            $data = $query->get();
-            foreach ($data as $key => $value) {            
-                if($value->return_type == '0'){
-                    $start_date = strtotime($value->start_date);
-                    $year = $value->tenure;
-                    $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
-                    $value->contract_end_date = $end_date;
-                }else{
-                    $start_date = date('Y-m-d',strtotime($value->start_date));
-                    $contract_end_date = date('Y-m-d', strtotime("+".$value->tenure." year",strtotime($start_date)));
-                    $value->contract_end_date = $contract_end_date;
-                }
+            if(isset($request->user_id) &&  $request->user_id != ''){
+                $query->where('i.user_id',$request->user_id);
             }
-            // dd($data);
+            if((isset($request->start_date) &&  $request->start_date != '') && (isset($request->end_date) &&  $request->end_date != '')){
+                // $query->whereDate('i.start_date', '>=', dbDateFormat($request->start_date,true))->whereDate('i.start_date', '<=', dbDateFormat($request->end_date,true));
+                $query->whereBetween('i.start_date', [dbDateFormat($request->start_date,true),dbDateFormat($request->end_date,true) ]);
+            }
+            
+            $query->orderBy('id','desc');
+            // Elq();
+            $data = $query->get();
+            // Plq();
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('client',function($row){
                 return $row->customerFname .' '.$row->customerLname;
@@ -81,21 +79,14 @@ class InvestmentController extends Controller
              ->addColumn('action', function($row){      
                     $role = (admin_login()['role'] == "3") ? 'd-none' : '';              
                     $cancel = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';
-                    $paymentFile = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';
                     $notView = (admin_login()['role'] == "0") ? 'd-none' : '';
                     $encryptedId = encrypt($row->id);
-
                     $editurl = "InvestmentEdit/".$encryptedId;
                     $deleteurl = "InvestmentDelete/".$encryptedId;
                     $view = "InvestmentDocument/".$encryptedId;
                     $conract = "contract/".$encryptedId;
-                    $payment = "payment-contract/".$encryptedId;
                     $roi = "roi/".$encryptedId;
-
-
-                    '<button data-id="'.encrypt($row->id).'" class="btn btn-primary btn-sm payBtn" data-toggle="modal" data-target="#Medium-modal" type="button" >Pay</button>';
-                  
-                    $btn = '<div class="dropdown" style="display:inline">
+                   $btn = '<div class="dropdown" style="display:inline">
                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                        <i class="dw dw-more"></i>
                    </a>
@@ -106,10 +97,7 @@ class InvestmentController extends Controller
                        <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
                        <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
                        <a class="dropdown-item '.$cancel.' CancelContract" href="javascript:" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
-                       <a class="dropdown-item '.$paymentFile.' PaymentFile" href="javascript:" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal2"><i class="dw dw-upload "></i>Upload Payment/Contract</a>
-                       <a class="dropdown-item '.$paymentFile.' PaymentFile" href="'.$payment.'" ><i class="dw dw-file"></i>Payment/Contract</a>
-                       </div>
-                       </div>
+                   </div>
                </div>';
                if(admin_login()['role'] != '0'){
                    if($row->contract_pdf != ''){
@@ -120,24 +108,15 @@ class InvestmentController extends Controller
                     return $btn;
                 })
                 ->addColumn('status', function($row){
-                    $zero = '';$one = ''; $two = '';
                     if($row->status == '0') {
+                            
                         $sttus ='<button type="button" class="badge badge-danger">Rejected</button>' ;
-                        $zero = "SELECTED";
                     }elseif($row->status == '1'){
                         $sttus ='<button type="button" class="badge badge-success">Approved</button>';
-                        $one = "SELECTED";
                     }else{
                         $sttus ='<button type="button" class="badge badge-warning">Pending</button>';
-                        $two = "SELECTED";
                     } 
-                    // if(admin_login()['role'] == "3" ){
-                    //     $sttus = '<select class="form-select change_status" name="change_status" data-investment_id = "'.encrypt($row->id).'">
-                    //                     <option value="0" '.$zero.'>Rejected</option>
-                    //                     <option value="1" '.$one.'>Approved</option>
-                    //                     <option value="2" '.$two.' >Pending</option>
-                    //             </select>';
-                    // }
+                   
                     return $sttus;
                 })
                 ->rawColumns(['roi','start date','end date','sales person','customer name','status','action'])
@@ -147,44 +126,6 @@ class InvestmentController extends Controller
         return view('admin/main_layout');
     }
 
-    public function changeStatus(Request $req){
-        if($req->all()){
-            if($req->status == '0'){
-                $status =  'is Rejected';
-            }else if($req->status == '1'){
-                $status =  'is Approved';
-            } else{
-                $status =  'is Pending';
-            }
-            $investData = Investment::where('id', decrypt($req->investment_id))->get();
-            $result = Investment :: where('id',decrypt($req->investment_id))->update([
-                'status'=>$req->status
-            ]);
-
-            if($result){
-                $plan = Schema::where('id',$investData[0]->schema_id)->get();
-                $planName = $plan[0]->name;
-                $device = Device::where(['user_id'=>$investData[0]->user_id,'role'=>'2'])->get();
-                if(!empty($device->all())){
-                    $notification_id = $device[0]->token;
-                    $title = $planName;
-                    $message =  'Application for Investment Plan '.$planName.' '.$status;
-                    $id = $investData[0]->user_id;
-                    $type = $device[0]->type;
-                    send_notification_FCM($notification_id, $title, $message, $id,$type);
-                }
-                    $message =  'Application for Investment Plan '.$planName.' '.$status;
-                    $insertData = ['for_role'=>'2','user_id'=>$investData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                if($req->status =='1'){
-                    $this->insertNotification($insertData);
-                }
-                redirect('Investment')->with('Mymessage', flashMessage('success','Status Changed Successfully'));
-            }else{
-                redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
-            }
-            echo '1' ;
-        }
-    }
 
     public function add(Request $req)
     {   
@@ -228,16 +169,6 @@ class InvestmentController extends Controller
                 $image1 = 'contract_reciept_'.time().'.'.$ext;
                 $file->move(public_path('uploads/contract_reciept'),$image1);
             }
-            if($req->return_type == '0'){
-                // dd($req->start_date);
-                $start_date = strtotime($req->start_date);
-                $month = $req->tenure;
-                $contract_end_date = date('Y-m-d', strtotime("+".$month.' month',$start_date));
-            }else{
-                $start_date = date('Y-m-d',strtotime($req->start_date));
-                $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",strtotime($start_date)));
-            }
-            dd($contract_end_date);
             $res = new Investment();
             $res->status = $req->status; 
             if($session['role'] == '0'){
@@ -250,7 +181,6 @@ class InvestmentController extends Controller
             $res->amount = $req->amount; 
             $res->return_type = $req->return_type; 
             $res->start_date = dbDateFormat($req->start_date,true); 
-            $res->contract_end_date =  $contract_end_date;
             $res->return_percentage = $req->return_percentage; 
             $res->contract_reciept = ($image1 != '') ? $image1 : ''; 
             $res->created_at = dbDateFormat(); 
@@ -335,15 +265,15 @@ class InvestmentController extends Controller
             
             $invest_document = (isset($req->old_invest_document) && $req->old_invest_document != NULL) ? $req->old_invest_document : '';
 
-            // if($req->hasfile('edit_invest_document')){
-            //     if($invest_document != NULL && file_exists(public_path('uploads/invest_document/'.$invest_document)) ){
-            //         unlink(public_path('uploads/invest_document/'.$invest_document));
-            //     }
-            //     $file = $req->file('edit_invest_document');
-            //     $ext = $file->getClientOriginalExtension();
-            //     $invest_document = 'invest_document_'.time().'.'.$ext;
-            //     $file->move(public_path('uploads/invest_document'),$invest_document);
-            // }
+            if($req->hasfile('edit_invest_document')){
+                if($invest_document != NULL && file_exists(public_path('uploads/invest_document/'.$invest_document)) ){
+                    unlink(public_path('uploads/invest_document/'.$invest_document));
+                }
+                $file = $req->file('edit_invest_document');
+                $ext = $file->getClientOriginalExtension();
+                $invest_document = 'invest_document_'.time().'.'.$ext;
+                $file->move(public_path('uploads/invest_document'),$invest_document);
+            }
 
 
             $other_document = (isset($req->old_other_document) && $req->old_other_document != NULL) ? $req->old_other_document : '';
@@ -360,7 +290,7 @@ class InvestmentController extends Controller
 
             $investData = Investment::where('id', decrypt($req->update_id))->get();
             $res = Investment::updateRecords($req->all(),$filename,$invest_document,$other_document);
-            if(	$req->status !='0'){
+            if(	$req->status=='1'){
                 // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
@@ -380,7 +310,6 @@ class InvestmentController extends Controller
                     $data['viewData'] = $viewData;
                     $data['arabic'] = [];
                     $start_date = strtotime($req->start_date);
-                    
                     if($req->return_type == '0'){
                         // dd($req->start_date);
                         $start_date = strtotime($req->start_date);
@@ -441,13 +370,6 @@ class InvestmentController extends Controller
                                 ]  
                                 );
                         }
-                        // $files = DB::table('investment_related_files')->where('investment_id',$investData[0]->id)->get();
-                        // if(!empty($files->all())){
-                        //     DB::table('investment_related_files')->where(['investment_id'=>$investData[0]->id])->update([
-                        //             'terminate_date'=>dbDateFormat($req->start_date,true),
-                        //             'updated_at' => dbDateFormat() 
-                        //         ]);
-                        // }
                         DB::table('contract_files')->insert(
                             [
                                 'investment_id'=> $id,
@@ -496,17 +418,14 @@ class InvestmentController extends Controller
                     if(!empty($device->all())){
                         $notification_id = $device[0]->token;
                         $title = $planName;
-                        $message =  'Application For Investment Plan '.$planName. ' Is Approved';
+                        $message =  'Application for '.$planName. ' is approved';
                         $id = $viewData[0]->user_id;
                         $type = $device[0]->type;
                         send_notification_FCM($notification_id, $title, $message, $id,$type);
                     }
-                    $message =  'Application For Investment Plan  '.$planName. ' Is Approved';
+                    $message =  'Application for '.$planName. ' is approved';
                     $insertData = ['for_role'=>'2','user_id'=>$viewData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    if($req->status =='1'){
-                        $this->insertNotification($insertData);
-                    }
-
+                    $this->insertNotification($insertData);
                 }
               // $filename = $req->old_image;
             if($res){
@@ -723,94 +642,6 @@ class InvestmentController extends Controller
         $data['contract'] = $record;
         $data['title'] = 'Investment Contract';
         $data['page']  = 'admin.investment.contractList';
-        $data['js'] = ['investment'];
-        return view('admin/main_layout',$data);
-    }
-
-    public function payment_reciept(Request $request){
-        if($request->all()){
-            // dd($request->all());
-            $image1 ='';
-            $image2='';
-            if($request->hasfile('investment_payment_file')){
-                if (!file_exists(public_path('uploads/contract_reciept'))) {
-                    mkdir(public_path('uploads/contract_reciept'), 0777, true);
-                }
-                $file = $request->file('investment_payment_file');
-                $ext = $file->getClientOriginalExtension();
-                $image1 = 'investment_payment_file_'.time().'.'.$ext;
-                $file->move(public_path('uploads/contract_reciept'),$image1);
-            }
-
-            if (!file_exists(public_path('uploads/signed_contract_file'))) {
-                mkdir(public_path('uploads/signed_contract_file'), 0777, true);
-            }
-
-            if($request->hasfile('signed_contract_file')){
-                if (!file_exists(public_path('uploads/signed_contract_file'))) {
-                    mkdir(public_path('uploads/signed_contract_file'), 0777, true);
-                }
-                $file = $request->file('signed_contract_file');
-                $ext = $file->getClientOriginalExtension();
-                $image2 = 'signed_contract_file_'.time().'.'.$ext;
-                $file->move(public_path('uploads/signed_contract_file'),$image2);
-            }
-
-
-            $uid = decrypt($request->invest_id);
-
-            $investData = Investment::where('id',$uid)->get();
-            
-            $res = Investment::where('id',$uid)->update(['status'=>'1','contract_reciept'=>$image1,'signed_contract_file'=>$image2,'updated_at'=>dbDateFormat()]);
-                $files = DB::table('investment_related_files')->where('investment_id',$uid)->get();
-                if(!empty($files->all())){
-                    
-                }    
-                    DB::table('investment_related_files')->insert([
-                        'investment_id'=>$uid,
-                        'start_date' =>$investData[0]->start_date,
-                        'end_date' =>$investData[0]->contract_end_date,
-                        'payment_reciept'=> $image1,
-                        'signed_contract_file'=> $image2,
-                        'created_at'=>dbDateFormat(),
-                        'updated_at'=>dbDateFormat()
-                    ]);
-            if($res){
-                $plan = Schema::where('id',$investData[0]->schema_id)->get();
-                $planName = $plan[0]->name;
-                $device = Device::where(['user_id'=>$investData[0]->user_id,'role'=>'2'])->get();
-                $status = " Is Approved";
-                if(!empty($device->all())){
-                    $notification_id = $device[0]->token;
-                    $title = $planName;
-                    $message =  'Application for Investment Plan '.$planName.' '.$status;
-                    $id = $investData[0]->user_id;
-                    $type = $device[0]->type;
-                    send_notification_FCM($notification_id, $title, $message, $id,$type);
-                }
-                    $message =  'Application for Investment Plan '.$planName.' '.$status;
-                    $insertData = ['for_role'=>'2','user_id'=>$investData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    $this->insertNotification($insertData);
-                    return redirect('Investment')->with('Mymessage', flashMessage('success','Investment Payment Inserted Successfully'));
-                }else{
-                    return redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
-                }
-        }
-
-    }
-
-    public function payment_contract($eid){
-        $id = decrypt($eid);
-        $query = DB:: table('investments as i');
-        $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')->select('u.*');
-        $query->where('i.id',$id);
-        $userData = $query->get();
-        $data['customer_name'] = $userData[0]->fname. ' '.$userData[0]->lname; 
-
-        $record = DB::table('investment_related_files')->where(['investment_id'=>$id])->orderBy('id','desc')->get();
-        $data['contract'] = $record;
-        $data['title'] = 'Payment/Signed Contract File';
-        $data['page']  = 'admin.investment.payment_contract_file';
         $data['js'] = ['investment'];
         return view('admin/main_layout',$data);
     }

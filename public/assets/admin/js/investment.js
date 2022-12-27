@@ -18,6 +18,12 @@ $(document).on('click','.CancelContract',function(){
 
 });
 
+$(document).on('click','.PaymentFile',function(){
+    var investment_id = $(this).data('id');
+    $('#invest_id').val(investment_id);
+
+});
+
 
 $(document).ready(function () {
     // DataTable
@@ -26,6 +32,26 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    
+    
+    $(document).on('change','.change_status',function(){
+        var base_url = $("#base_url").val();
+        var status = $(this).val();
+        var investment_id = $(this).data('investment_id');
+        $.ajax({
+            url: base_url+"changeStatus",
+            method:"post",
+            data : {
+                status: status,
+                investment_id : investment_id
+            },
+            success: function(res){
+                // window.location.reload();
+            }
+          });
+    });
+
+
     const base_url = $("#base_url").val();
     $("#InvestmentTable").DataTable({
         processing: true,

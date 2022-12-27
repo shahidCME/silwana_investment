@@ -69,7 +69,7 @@
                 <label class="custom-control-label" for="returnType2">Yearly</label>
             </div>
         </div>
-        @if(admin_login()['role'] == '1' || admin_login()['role'] == '4')
+        @if(admin_login()['role'] == '12' || admin_login()['role'] == '3')
         <div class="col-md-6">
             <label class="weight-600">Status</label>
             <div class="custom-control custom-radio mb-5">

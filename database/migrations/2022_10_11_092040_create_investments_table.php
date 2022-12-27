@@ -25,7 +25,7 @@ class CreateInvestmentsTable extends Migration
             $table->enum('return_type', ['0', '1'])->default('0')->comment('0=>monthly;1=>yearly'); // 0 =>monthly 1=>yearly 
             $table->float('return_percentage');
             $table->string('contract_reciept');
-            $table->string('investment_doc');
+            $table->string('signed_contract_file');
             $table->string('other_doc')->nullable();
             $table->string('contract_pdf')->nullable();
             $table->enum('status', ['0','1','2','9'])->default('1')->comment('0=>rejected;1=>approved;2=>pending;0=>cancel'); // 0 =>rejected 1=>approved 2 => pending 
