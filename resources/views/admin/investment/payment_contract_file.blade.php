@@ -10,10 +10,10 @@
                     <th class="table-plus datatable-nosort">S.no</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <!-- <th>Terminate Date</th> -->
+                    <th>Terminate Date</th>
                     <th class="datatable-nosort">Payment File</th>
                     <th class="datatable-nosort">Signed Contract File</th>
-                    <th >Created At</th>
+                    <!-- <th >Created At</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +22,7 @@
                     <td class="table-plus datatable-nosort">{{ $key+1 ;}}</td>
                     <td>{{ date('d F Y',strtotime($value->start_date))}}</td>
                     <td>{{ date('d F Y',strtotime($value->end_date))}}</td>
-                    <!-- <td>{{ ($value->terminate_date != NULL ) ? date('d F Y',strtotime($value->terminate_date)) : '-' }}</td> -->
+                    <td>{{ ($value->terminate_date != NULL ) ? date('d F Y',strtotime($value->terminate_date)) : '-' }}</td>
                     <td class="datatable-nosort">
                     @if($value->payment_reciept != '')
                      <a href="{{ url('uploads/contract_reciept/'.$value->payment_reciept) }}" target="_blank" class="badge badge-success" ><i class="fa fa-download"></i></a> 
@@ -33,7 +33,7 @@
                      <a href="{{ url('uploads/signed_contract_file/'.$value->signed_contract_file) }}" target="_blank" class="badge badge-success" ><i class="fa fa-download"></i></a> 
                     @endif
                     </td>
-                    <td>{{ date('d F Y H:i:s',strtotime($value->created_at))}}</td>
+                    <!-- <td>{{ date('d F Y H:i:s',strtotime($value->created_at))}}</td> -->
                 </tr>      
                 @endforeach
             </tbody>

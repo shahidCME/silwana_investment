@@ -373,12 +373,20 @@ $("#investmentFile").validate({
             required : true,
             extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
         },
+        signed_contract_file : {
+            required : true,
+            extension: "jpg|png|jpeg|svg|docx|rtf|doc|pdf"
+        }
     },
     messages: {
         investment_payment_file: {
-            required: "Please enter file",
+            required: "Please select payment file",
             extension : ' extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"'
         },
+        signed_contract_file: {
+            required: "Please select signed contract file",
+            extension : ' extension: "Only type jpg|png|jpeg|svg|docx|rtf|doc|pdf is allowed"'
+        }
     },
     submitHandler: function (form) {
         $('body').attr('disabled','disabled');

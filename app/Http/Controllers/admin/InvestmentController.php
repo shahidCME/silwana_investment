@@ -237,7 +237,7 @@ class InvestmentController extends Controller
                 $start_date = date('Y-m-d',strtotime($req->start_date));
                 $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",strtotime($start_date)));
             }
-            dd($contract_end_date);
+            // dd($contract_end_date);
             $res = new Investment();
             $res->status = $req->status; 
             if($session['role'] == '0'){
@@ -764,7 +764,10 @@ class InvestmentController extends Controller
             $res = Investment::where('id',$uid)->update(['status'=>'1','contract_reciept'=>$image1,'signed_contract_file'=>$image2,'updated_at'=>dbDateFormat()]);
                 $files = DB::table('investment_related_files')->where('investment_id',$uid)->get();
                 if(!empty($files->all())){
-                    
+                    $contract_files = DB::table('contract_files')->where(['investment_id'=>$uid])->whereNotNull('terminate_date')->get();
+                    if(!empty($contract_files->all())){
+                        DB::table('investment_related_files')->where('investment_id',$uid)->update(['terminate_date'=>$contract_files[0]->terminate_date]);
+                    }
                 }    
                     DB::table('investment_related_files')->insert([
                         'investment_id'=>$uid,

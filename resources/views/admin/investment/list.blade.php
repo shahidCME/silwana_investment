@@ -1,4 +1,20 @@
-<div class="card-box  investment-card-box  mb-30 ">
+<style>
+    .investment-card-wrapper .table{
+        padding:10px 0px !important;
+    }
+    .investment-card-wrapper .dropdown-item {
+        padding-top: 8px;
+        padding-bottom:8px;
+    }
+    .investment-card-wrapper .manage-action {
+        position: absolute !important;
+        will-change: transform !important;
+        top: 0px !important;
+        left: 0px !important;
+        transform: translate3d(-175px, -197px, 0px) !important;
+    }
+</style>
+<div class="card-box  investment-card-box  mb-30 investment-card-wrapper">
     <div class="pd-20">
         <h4 class="text-blue h4">{{ $title }} </>
         @if(admin_login()['role'] != '3')

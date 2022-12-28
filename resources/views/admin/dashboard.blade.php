@@ -98,7 +98,7 @@
             </a>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20" style="display : <?=(admin_login()['role'] != '1') ? 'none' : '' ?>">
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">

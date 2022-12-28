@@ -32,7 +32,11 @@ $(document).ready(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    
+
+    $(document).on('click','.PaymentFile',function(){
+        $('#investmentFile')[0].reset();
+        $('label.error').html("");
+    })
     
     $(document).on('change','.change_status',function(){
         var base_url = $("#base_url").val();
