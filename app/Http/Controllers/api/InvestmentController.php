@@ -60,12 +60,21 @@ class InvestmentController extends Controller
                 // $files = DB::table('contract_files')->where('user_id',$value->user_id)->get();
                 $url = url("uploads/contract_pdf/");
                 $files = DB::table('contract_files as cf')->where('cf.investment_id',$value->id)->get();
+                $paymentAndSignedContract = DB::table('investment_related_files as rf')->where('rf.investment_id',$value->id)->get();
                 $value->contract_files = [];
+                $value->signed_contractAndPaymentFile = [];
                 if(!empty($files->all())){
                     foreach ($files as $k => $v) {
-                        $v->contract_pdf = $url.$v->contract_pdf; 
+                        $v->contract_pdf = $url.'/'.$v->contract_pdf; 
                     }
                     $value->contract_files = $files;
+                }
+                if(!empty($paymentAndSignedContract->all())){
+                    foreach ($paymentAndSignedContract as $k => $v) {
+                        $v->payment_reciept = url("uploads/contract_reciept/".$v->payment_reciept); 
+                        $v->signed_contract_file = url("uploads/contract_reciept/".$v->signed_contract_file); 
+                    }
+                    $value->signed_contractAndPaymentFile = $paymentAndSignedContract;
                 }
             }
             $responce = [
@@ -110,25 +119,36 @@ class InvestmentController extends Controller
                 $image1 = 'contract_reciept_'.time().'.'.$ext;
                 $file->move(public_path('uploads/contract_reciept'),$image1);
             }
-            if($req->hasfile('invest_document')){
-                // echo '3';die;
-                if (!file_exists(public_path('uploads/invest_document'))) {
-                    mkdir(public_path('uploads/invest_document'), 0777, true);
-                }
-                $file = $req->file('invest_document');
-                $ext = $file->getClientOriginalExtension();
-                $investDoc = 'invest_document_'.time().'.'.$ext;
-                $file->move(public_path('uploads/invest_document'),$investDoc);
+
+            // if($req->hasfile('invest_document')){
+            //     // echo '3';die;
+            //     if (!file_exists(public_path('uploads/invest_document'))) {
+            //         mkdir(public_path('uploads/invest_document'), 0777, true);
+            //     }
+            //     $file = $req->file('invest_document');
+            //     $ext = $file->getClientOriginalExtension();
+            //     $investDoc = 'invest_document_'.time().'.'.$ext;
+            //     $file->move(public_path('uploads/invest_document'),$investDoc);
               
-            }
-            if($req->hasfile('other_document')){
-                if (!file_exists(public_path('uploads/other_document'))) {
-                    mkdir(public_path('uploads/other_document'), 0777, true);
-                }
-                $file = $req->file('other_document');
-                $ext = $file->getClientOriginalExtension();
-                $otherDoc = 'other_document_'.time().'.'.$ext;
-                $file->move(public_path('uploads/other_document'),$otherDoc);
+            // }
+            // if($req->hasfile('other_document')){
+            //     if (!file_exists(public_path('uploads/other_document'))) {
+            //         mkdir(public_path('uploads/other_document'), 0777, true);
+            //     }
+            //     $file = $req->file('other_document');
+            //     $ext = $file->getClientOriginalExtension();
+            //     $otherDoc = 'other_document_'.time().'.'.$ext;
+            //     $file->move(public_path('uploads/other_document'),$otherDoc);
+            // }
+
+            if($req->return_type == '0'){
+                // dd($req->start_date);
+                $start_date = strtotime($req->start_date);
+                $month = $req->tenure;
+                $contract_end_date = date('Y-m-d', strtotime("+".$month.' month',$start_date));
+            }else{
+                $start_date = date('Y-m-d',strtotime($req->start_date));
+                $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",strtotime($start_date)));
             }
             $res = new Investment();
             $res->status = ($req->status == '' ) ? '2' : $req->status; 
@@ -142,9 +162,10 @@ class InvestmentController extends Controller
             $res->amount = $req->amount; 
             $res->return_type = $req->return_type; 
             $res->start_date = dbDateFormat($req->start_date,true); 
+            $res->contract_end_date =  $contract_end_date;
             $res->return_percentage = $req->return_percentage; 
             $res->contract_reciept = ($image1 != '') ? $image1 : ''; 
-            $res->investment_doc = ($investDoc!='') ? $investDoc : ''; 
+            // $res->investment_doc = ($investDoc!='') ? $investDoc : ''; 
             $res->other_doc = (!isset($otherDoc)) ? '' : $otherDoc; 
             $res->created_at = dbDateFormat(); 
             $res->updated_at = dbDateFormat(); 
@@ -261,9 +282,12 @@ class InvestmentController extends Controller
             ];
             return response()->json($responce);
         }
-
+            $status = '2';
             $investData = Investment::where('id',$req->investment_id)->get();
-            
+
+            if(( ($investData[0]->amount == $req->amount) && ($investData[0]->start_date == dbDateFormat($req->start_date,true)) )){
+                $status = $investData[0]->status;
+            }
             if($req->hasfile('contract_reciept')){
                 if($filename != NULL && file_exists(public_path('uploads/contract_reciept/'.$filename)) ){
                     unlink(public_path('uploads/contract_reciept/'.$filename));
@@ -276,45 +300,55 @@ class InvestmentController extends Controller
                 $filename = $investData[0]->contract_reciept;
             }
             
+            if($req->return_type == '0'){
+                // dd($req->start_date);
+                $start_date = strtotime($req->start_date);
+                $month = $req->tenure;
+                $contract_end_date = date('Y-m-d', strtotime("+".$month.' month',$start_date));
+            }else{
+                $start_date = strtotime('Y-m-d',$req->start_date);
+                $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",$start_date));
+            }
             
 
-            if($req->hasfile('invest_document')){
-                if($invest_document != NULL && file_exists(public_path('uploads/invest_document/'.$invest_document)) ){
-                    unlink(public_path('uploads/invest_document/'.$invest_document));
-                }
-                $file = $req->file('invest_document');
-                $ext = $file->getClientOriginalExtension();
-                $invest_document = 'invest_document_'.time().'.'.$ext;
-                $file->move(public_path('uploads/invest_document'),$invest_document);
-            }else{
-                $invest_document = $investData[0]->investment_doc;
-            }
+            // if($req->hasfile('invest_document')){
+            //     if($invest_document != NULL && file_exists(public_path('uploads/invest_document/'.$invest_document)) ){
+            //         unlink(public_path('uploads/invest_document/'.$invest_document));
+            //     }
+            //     $file = $req->file('invest_document');
+            //     $ext = $file->getClientOriginalExtension();
+            //     $invest_document = 'invest_document_'.time().'.'.$ext;
+            //     $file->move(public_path('uploads/invest_document'),$invest_document);
+            // }else{
+            //     $invest_document = $investData[0]->investment_doc;
+            // }
 
 
-            if($req->hasfile('other_document')){
-                if($other_document != NULL && file_exists(public_path('uploads/other_document/'.$other_document)) ){
-                    unlink(public_path('uploads/other_document/'.$other_document));
-                }
-                $file = $req->file('other_document');
-                $ext = $file->getClientOriginalExtension();
-                $other_document = 'other_document_'.time().'.'.$ext;
-                $file->move(public_path('uploads/other_document'),$other_document);
-            }else{
-                $other_document = $investData[0]->other_doc;
-            }
+            // if($req->hasfile('other_document')){
+            //     if($other_document != NULL && file_exists(public_path('uploads/other_document/'.$other_document)) ){
+            //         unlink(public_path('uploads/other_document/'.$other_document));
+            //     }
+            //     $file = $req->file('other_document');
+            //     $ext = $file->getClientOriginalExtension();
+            //     $other_document = 'other_document_'.time().'.'.$ext;
+            //     $file->move(public_path('uploads/other_document'),$other_document);
+            // }else{
+            //     $other_document = $investData[0]->other_doc;
+            // }
             $id = $req->investment_id;
             $updateData = [
                 'user_id' => $req->customer_id,
                 'schema_id'=> $req->schema_id,
                 'tenure'=> $req->tenure,
                 'start_date'=> dbDateFormat($req->start_date,true),
+                'contract_end_date'=>$contract_end_date,
                 'amount' => $req->amount,
                 'return_type' => $req->return_type,
                 'return_percentage' => $req->return_percentage,
-                'status' => (isset($req->status)) ? $req->status : '2',
+                'status' => (isset($req->status)) ? $req->status : $status,
                 'contract_reciept' => $filename,
-                'investment_doc' => $invest_document,
-                'other_doc' => $other_document,
+                // 'investment_doc' => $invest_document,
+                // 'other_doc' => $other_document,
                 'updated_at' => dbDateFormat(), 
             ];
             // dd($updateData);
@@ -368,7 +402,7 @@ class InvestmentController extends Controller
                 ];
                 DB::table('roi')->insert($willInsert);
             }
-            if(	$req->status !='0'){
+            // if(	$req->status !='0'){
                 // dd($req->all());
                 if (!file_exists(public_path('uploads/contract_pdf'))) {
                     mkdir(public_path('uploads/contract_pdf'), 0777, true);
@@ -501,7 +535,7 @@ class InvestmentController extends Controller
                 if(	$req->status=='1'){
                     $this->insertNotification($insertData);
                 }
-            }
+            // }
             if($result){
                 $responce = [
                     'status'=>'1',
@@ -791,10 +825,11 @@ class InvestmentController extends Controller
     }
 
     public function payment_reciept(Request $request){
-        if($request->all()){
+        // if($request->all()){
             $validator = Validator::make($request->all(), [
                 'investment_id'  => 'required|numeric',
-                'investment_payment_file'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf'
+                'investment_payment_file'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
+                'signed_contract_file'=>'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf'
             ]);
             if ($validator->fails()) {
                 $responce = [
@@ -814,16 +849,46 @@ class InvestmentController extends Controller
                 $image1 = 'investment_payment_file_'.time().'.'.$ext;
                 $file->move(public_path('uploads/contract_reciept'),$image1);
             }
-            $uid = $req->investment_id;
 
-            $investData = Investment::where('id',uid)->get();
-            
+            if (!file_exists(public_path('uploads/signed_contract_file'))) {
+                mkdir(public_path('uploads/signed_contract_file'), 0777, true);
+            }
+            $image2 = '';
+            if($request->hasfile('signed_contract_file')){
+                if (!file_exists(public_path('uploads/signed_contract_file'))) {
+                    mkdir(public_path('uploads/signed_contract_file'), 0777, true);
+                }
+                $file = $request->file('signed_contract_file');
+                $ext = $file->getClientOriginalExtension();
+                $image2 = 'signed_contract_file_'.time().'.'.$ext;
+                $file->move(public_path('uploads/signed_contract_file'),$image2);
+            }
+
+           $uid = $request->investment_id;
+            $investData = Investment::where('id',$uid)->get();
+            // dd($investData);
             $res = Investment::where('id',$uid)->update(['status'=>'1','contract_reciept'=>$image1,'updated_at'=>dbDateFormat()]);
-           
+                $files = DB::table('investment_related_files')->where('investment_id',$uid)->get();
+                if(!empty($files->all())){
+                    $contract_files = DB::table('contract_files')->where(['investment_id'=>$uid])->whereNotNull('terminate_date')->get();
+                    if(!empty($contract_files->all())){
+                        DB::table('investment_related_files')->where('investment_id',$uid)->update(['terminate_date'=>$contract_files[0]->terminate_date]);
+                    }
+                } 
+                DB::table('investment_related_files')->insert([
+                    'investment_id'=>$uid,
+                    'start_date' =>$investData[0]->start_date,
+                    'end_date' =>$investData[0]->contract_end_date,
+                    'payment_reciept'=> $image1,
+                    'signed_contract_file'=> $image2,
+                    'created_at'=>dbDateFormat(),
+                    'updated_at'=>dbDateFormat()
+                ]);
             if($res){
                 $plan = Schema::where('id',$investData[0]->schema_id)->get();
                 $planName = $plan[0]->name;
                 $device = Device::where(['user_id'=>$investData[0]->user_id,'role'=>'2'])->get();
+                $status = " Is Approved";
                 if(!empty($device->all())){
                     $notification_id = $device[0]->token;
                     $title = $planName;
@@ -835,20 +900,20 @@ class InvestmentController extends Controller
                     $message =  'Application for Investment Plan '.$planName.' '.$status;
                     $insertData = ['for_role'=>'2','user_id'=>$investData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
                     $this->insertNotification($insertData);
-                    return redirect('Investment')->with('Mymessage', flashMessage('success','Investment Payment Inserted Successfully'));
+                    // return redirect('Investment')->with('Mymessage', flashMessage('success','Investment Payment Inserted Successfully'));
                     $responce = [
                         'status'=>'1',
-                        'message'=>"Investment Payment Inserted Successfully",
+                        'message'=>"Investment Payment reciept/signed contract uploaded Successfully",
                     ];
                 }else{
-                    return redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
+                    // return redirect('Investment')->with('Mymessage', flashMessage('danger','Something Went Wrong'));
                     $responce = [
                         'status'=>'0',
                         'message'=>"Something Went Wrong",
                     ];
                 }
                 return response()->json($responce);
-         }
+        //  }
 
     }
 }

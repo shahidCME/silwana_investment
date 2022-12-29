@@ -42,6 +42,8 @@ Route::group(['middleware' => AdminAuth::Class ], function () {
     Route::get('/salesPersonDelete/{id}', [SalesPerson::class, 'delete']);
     Route::get('/salesStatus/{id}', [SalesPerson::class, 'salesStatus']);
 
+    Route::get('/verify_email', [SalesPerson::class, 'verify_email']);
+
     // End Sales Module
 
     // Start FinancePerson Module

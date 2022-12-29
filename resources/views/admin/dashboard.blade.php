@@ -23,6 +23,7 @@
 </div>
 
 <div class="row pb-10">
+    @if(admin_login()['role'] == '1' || admin_login()['role'] == '2')
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <a href="{{ url ('customer') }}">
             <div class="card-box height-100-p widget-style3">
@@ -41,6 +42,8 @@
             </div>
         </a>
     </div>
+    @endif
+    @if(admin_login()['role'] == '1')
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
             <a href="{{ url('salesPerson') }}">
@@ -61,6 +64,7 @@
             </a>
             </div>
         </div>
+        
         <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
             <a href="{{ url('financePerson') }}">
@@ -98,7 +102,26 @@
             </a>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20" style="display : <?=(admin_login()['role'] != '1') ? 'none' : '' ?>">
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="card-box height-100-p widget-style3">
+            <a href="{{ url('Schema') }}">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">{{ $totalSchema }}</div>
+                        <div class="font-14 text-secondary weight-500">Investment Plan</div>
+                    </div>
+                    <div class="widget-icon">
+                        <div class="icon" data-color="#09cc06">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_scheme.svg" alt="">
+                            <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    @endif
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
@@ -116,24 +139,6 @@
     </div>
     <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
         <div class="card-box height-100-p widget-style3">
-        <a href="{{ url('Schema') }}">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">{{ $totalSchema }}</div>
-                    <div class="font-14 text-secondary weight-500">Investment Plan</div>
-                </div>
-                <div class="widget-icon">
-                    <div class="icon" data-color="#09cc06">
-                        <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_total_scheme.svg" alt="">
-                        <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
-                    </div>
-                </div>
-            </div>
-        </a>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
             <a href="{{ url('cancelledInvestment') }}">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
@@ -143,6 +148,24 @@
                     <div class="widget-icon">
                         <div class="icon" data-color="#09cc06">
                             <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_cancel_Investment.svg" alt="">
+                            <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-3 col-md-6 mb-20" style="display : <?=(admin_login()['role'] != '1') ? 'none' : '' ?>">
+        <div class="card-box height-100-p widget-style3">
+            <a href="{{ url('Report') }}">
+                <div class="d-flex flex-wrap">
+                    <div class="widget-data">
+                        <div class="weight-700 font-24 text-dark">Report</div>
+                        <div class="font-14 text-secondary weight-500">Investment</div>
+                    </div>
+                    <div class="widget-icon">
+                        <div class="icon" data-color="#09cc06">
+                            <img src="{{ asset('assets/admin/') }}/vendors/images/ic_ims_admin/ic_report.svg" alt="">
                             <!-- <i class="icon-copy fa fa-money" aria-hidden="true"></i> -->
                         </div>
                     </div>

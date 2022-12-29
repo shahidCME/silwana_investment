@@ -6,7 +6,7 @@
     </div>
     <form id="salesPerson" action="{{ $action }}" method="POST">
         @csrf
-        <input type="hidden" value="{{ $update_id }}" name="update_id">
+        <input type="hidden" value="{{ $update_id }}" name="update_id" id="update_id">
         <div class="form-group">
             <label>First Name</label>
             <input class="form-control" name="fname" type="text" value="{{ $editData[0]->fname }}" placeholder="Enter first name">

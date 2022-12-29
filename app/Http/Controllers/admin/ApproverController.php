@@ -111,6 +111,7 @@ class ApproverController extends Controller
         }
         $data['page'] = 'admin.approver.edit';
         $data['title'] = 'Edit Approver';
+        $data['js'] = array('validateFile');
         $data['action'] = url('approverEdit');
         if($req->all()){
             $validatedData = $req->validate([

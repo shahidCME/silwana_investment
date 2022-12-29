@@ -113,6 +113,7 @@ class FinancePersonController extends Controller
         }
         $data['page'] = 'admin.financePerson.edit';
         $data['title'] = 'Eidt Finance ';
+        $data['js'] = array('validateFile');
         $data['action'] = url('financePersonEdit');
         if($req->all()){
             // dd($req->all());

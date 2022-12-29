@@ -14,13 +14,36 @@ class Dashboard extends Controller
 {
     
     function index(){
-        $data['totalInvestment'] = Investment::sum('amount');
-        $data['totalUser'] = User::count();
+       $totalInvestment = Investment::where('status','1');
+        if(admin_login()['role'] == '2'  ){
+            $totalInvestment->where('admin_id',admin_login()['id']);
+        }
+        // Elq();
+        $totalInvestment =  $totalInvestment->sum('amount');
+        // Plq();
+        $data['totalInvestment'] = $totalInvestment;
+
+        $user = DB :: table('users')->where('deleted_at',NULL);
+        if(admin_login()['role'] != '1' ){
+            $user->where('admin_id',admin_login()['id']);
+        }
+        $totalUser =  $user->count();
+        $data['totalUser'] = $totalUser;
+
+
         $data['totalSalePerson'] = Admin::where('role','0')->count();
         $data['totalFinancePerson'] = Admin::where('role','3')->count();
         $data['totalApprover'] = Admin::where('role','4')->count();
         $data['totalSchema'] = Schema::count();
-        $data['totalCancelledInvestment'] = Investment::where('status','9')->count();
+
+        $queryCancelled = Investment::where('status','9');
+        if(admin_login()['role'] == '2' ){
+            $queryCancelled->where('admin_id',admin_login()['id']);
+        }
+        // Elq();
+        $totalCancelledInvestment = $queryCancelled->count();
+        // Plq();
+        $data['totalCancelledInvestment'] = $totalCancelledInvestment;
         $data['appointment']= '45';
         return view('admin/dashboard',$data);
     }

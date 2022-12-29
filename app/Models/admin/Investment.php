@@ -34,9 +34,12 @@ class Investment extends Model
     // }
 
     
-    public function updateRecords($postData,$filename,$invest_document,$other_document){
+    public function updateRecords($postData,$filename,$invest_document,$other_document,$status='2'){
         $id = decrypt($postData['update_id']);
         $investData = Investment::where('id', $id)->get();
+        if($status == '1'){
+            $status = $investData[0]->status;
+        }
         if($postData['return_type'] == '0'){
             // dd($postData['start_date']);
             $start_date = strtotime($postData['start_date']);
@@ -55,13 +58,13 @@ class Investment extends Model
             'amount' => $postData['amount'],
             'return_type' => $postData['return_type'],
             'return_percentage' => $postData['return_percentage'],
-            'status' => (isset($postData['status'])) ? $postData['status'] : '2',
+            'status' => (isset($postData['status'])) ? $postData['status'] : $status,
             'contract_reciept' => $filename,
             // 'investment_doc' => $invest_document,
             'other_doc' => $other_document,
             'updated_at' => dbDateFormat(), 
         ];
-        // dd($updateData);
+
         Investment::where('id', $id)->update($updateData);
         $availableStartData = $investData[0]->start_date;
 

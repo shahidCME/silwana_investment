@@ -239,10 +239,10 @@ class InvestmentController extends Controller
             }
             // dd($contract_end_date);
             $res = new Investment();
-            $res->status = $req->status; 
-            if($session['role'] == '0'){
-                $res->status = '2';
-            }
+            $res->status = '2';
+            // if($session['role'] == '0'){
+            //     $res->status = $req->status; 
+            // }
             $res->admin_id = admin_login()['id']; 
             $res->user_id = $req->customer; 
             $res->schema_id = $req->schema;
@@ -359,122 +359,95 @@ class InvestmentController extends Controller
             }
 
             $investData = Investment::where('id', decrypt($req->update_id))->get();
-            $res = Investment::updateRecords($req->all(),$filename,$invest_document,$other_document);
-            if(	$req->status !='0'){
-                // dd($req->all());
-                if (!file_exists(public_path('uploads/contract_pdf'))) {
-                    mkdir(public_path('uploads/contract_pdf'), 0777, true);
-                }
-                // if($req->edit_contract_pdf != '' && file_exists(public_path('uploads/contract_pdf'.$req->edit_contract_pdf))){
-                //     unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
-                // }
-                $id = decrypt($req->update_id);
-                $query=DB:: table('investments as i');
-                $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
-                    ->leftJoin('countries as c', 'c.id', '=', 'u.country_id')
-                    // ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
-                    ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','u.date_of_expiry','u.national_id','c.nationality');
-                    $query->where('i.id',$id);
-                    $query->where('i.deleted_at',null);
-                    $viewData = $query->groupBy('i.id')->get();
-                    $data['viewData'] = $viewData;
-                    $data['arabic'] = [];
-                    $start_date = strtotime($req->start_date);
-                    
-                    if($req->return_type == '0'){
-                        // dd($req->start_date);
-                        $start_date = strtotime($req->start_date);
-                        $year = $req->tenure;
-                        $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
-                        // ddd($end_date);
-                        $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
-                        $data['viewData'][0]->contract_end_date = $end_date;
-                    }else{
-                        $start_date = date('Y-m-d',strtotime($req->start_date));
-                        $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",strtotime($start_date)));
-                        $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
-                        $data['viewData'][0]->contract_end_date = $contract_end_date;
-                    }
-                      $contractStartDateFraction = explode("-",date("d-F-Y",strtotime($start_date)));
-                      $data['viewData'][0]->day   =  $day = $contractStartDateFraction[0];
-                      $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
-                      $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
-                      $viewData[0]->amountArabic = convertNumberToWord($viewData[0]->amount);
-                    //   ddd($data['viewData'][0]->contract_end_date);
-                      if($req->lang == '1'){
-                        
-                        $tr = new GoogleTranslate();
-                        $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
-                        $data['arabic']['customerLname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerLname);
-                        $data['arabic']['nationality'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality);
-                        // $data['arabic']['national_id'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->national_id);
-                        $data['arabic']['national_id'] = $viewData[0]->national_id;
-                        $data['arabic']['nationality'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality);
-                        $date_of_expiry = date('d-F-Y',strtotime($viewData[0]->date_of_expiry));
-                        $data['arabic']['date_of_expiry'] = $tr->setSource('en')->setTarget('ar')->translate($date_of_expiry);
-                        $dob = date('d-F-Y',strtotime($viewData[0]->dob));
-                        $data['arabic']['dob'] = $tr->setSource('en')->setTarget('ar')->translate($dob);
-                        $data['arabic']['amount'] = $tr->setSource('en')->setTarget('ar')->translate(($viewData[0]->amount));
-                        $data['arabic']['amountArabic'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->amountArabic);
-                        $data['arabic']['contract_end_date'] = $viewData[0]->contract_end_date;
-                        $data['arabic']['contract_start_date'] = $viewData[0]->contract_start_date;
-
-                        $data['arabic']['day'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->day);
-                        $data['arabic']['month'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->month);
-                        $data['arabic']['year'] = $tr->setSource('en')->setTarget('ar')->translate(strtolower(convertNumberToWord($viewData[0]->year)));
-                    }
-                    $pdf = PDF::loadView('admin.contractTemplate.'.strtolower($req->contract), $data);
-                    $filename = strtolower($req->contract).'_'.time().'.pdf';
-                    $pdf->save(public_path('uploads/contract_pdf/').$filename);
-
-                    
-                    $availableAmount = $investData[0]->amount;
-                    $availableStartData = $investData[0]->start_date;
+            $status = '2';
+            if($investData[0]->amount == $req->amount && $investData[0]->start_date == dbDateFormat($req->start_date,true) ){
+                $status = '1';
+            }
+            $res = Investment::updateRecords($req->all(),$filename,$invest_document,$other_document,$status);
+            // if(	$req->status !='0'){
                     // dd($req->all());
-                    if(($investData[0]->contract_pdf == NULL) || ( ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true)) )){
-                        $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
-                       if(!empty($willUpdateFiles->all())){
-                            DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->update(
-                                [
-                                    'terminate_date'=>dbDateFormat($req->start_date,true),
-                                    'updated_at' => dbDateFormat() 
-                                ]  
-                                );
-                        }
-                        // $files = DB::table('investment_related_files')->where('investment_id',$investData[0]->id)->get();
-                        // if(!empty($files->all())){
-                        //     DB::table('investment_related_files')->where(['investment_id'=>$investData[0]->id])->update([
-                        //             'terminate_date'=>dbDateFormat($req->start_date,true),
-                        //             'updated_at' => dbDateFormat() 
-                        //         ]);
-                        // }
-                        DB::table('contract_files')->insert(
-                            [
-                                'investment_id'=> $id,
-                                'user_id' =>$viewData[0]->user_id,
-                                'start_date' => dbDateFormat($req->start_date,true),
-                                'end_date'   => $data['viewData'][0]->contract_end_date,
-                                'contract_pdf'=>$filename,
-                                'created_at' => dbDateFormat(),
-                                'updated_at' => dbDateFormat() 
-                                ]  
-                            );
-                    }else{
-                        $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
-                        // dd($willUpdateFiles->all());
-                        if(!empty($willUpdateFiles->all())){
-
-                            if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
-                                unlink(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf));
-                            }
-                            
-                            DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->update(
-                                [
-                                    'contract_pdf'=>$filename,
-                                    'updated_at' => dbDateFormat() 
-                                ]  
-                                );
+                    if (!file_exists(public_path('uploads/contract_pdf'))) {
+                        mkdir(public_path('uploads/contract_pdf'), 0777, true);
+                    }
+                    // if($req->edit_contract_pdf != '' && file_exists(public_path('uploads/contract_pdf'.$req->edit_contract_pdf))){
+                    //     unlink(public_path('uploads/contract_pdf/'.$req->edit_contract_pdf));
+                    // }
+                    $id = decrypt($req->update_id);
+                    $query=DB:: table('investments as i');
+                    $query->leftJoin('users as u', 'u.id', '=', 'i.user_id')
+                        ->leftJoin('countries as c', 'c.id', '=', 'u.country_id')
+                        // ->leftJoin('user_kyc as k', 'u.id', '=', 'k.user_id')
+                        ->select('i.*', 'u.fname as customerFname','u.lname as customerLname','u.mobile','u.dob','u.date_of_expiry','u.national_id','c.nationality');
+                        $query->where('i.id',$id);
+                        $query->where('i.deleted_at',null);
+                        $viewData = $query->groupBy('i.id')->get();
+                        $data['viewData'] = $viewData;
+                        $data['arabic'] = [];
+                        $start_date = strtotime($req->start_date);
+                        
+                        if($req->return_type == '0'){
+                            // dd($req->start_date);
+                            $start_date = strtotime($req->start_date);
+                            $year = $req->tenure;
+                            $end_date = date('Y-m-d', strtotime("+".$year.' month',$start_date));
+                            // ddd($end_date);
+                            $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
+                            $data['viewData'][0]->contract_end_date = $end_date;
                         }else{
+                            $start_date = date('Y-m-d',strtotime($req->start_date));
+                            $contract_end_date = date('Y-m-d', strtotime("+".$req->tenure." year",strtotime($start_date)));
+                            $data['viewData'][0]->contract_start_date = dbDateFormat($req->start_date,true);
+                            $data['viewData'][0]->contract_end_date = $contract_end_date;
+                        }
+                        $contractStartDateFraction = explode("-",date("d-F-Y",strtotime($start_date)));
+                        $data['viewData'][0]->day   =  $day = $contractStartDateFraction[0];
+                        $data['viewData'][0]->month =  $month = $contractStartDateFraction[1];
+                        $data['viewData'][0]->year  =  $year = $contractStartDateFraction[2];
+                        $viewData[0]->amountArabic = convertNumberToWord($viewData[0]->amount);
+                        //   ddd($data['viewData'][0]->contract_end_date);
+                        if($req->lang == '1'){
+                            
+                            $tr = new GoogleTranslate();
+                            $data['arabic']['customerFname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerFname);
+                            $data['arabic']['customerLname'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->customerLname);
+                            $data['arabic']['nationality'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality);
+                            // $data['arabic']['national_id'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->national_id);
+                            $data['arabic']['national_id'] = $viewData[0]->national_id;
+                            $data['arabic']['nationality'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->nationality);
+                            $date_of_expiry = date('d-F-Y',strtotime($viewData[0]->date_of_expiry));
+                            $data['arabic']['date_of_expiry'] = $tr->setSource('en')->setTarget('ar')->translate($date_of_expiry);
+                            $dob = date('d-F-Y',strtotime($viewData[0]->dob));
+                            $data['arabic']['dob'] = $tr->setSource('en')->setTarget('ar')->translate($dob);
+                            $data['arabic']['amount'] = $tr->setSource('en')->setTarget('ar')->translate(($viewData[0]->amount));
+                            $data['arabic']['amountArabic'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->amountArabic);
+                            $data['arabic']['contract_end_date'] = $viewData[0]->contract_end_date;
+                            $data['arabic']['contract_start_date'] = $viewData[0]->contract_start_date;
+
+                            $data['arabic']['day'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->day);
+                            $data['arabic']['month'] = $tr->setSource('en')->setTarget('ar')->translate($viewData[0]->month);
+                            $data['arabic']['year'] = $tr->setSource('en')->setTarget('ar')->translate(strtolower(convertNumberToWord($viewData[0]->year)));
+                        }
+                        $pdf = PDF::loadView('admin.contractTemplate.'.strtolower($req->contract), $data);
+                        $filename = strtolower($req->contract).'_'.time().'.pdf';
+                        $pdf->save(public_path('uploads/contract_pdf/').$filename);
+
+                        
+                        $availableAmount = $investData[0]->amount;
+                        $availableStartData = $investData[0]->start_date;
+                        // dd($req->all());
+                        if(($investData[0]->contract_pdf == NULL) || ( ($availableAmount != $req->amount) || ($availableStartData != dbDateFormat($req->start_date,true)) )){
+
+                            $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
+                        
+                            if(!empty($willUpdateFiles->all())){
+                                DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->update(
+                                    [
+                                        'terminate_date'=>dbDateFormat($req->start_date,true),
+                                        'updated_at' => dbDateFormat() 
+                                    ]  
+                                    );
+                            }
+                          
                             DB::table('contract_files')->insert(
                                 [
                                     'investment_id'=> $id,
@@ -486,28 +459,55 @@ class InvestmentController extends Controller
                                     'updated_at' => dbDateFormat() 
                                     ]  
                                 );
-                        }
-                    }
-                    DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]); 
-                    // for user
-                    $plan = Schema::where('id',$viewData[0]->schema_id)->get();
-                    $planName = $plan[0]->name;
-                    $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
-                    if(!empty($device->all())){
-                        $notification_id = $device[0]->token;
-                        $title = $planName;
-                        $message =  'Application For Investment Plan '.$planName. ' Is Approved';
-                        $id = $viewData[0]->user_id;
-                        $type = $device[0]->type;
-                        send_notification_FCM($notification_id, $title, $message, $id,$type);
-                    }
-                    $message =  'Application For Investment Plan  '.$planName. ' Is Approved';
-                    $insertData = ['for_role'=>'2','user_id'=>$viewData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
-                    if($req->status =='1'){
-                        $this->insertNotification($insertData);
-                    }
+                        }else{
+                            $willUpdateFiles = DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date])->get();
+                            // dd($willUpdateFiles->all());
+                            if(!empty($willUpdateFiles->all())){
 
-                }
+                                if(file_exists(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf))){
+                                    unlink(public_path('uploads/contract_pdf/'.$willUpdateFiles[0]->contract_pdf));
+                                }
+                                
+                                DB::table('contract_files')->where(['investment_id'=>$investData[0]->id,'start_date'=>$investData[0]->start_date,'created_at'=>$investData[0]->created_at])->update(
+                                    [
+                                        'contract_pdf'=>$filename,
+                                        'updated_at' => dbDateFormat() 
+                                    ]  
+                                    );
+                            }else{
+                                DB::table('contract_files')->insert(
+                                    [
+                                        'investment_id'=> $id,
+                                        'user_id' =>$viewData[0]->user_id,
+                                        'start_date' => dbDateFormat($req->start_date,true),
+                                        'end_date'   => $data['viewData'][0]->contract_end_date,
+                                        'contract_pdf'=>$filename,
+                                        'created_at' => dbDateFormat(),
+                                        'updated_at' => dbDateFormat() 
+                                        ]  
+                                    );
+                            }
+                        }
+                        DB::table('investments')->where('id',$id)->update(['contract_pdf'=>$filename,'language'=>$req->lang,'contract_type'=>$req->contract]); 
+                        // for user
+                        $plan = Schema::where('id',$viewData[0]->schema_id)->get();
+                        $planName = $plan[0]->name;
+                        $device = Device::where(['user_id'=>$viewData[0]->user_id,'role'=>'2'])->get();
+                        if(!empty($device->all())){
+                            $notification_id = $device[0]->token;
+                            $title = $planName;
+                            $message =  'Application For Investment Plan '.$planName. ' Is Approved';
+                            $id = $viewData[0]->user_id;
+                            $type = $device[0]->type;
+                            send_notification_FCM($notification_id, $title, $message, $id,$type);
+                        }
+                        $message =  'Application For Investment Plan  '.$planName. ' Is Approved';
+                        $insertData = ['for_role'=>'2','user_id'=>$viewData[0]->user_id,'title'=>$planName,'description'=>$message,'created_at'=>dbDateFormat(),'updated_at' => dbDateFormat()];
+                        if($req->status =='1'){
+                            $this->insertNotification($insertData);
+                        }
+
+                // }
               // $filename = $req->old_image;
             if($res){
                 // $this->notification($req->all());
@@ -762,6 +762,7 @@ class InvestmentController extends Controller
             $investData = Investment::where('id',$uid)->get();
             
             $res = Investment::where('id',$uid)->update(['status'=>'1','contract_reciept'=>$image1,'signed_contract_file'=>$image2,'updated_at'=>dbDateFormat()]);
+
                 $files = DB::table('investment_related_files')->where('investment_id',$uid)->get();
                 if(!empty($files->all())){
                     $contract_files = DB::table('contract_files')->where(['investment_id'=>$uid])->whereNotNull('terminate_date')->get();

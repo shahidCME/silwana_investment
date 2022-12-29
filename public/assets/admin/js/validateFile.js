@@ -44,13 +44,27 @@ $("#schemaForm").validate({
     },
 });
 
-
-
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+var base_url = $("#base_url").val();
 $("#salesPerson").validate({
     rules: {
         fname: { required: true },
         lname: { required: true },
-        email: { required: true, email: true },
+        email: { 
+                required: true, 
+                email: true,
+                remote:{ 
+                    url  : base_url+"verify_email",
+                    type : "GET",
+                    data : {
+                        id : $('#update_id').val()
+                    }
+                  }
+             },
         password: { required: true },
         dob: { 
             required: true,
@@ -77,6 +91,7 @@ $("#salesPerson").validate({
         email: {
             required: "Email is required ",
             email: "Please enter valid email",
+            remote : "Email already exist"
         },
         password : {
             required : "Default password is 123456"

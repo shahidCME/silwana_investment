@@ -171,4 +171,19 @@ class SalesPerson extends Controller
         }
     }
 
+    public function verify_email(Request $req){
+        $query = Admin::where('email',$req->email);
+        if(isset($req->id) && $req->id != ''){
+            $id = decrypt($req->id);
+            $query->where('id','!=',$id);
+        }
+        $email = $query->count();
+        if($email > 0)
+        {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+
+    }
 }
