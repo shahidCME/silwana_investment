@@ -45,8 +45,8 @@ class ReportController extends Controller
                 $id = $Session['id'];
                 $query->where('i.admin_id',$id);
             }
-            $query->where('i.deleted_at',null);
-            $query->where('u.deleted_at',null);
+            $query->where('i.deleted_at',NULL);
+            $query->where('u.deleted_at',NULL);
             $query->where('i.status','!=','9');
             if(isset($request->user_id) &&  $request->user_id != ''){
                 $query->where('i.user_id',$request->user_id);
@@ -77,12 +77,12 @@ class ReportController extends Controller
                 return ($row->return_type =='0') ? "Monthly" : "Yearly";
             })
              ->addColumn('action', function($row){      
-                    $role = (admin_login()['role'] == "3") ? 'd-none' : '';              
-                    $cancel = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';
+                    // $role = (admin_login()['role'] == "3") ? 'd-none' : '';              
+                    // $cancel = (admin_login()['role'] == "3" || admin_login()['role'] == "1") ? '' : 'd-none';
                     $notView = (admin_login()['role'] == "0") ? 'd-none' : '';
                     $encryptedId = encrypt($row->id);
-                    $editurl = "InvestmentEdit/".$encryptedId;
-                    $deleteurl = "InvestmentDelete/".$encryptedId;
+                    // $editurl = "InvestmentEdit/".$encryptedId;
+                    // $deleteurl = "InvestmentDelete/".$encryptedId;
                     $view = "InvestmentDocument/".$encryptedId;
                     $conract = "contract/".$encryptedId;
                     $roi = "roi/".$encryptedId;
@@ -94,9 +94,6 @@ class ReportController extends Controller
                        <a class="dropdown-item '.$notView.'" href="'.url($roi).'"><i class="dw dw-file"></i> ROI</a>
                        <a class="dropdown-item '.$notView.'" href="'.url($view).'"><i class="dw dw-eye"></i> View</a>
                        <a class="dropdown-item '.$notView.'" href="'.url($conract).'"><i class="dw dw-file"></i> Contract</a>
-                       <a class="dropdown-item '.$role.'" href="'.url($editurl).'" ><i class="dw dw-edit2"></i> Edit</a>
-                       <a class="dropdown-item deleteRecord '.$role.'" href="'.url($deleteurl).'"><i class="dw dw-delete-3 "></i> Delete</a>
-                       <a class="dropdown-item '.$cancel.' CancelContract" href="javascript:" data-id='.$encryptedId.' data-toggle="modal" data-target="#Medium-modal"><i class="dw dw-cancel "></i> Cancel</a>
                    </div>
                </div>';
                if(admin_login()['role'] != '0'){

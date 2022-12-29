@@ -8,6 +8,7 @@ use App\Http\Controllers\api\SalesPersonController;
 use App\Http\Controllers\api\SchemaController;
 use App\Http\Controllers\api\InvestmentController;
 use App\Http\Controllers\api\DashboardController;
+use App\Http\Controllers\api\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,9 @@ Route::post('cancelledRoi',[InvestmentController::class,'cancelledRoi']);
 
 Route::post('/payment_reciept', [InvestmentController::class, 'payment_reciept']);
 
+
+ // Start Report Module
+ Route::post('/Report', [ReportController::class, 'index']);
 
 // Route::group(['middleware' => ['auth:sanctum','abilities:admin']], function () {
 //     Route::get('/getUsers', [UserController::class, 'index']);

@@ -11,6 +11,7 @@
                     <th>Sales person</th>
                     <th>Schema</th>
                     <th>Start Date</th>
+                    <th>End Date</th>
                     <th>Amount</th>
                     <th>Return Type</th>
                     <th>Status</th>

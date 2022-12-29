@@ -120,7 +120,7 @@ class Login extends Controller
             }
 
            }
-            return redirect('/forgetPassword')->with('Mymessage', flashMessage('danger','Something Went Wrong! Try again'));
+            return redirect('/forgetPassword')->with('Mymessage', flashMessage('danger','You have entered invalid email or password ! Try again'));
         }
 
         return view('admin.forget_password',$data);

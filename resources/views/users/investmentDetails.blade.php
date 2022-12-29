@@ -20,11 +20,11 @@
                 {{ $viewData[0]->lname  }}
             </dd>
             
-            <dt class="col-sm-3">Schema Name</dt>
+            <dt class="col-sm-3">Plan Name</dt>
             <dd class="col-sm-9">
                 {{ $viewData[0]->schema  }}
             </dd>
-            <dt class="col-sm-3">Schema details</dt>
+            <dt class="col-sm-3">Plan details</dt>
             <dd class="col-sm-9">
                 <dl class="row">
                     {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
@@ -101,27 +101,13 @@
                 </dl>
             </dd>
             @endif
-            @if($viewData[0]->contract_pdf != '')
-            <dt class="col-sm-3"> Contract pdf</dt>
-            <dd class="col-sm-9">
-                <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
-                    <dd class="col-sm-8">
-                        <a href="{{ url('uploads/contract_reciept/'.$viewData[0]->contract_pdf) }}" class="btn btn-dark btn-lg" download>
-                            <i class="fa fa-download"></i>
-                            Download
-                        </a>
-                    </dd>
-                </dl>
-            </dd>
-            @endif
             @if($viewData[0]->contract_reciept != '')
-            <dt class="col-sm-3"> Contract Reciept</dt>
+            <dt class="col-sm-3">Investment Payment Reciept</dt>
             <dd class="col-sm-9">
                 <dl class="row">
                     {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
-                        <a href="{{ url('uploads/contract_reciept/'.$viewData[0]->contract_reciept) }}" class="btn btn-dark btn-lg" download>
+                        <a target="_blank" href="{{ url('uploads/contract_reciept/'.$viewData[0]->contract_reciept) }}" class="btn btn-dark btn-lg">
                             <i class="fa fa-download"></i>
                             Download
                         </a>
@@ -129,13 +115,12 @@
                 </dl>
             </dd>
             @endif
-            @if($viewData[0]->investment_doc != '')
-            <dt class="col-sm-3"> Investment document</dt>
+            @if($viewData[0]->signed_contract_file != '')
+            <dt class="col-sm-3">Signed Contract File</dt>
             <dd class="col-sm-9">
                 <dl class="row">
-                    {{-- <dt class="col-sm-4">Nested definition list</dt> --}}
                     <dd class="col-sm-8">
-                        <a href="{{ url('uploads/invest_document/'.$viewData[0]->investment_doc) }}" class="btn btn-dark btn-lg" download>
+                        <a target="_blank" href="{{ url('uploads/signed_contract_file/'.$viewData[0]->signed_contract_file) }}" class="btn btn-dark btn-lg">
                             <i class="fa fa-download"></i>
                             Download
                         </a>
