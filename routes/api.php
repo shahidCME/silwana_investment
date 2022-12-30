@@ -2,14 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\LoginController;
-use App\Http\Controllers\api\UserController;
-use App\Http\Controllers\api\SalesPersonController;
-use App\Http\Controllers\api\SchemaController;
-use App\Http\Controllers\api\InvestmentController;
-use App\Http\Controllers\api\DashboardController;
-use App\Http\Controllers\api\ReportController;
-
+use App\Http\Controllers\api\{LoginController,UserController,SalesPersonController,SchemaController,InvestmentController,DashboardController,ReportController};
 /*
 |--------------------------------------------------------------------------
 | API Routes

@@ -121,7 +121,7 @@ class UserController extends Controller
             $res->fname = $req->fname; 
             $res->lname = $req->lname; 
             $res->nationality = $req->nationality; 
-            $res->email = $req->email; 
+            $res->email = strtolower($req->email); 
             $res->password = bcrypt($req->password); 
             $res->gender = $req->gender; 
             $res->country_code = $req->country_code; 

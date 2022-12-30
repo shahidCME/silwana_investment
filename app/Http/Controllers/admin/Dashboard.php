@@ -5,10 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Models\admin\Investment;
-use App\Models\admin\Admin;
-use App\Models\admin\User;
-use App\Models\admin\Schema;
+use App\Models\admin\{Investment,Admin,User,Schema};
 use DB;
 class Dashboard extends Controller
 {

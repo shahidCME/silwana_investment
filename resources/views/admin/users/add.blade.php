@@ -13,36 +13,36 @@
         @csrf
         <div class="form-group">
             <label>First Name</label>
-            <input class="form-control" name="fname" type="text" placeholder="Enter first name">
+            <input class="form-control" name="fname" type="text" placeholder="Enter first name" value="{{ old('fname') }}">
             <label id="fname-error" class="error" for="fname">@error('fname') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
             <label>Last Name</label>
-            <input class="form-control" name="lname" type="text" placeholder="Enter last name">
+            <input class="form-control" name="lname" type="text" placeholder="Enter last name" value="{{ old('lname') }}">
             <label id="lname-error" class="error" for="lname">@error('lname') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input class="form-control" name="email"  type="email" placeholder="Enter email">
+            <input class="form-control" name="email"  type="email" placeholder="Enter email" value="{{ old('email') }}">
             <label id="email-error" class="error" for="email">@error('email') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input class="form-control" name="password" value="123456" type="password">
+            <input class="form-control" name="password" value="123456" type="password" value="{{ old('password') }}">
         </div>
         <div class="form-group">
             <label>Select Country</label>
             <select class="custom-select2 form-control" id="country_id"  name="country"  style="width: 100%; height: 38px">
                 <option value="">Select country</option>
                 @foreach ($countries as $item)
-                <option value="{{ $item->id}}">{{ $item->name}}</option>
+                <option value="{{ $item->id}}" {{  (old('country')== $item->id ? "SELECTED" : '' ) }}>{{ $item->name}}</option>
                 @endforeach
             </select>
             <label id="country_id-error" class="error" for="country_id">@error('country') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
             <label>Nationality</label>
-            <input class="form-control" name="nationality" id="nationality" value="" type="text" placeholder="Enter Nationality">
+            <input class="form-control" name="nationality" id="nationality" value="{{ old('nationality') }}" type="text" placeholder="Enter Nationality">
             <label id="nationality-error" class="error" for="nationality">@error('nationality') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
@@ -50,14 +50,14 @@
             <select class="custom-select2 form-control"  name="country_code"  style="width: 100%; height: 38px">
                 <option value="">Select country code</option>
                 @foreach (GetDialcodelist() as $code => $country_name)
-                <option value="{{ $code }}">{{$country_name}}</option>
+                <option value="{{ $code }}" {{ (old('country_code') == $code ) ?  "SELECTED" : "" }}>{{$country_name}}</option>
                 @endforeach
             </select>
             <label id="country_code-error" class="error" for="country_code">@error('country_code') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
             <label>Mobile</label>
-            <input class="form-control" name="mobile" value="" type="text" placeholder="Enter mobile">
+            <input class="form-control" name="mobile" value="{{ old('mobile') }}" type="text" placeholder="Enter mobile" >
             <label id="mobile-error" class="error" for="mobile">@error('mobile') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
@@ -92,15 +92,15 @@
         </div>
         <div class="form-group">
             <label>DOB</label>
-            <input class="form-control date-picker_dob" name="dob" placeholder="Select Date" type="text" autocomplete="off">
+            <input class="form-control date-picker_dob" name="dob" placeholder="Select Date" type="text" autocomplete="off" value="{{ old('dob') }}">
         </div>
         <div class="form-group">
             <label>National Id Number</label>
-            <input class="form-control" name="national_id" placeholder="Enter national id number" type="text" autocomplete="off">
+            <input class="form-control" name="national_id" placeholder="Enter national id number" type="text" autocomplete="off" value="{{ old('national_id') }}">
         </div>
         <div class="form-group">
             <label>National Id Valid Thru</label>
-            <input class="form-control date-picker_dob" name="date_of_expiry" placeholder="Select date valid thru" type="text" autocomplete="off">
+            <input class="form-control date-picker_dob" name="date_of_expiry" placeholder="Select date valid thru" type="text" autocomplete="off" value="{{ old('date_of_expiry') }}">
         </div>
         
         <div class="form-group">

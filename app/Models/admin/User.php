@@ -26,7 +26,7 @@ class User extends Authenticatable
         $updateData = [
             'fname' => $postData['fname'],
             'lname' => $postData['lname'],
-            'email'=> $postData['email'],
+            'email'=> strtolower($postData['email']),
             'country_code'=> $postData['country_code'],
             'mobile'=> $postData['mobile'],
             'country_id'=> $postData['country'],

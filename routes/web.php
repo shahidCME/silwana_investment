@@ -2,18 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\admin\Login;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Controllers\admin\Dashboard;
-use App\Http\Controllers\admin\SalesPerson;
-use App\Http\Controllers\admin\UserController;
-use App\Http\Controllers\admin\SchemaController;
-use App\Http\Controllers\admin\InvestmentController;
-use App\Http\Controllers\admin\ReportController;
-use App\Http\Controllers\admin\ChangeController;
-use App\Http\Controllers\admin\FinancePersonController;
-use App\Http\Controllers\admin\ApproverController;
+use App\Http\Controllers\admin\{Login,Dashboard,SalesPerson,UserController,SchemaController,InvestmentController,ReportController,ChangeController,FinancePersonController,ApproverController};
 use App\Http\Controllers\MyinvestmentController;
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\CheckUserRole;

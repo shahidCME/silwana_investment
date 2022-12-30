@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input class="form-control" name="email"  value="{{  $editData[0]->email }}" type="email" placeholder="Enter email">
+            <input class="form-control" name="email"  value="{{  (old('email')) ? old('email') : $editData[0]->email  }}" type="email" placeholder="Enter email">
             <label id="email-error" class="error" for="email">@error('email') {{ $message }} @enderror</label>
         </div>
         <div class="form-group">
