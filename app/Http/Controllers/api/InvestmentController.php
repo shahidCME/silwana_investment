@@ -41,7 +41,7 @@ class InvestmentController extends Controller
                 $query->skip($off);
             }
             $query->take($limit);
-            if($request->role == '1'){
+            if($request->role != '2'){
                 $id = $request->admin_id;
                 $query->where('i.admin_id',$id);
             }
