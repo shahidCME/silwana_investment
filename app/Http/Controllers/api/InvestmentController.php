@@ -41,7 +41,7 @@ class InvestmentController extends Controller
                 $query->skip($off);
             }
             $query->take($limit);
-            if($request->role != '2'){
+            if($request->role == '0'){
                 $id = $request->admin_id;
                 $query->where('i.admin_id',$id);
             }
@@ -51,7 +51,9 @@ class InvestmentController extends Controller
             }
             $query->where('i.deleted_at',null);
             $query->orderBy('i.id','desc');
+            // Elq();
             $data = $query->get();
+            // Plq();
             foreach ($data as $key => $value) {
                 $value->contract_pdf    = ($value->contract_pdf != '') ? url('uploads/contract_pdf/'.$value->contract_pdf) : "";
                 $value->schemaImage     = ($value->schemaImage != '') ? url('uploads/schema/'.$value->schemaImage) : "";
