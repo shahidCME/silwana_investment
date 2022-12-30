@@ -78,8 +78,8 @@ class Login extends Controller
     function logout(Request $request){ 
         if(Session::has('admin_login')){
             $request->session()->flush('admin_login');
-            return Redirect::to(URL::to('/'));
         }
+        return Redirect::to(URL::to('/'));
     }
 
     public function forgetPassword(Request $request){
