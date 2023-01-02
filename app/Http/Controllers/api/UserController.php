@@ -214,7 +214,6 @@ class UserController extends Controller
         return response()->json($responce);
     }
     public function update(Request $request){
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'user_id'=> 'required',
             'fname'  => 'required',
@@ -254,41 +253,40 @@ class UserController extends Controller
             
             $userKcy = DB::table('user_kyc')->where('user_id',$request->user_id)->get();
 
-            if(isset($request->is_kyc) && $request->is_kyc == "1" ){
-                DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
+                if(isset($request->is_kyc) && $request->is_kyc == "1" ){
+                    DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
 
-                for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
-                   if(isset($request->file('document_file')[$key])){
-                       if($request->hasfile('document_file')){
-                           $file = $request->file('document_file')[$key];
-                           $ext = $file->getClientOriginalExtension();
-                           $filename = 'document_file_'.time().'.'.$ext;
-                           $file->move(public_path('uploads/kyc_document'),$filename);
+                    for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
+
+                        $filename = (isset($req->document_file_exist[$key])) ? $req->document_file_exist[$key] : ''; 
+                    
+                        if($request->hasfile('document_file') &&  $filename == ''){
+                            $file = $request->file('document_file')[$key];
+                            $ext = $file->getClientOriginalExtension();
+                            $filename = 'document_file_'.time().'.'.$ext;
+                            $file->move(public_path('uploads/kyc_document'),$filename);
                         }
-                    }else{
-                        $filename = $request->document_file[$key];
+                            $valid_from = $request->valid_from[$key];
+                            $valid_thru = $request->valid_thru[$key];
+                            DB::table('user_kyc')->insert([
+                                'user_id'=>$request->user_id,
+                                'name_document'=> $request->name_document[$key],
+                                'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
+                                'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
+                                'document_file'=>$filename,
+                                'created_at' => dbDateFormat(),
+                                'updated_at' => dbDateFormat()
+                            ]);
                     }
-                        $valid_from = $request->valid_from[$key];
-                        $valid_thru = $request->valid_thru[$key];
-                        DB::table('user_kyc')->insert([
-                            'user_id'=>$request->user_id,
-                            'name_document'=> $request->name_document[$key],
-                            'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
-                            'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
-                            'document_file'=>$filename,
-                            'created_at' => dbDateFormat(),
-                            'updated_at' => dbDateFormat()
-                        ]);
-                }
-            }else{
-                $kycData = DB::table('user_kyc')->where('user_id', $request->user_id)->get();
-                for($key = 0 ; $key <= (count($kycData))-1; $key++) {
-                    if(file_exists(public_path('uploads/kyc_document/'.$kycData[$key]->document_file))){
-                        unlink(public_path('uploads/kyc_document/'.$kycData[$key]->document_file));
+                }else{
+                    $kycData = DB::table('user_kyc')->where('user_id', $request->user_id)->get();
+                    for($key = 0 ; $key <= (count($kycData))-1; $key++) {
+                        if(file_exists(public_path('uploads/kyc_document/'.$kycData[$key]->document_file))){
+                            unlink(public_path('uploads/kyc_document/'.$kycData[$key]->document_file));
+                        }
                     }
+                    DB::table('user_kyc')->where('user_id',$request->user_id)->delete(); 
                 }
-                DB::table('user_kyc')->where('user_id',$request->user_id)->delete(); 
-            }
             if($result){
                 $responce = [
                     'status'=>'1',
