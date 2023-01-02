@@ -11,7 +11,7 @@ class Dashboard extends Controller
 {
     
     function index(){
-       $totalInvestment = Investment::where('status','1');
+       $totalInvestment = new Investment;
         if(admin_login()['role'] == '2'  ){
             $totalInvestment->where('admin_id',admin_login()['id']);
         }
