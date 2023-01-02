@@ -260,12 +260,13 @@ class UserController extends Controller
                     for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
 
                         $filename = (isset($req->document_file_exist[$key])) ? $req->document_file_exist[$key] : ''; 
-                    
+                        $j = 0;
                         if($request->hasfile('document_file') &&  $filename == ''){
-                            $file = $request->file('document_file')[$key];
+                            $file = $request->file('document_file')[$j];
                             $ext = $file->getClientOriginalExtension();
                             $filename = 'document_file_'.time().'.'.$ext;
                             $file->move(public_path('uploads/kyc_document'),$filename);
+                            $j++
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
