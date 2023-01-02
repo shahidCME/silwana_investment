@@ -256,14 +256,16 @@ class UserController extends Controller
 
             if(isset($request->is_kyc) && $request->is_kyc == "1" ){
                 DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
-                
+
                 for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
                     if($request->hasfile('document_file')[$key]){
                         $file = $request->file('document_file')[$key];
                         $ext = $file->getClientOriginalExtension();
                         $filename = 'document_file_'.time().'.'.$ext;
                         $file->move(public_path('uploads/kyc_document'),$filename);
-                    }  
+                    }else{
+                        $filename = $request->document_file[$key];
+                    }
                         $valid_from = $request->valid_from[$key];
                         $valid_thru = $request->valid_thru[$key];
                         DB::table('user_kyc')->insert([
