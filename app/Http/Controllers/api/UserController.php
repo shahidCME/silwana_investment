@@ -266,7 +266,7 @@ class UserController extends Controller
                             $ext = $file->getClientOriginalExtension();
                             $filename = 'document_file_'.time().'.'.$ext;
                             $file->move(public_path('uploads/kyc_document'),$filename);
-                            $j++
+                            $j++;
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
