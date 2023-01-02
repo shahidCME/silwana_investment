@@ -214,7 +214,7 @@ class UserController extends Controller
         return response()->json($responce);
     }
     public function update(Request $request){
-        dd($request->all());
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'user_id'=> 'required',
             'fname'  => 'required',
