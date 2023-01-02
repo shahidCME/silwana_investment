@@ -214,7 +214,7 @@ class UserController extends Controller
         return response()->json($responce);
     }
     public function update(Request $request){
-        // dd($request->all());
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'user_id'=> 'required',
             'fname'  => 'required',
@@ -270,15 +270,7 @@ class UserController extends Controller
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
-                            // dd([
-                            //     'user_id'=>$request->user_id,
-                            //     'name_document'=> $request->name_document[$key],
-                            //     'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
-                            //     'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
-                            //     'document_file'=>$filename,
-                            //     'created_at' => dbDateFormat(),
-                            //     'updated_at' => dbDateFormat()
-                            // ]);die;
+                        
                             DB::table('user_kyc')->insert([
                                 'user_id'=>$request->user_id,
                                 'name_document'=> $request->name_document[$key],
