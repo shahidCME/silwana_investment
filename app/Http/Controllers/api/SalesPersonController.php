@@ -147,6 +147,7 @@ class SalesPersonController extends Controller
                 'fname' => $request['fname'],
                 'lname' => $request['lname'],
                 'email'=> $request['email'],
+                'country_code'=> $request['country_code'],
                 'mobile'=> $request['mobile'],
                 'role' => $request['role'],
                 'status' => $request['status'],

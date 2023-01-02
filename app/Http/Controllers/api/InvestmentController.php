@@ -286,7 +286,6 @@ class InvestmentController extends Controller
         }
             $status = '2';
             $investData = Investment::where('id',$req->investment_id)->get();
-
             if(( ($investData[0]->amount == $req->amount) && ($investData[0]->start_date == dbDateFormat($req->start_date,true)) )){
                 $status = $investData[0]->status;
             }
