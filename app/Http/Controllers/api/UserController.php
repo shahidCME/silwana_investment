@@ -69,7 +69,7 @@ class UserController extends Controller
     }
 
     public function addUser(Request $request){
-        // dd($request->all());
+        // echo '1';die;
         $validator = Validator::make($request->all(), [
             'admin_id' => 'required',
             'fname' => 'required',
@@ -84,6 +84,22 @@ class UserController extends Controller
             'national_id' => 'required',
             'date_of_expiry' => 'required|date_format:"Y-m-d"'
         ]);
+        // if(isset($request->is_kyc) && $request->is_kyc == '1'){
+        // //  echo '1';die;
+        //     $validator = Validator::make($request->all(), [
+        //         'name_document.*' => 'required',
+        //         'document_file.*' => 'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
+        //         'valid_from.*' => 'required|date_format:"Y-m-d"',
+        //         'valid_thru.*' => 'required|date_format:"Y-m-d"'
+        //     ]);
+        //     if ($validator->fails()) {
+        //         $responce = [
+        //             'status'=>'0',
+        //             'errors'=>$validator->errors()
+        //         ];
+        //         return response()->json($responce);
+        //     }
+        // }
         if ($validator->fails()) {
             $responce = [
                 'status'=>'0',
@@ -91,6 +107,8 @@ class UserController extends Controller
             ];
             return response()->json($responce);
         }
+        // dd($request->all());
+
             $res = new User();
             $res->admin_id = $request->admin_id;
             $res->fname = $request->fname; 
@@ -110,7 +128,8 @@ class UserController extends Controller
             $res->updated_at = dbDateFormat(); 
             $res->save();
             $last_id = $res->id;
-            if(isset($request->is_kyc) && $request->is_kyc == 1){
+            if(isset($request->is_kyc) && $request->is_kyc == "1"){
+                // echo '1';die;
                 $validator = Validator::make($request->all(), [
                     'name_document.*' => 'required',
                     'document_file.*' => 'required|mimes:jpg,png,jpeg,svg,docx,rtf,doc,pdf',
@@ -195,6 +214,7 @@ class UserController extends Controller
         return response()->json($responce);
     }
     public function update(Request $request){
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'user_id'=> 'required',
             'fname'  => 'required',
