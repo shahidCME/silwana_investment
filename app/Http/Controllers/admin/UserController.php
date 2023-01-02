@@ -189,7 +189,7 @@ class UserController extends Controller
         $data['action'] = url('customerEdit');
         $data['countries'] = DB::table('countries')->get();
         if($req->all()){
-            dd($req->all());
+            // dd($req->all());
             $validatedData = $req->validate([
                 'fname' => 'required',
                 'lname' => 'required',
