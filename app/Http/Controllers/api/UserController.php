@@ -261,7 +261,7 @@ class UserController extends Controller
                     if($request->hasfile('document_file')){
 
                         $file = $request->file('document_file')[$key];
-                        if($file){
+                        if(isset($file)){
                             $ext = $file->getClientOriginalExtension();
                             $filename = 'document_file_'.time().'.'.$ext;
                             $file->move(public_path('uploads/kyc_document'),$filename);
