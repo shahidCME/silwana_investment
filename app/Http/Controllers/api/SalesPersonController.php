@@ -36,7 +36,7 @@ class SalesPersonController extends Controller
 
         $limit = 10;
         $offset = 0;
-        $query = DB::table('admins')->select('id','email','fname','lname','mobile','role','status','created_at','updated_at');
+        $query = DB::table('admins')->select('id','email','fname','lname','country_code','mobile','role','status','created_at','updated_at');
         $query->where(['role'=>$request->role,'deleted_at'=>null]);
         if($request['offset'] > 0 ){
             $off= $limit * $request['offset'];
