@@ -261,7 +261,7 @@ class UserController extends Controller
 
                         $filename = (isset($req->document_file_exist[$key])) ? $req->document_file_exist[$key] : ''; 
                         $j = 0;
-                        if($request->hasfile('document_file')){
+                        if($request->hasfile('document_file') &&  $filename == ''){
                             $file = $request->file('document_file')[$j];
                             $ext = $file->getClientOriginalExtension();
                             $filename = 'document_file_'.time().'.'.$ext;
@@ -270,15 +270,15 @@ class UserController extends Controller
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
-                            dd([
-                                'user_id'=>$request->user_id,
-                                'name_document'=> $request->name_document[$key],
-                                'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
-                                'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
-                                'document_file'=>$filename,
-                                'created_at' => dbDateFormat(),
-                                'updated_at' => dbDateFormat()
-                            ]);die;
+                            // dd([
+                            //     'user_id'=>$request->user_id,
+                            //     'name_document'=> $request->name_document[$key],
+                            //     'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
+                            //     'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
+                            //     'document_file'=>$filename,
+                            //     'created_at' => dbDateFormat(),
+                            //     'updated_at' => dbDateFormat()
+                            // ]);die;
                             DB::table('user_kyc')->insert([
                                 'user_id'=>$request->user_id,
                                 'name_document'=> $request->name_document[$key],
