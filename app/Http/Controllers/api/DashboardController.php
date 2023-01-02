@@ -27,7 +27,7 @@ class DashboardController extends Controller
             if($request->role == '1' || $request->role == '0' || $request->role == '3' || $request->role == '4' || $request->role == '2'){
 
                 if($request->role == '1' || $request->role == '0' || $request->role == '3' || $request->role == '4'){
-                    $data['totalInvestment'] = Investment::sum('amount');
+                    $data['totalInvestment'] = Investment::where('status','!=','9')->sum('amount');
                     $data['totalUser'] = User::count();
                     $data['totalSalePerson'] = Admin::where('role','0')->count();
                     $data['totalFinancePerson'] = Admin::where('role','3')->count();
