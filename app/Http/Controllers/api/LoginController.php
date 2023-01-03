@@ -273,7 +273,7 @@ class LoginController extends Controller
                 $adminData = Admin::where('id',$req->user_id)->get();
 
                 if(Hash::check($req->old_password, $adminData[0]->password) ){ 
-                    $willUpdate = ['password'=>bcrypt($req->password),'updated_at'=>dbDateFormat()];
+                    $willUpdate = ['password'=>bcrypt($req->new_password),'updated_at'=>dbDateFormat()];
                     $updateStatus = Admin::where('id',$req->user_id)->update($willUpdate);
                     }else{
                         $responce = [
@@ -285,7 +285,7 @@ class LoginController extends Controller
             }else{
                 $userData = User::where('id',$req->user_id)->get();
                     if(Hash::check($req->old_password, $userData[0]->password) ){ 
-                        $willUpdate = ['password'=>bcrypt($req->password),'updated_at'=>dbDateFormat()];
+                        $willUpdate = ['password'=>bcrypt($req->new_password),'updated_at'=>dbDateFormat()];
                         $updateStatus = User::where('id',$req->user_id)->update($willUpdate);
                     }else{
                         $responce = [
