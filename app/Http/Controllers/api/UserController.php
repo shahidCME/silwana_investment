@@ -258,7 +258,7 @@ class UserController extends Controller
                     DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
 
                     for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
-                        $filename = (isset($request->document_file_exist[$key])) ? $request->document_file_exist[$key] : '1'; 
+                        $filename = (isset($request->document_file_exist[$key])) ? $request->document_file_exist[$key] : ''; 
                         $j = 0;
                         if($key==0){
                             $filename;
