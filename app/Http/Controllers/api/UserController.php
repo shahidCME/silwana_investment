@@ -260,7 +260,7 @@ class UserController extends Controller
                     for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
                         $filename = (isset($req->document_file_exist[$key])) ? $req->document_file_exist[$key] : '1'; 
                         $j = 0;
-                        if($key==1){
+                        if($key==0){
                             $filename;
                             die;
                         }
