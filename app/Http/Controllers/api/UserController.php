@@ -255,10 +255,6 @@ class UserController extends Controller
             $userKcy = DB::table('user_kyc')->where('user_id',$request->user_id)->get();
 
                 if(isset($request->is_kyc) && $request->is_kyc == "1" ){
-                    if(isset($request->document_file_exist[1])){
-                        echo 'yes';die;
-                    }
-                    echo 'not';die;
                     DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
 
                     for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
@@ -273,7 +269,15 @@ class UserController extends Controller
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
-                        
+                        dd([
+                                'user_id'=>$request->user_id,
+                                'name_document'=> $request->name_document[$key],
+                                'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
+                                'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
+                                'document_file'=>$filename,
+                                'created_at' => dbDateFormat(),
+                                'updated_at' => dbDateFormat()
+                        ]);
                         
                             DB::table('user_kyc')->insert([
                                 'user_id'=>$request->user_id,
