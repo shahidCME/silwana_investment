@@ -255,7 +255,7 @@ class UserController extends Controller
             $userKcy = DB::table('user_kyc')->where('user_id',$request->user_id)->get();
 
                 if(isset($request->is_kyc) && $request->is_kyc == "1" ){
-                    dd($request->all());
+                    dd($request->$request->document_file_exist[$key]);
                     DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
 
                     for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
