@@ -269,15 +269,19 @@ class UserController extends Controller
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
-                        dd([
-                                'user_id'=>$request->user_id,
+                      if($key == '1'){
+
+                          dd([
+                              'user_id'=>$request->user_id,
                                 'name_document'=> $request->name_document[$key],
                                 'valid_from'=> ( !is_null ($valid_from) ) ? dbDateFormat($valid_from,true) : NULL,
                                 'valid_thru'=> ( !is_null ($valid_thru) ) ? dbDateFormat($valid_thru,true) : NULL,
                                 'document_file'=>$filename,
                                 'created_at' => dbDateFormat(),
                                 'updated_at' => dbDateFormat()
-                        ]);
+                                
+                            ]);
+                        }
                         
                             DB::table('user_kyc')->insert([
                                 'user_id'=>$request->user_id,
