@@ -255,15 +255,12 @@ class UserController extends Controller
             $userKcy = DB::table('user_kyc')->where('user_id',$request->user_id)->get();
 
                 if(isset($request->is_kyc) && $request->is_kyc == "1" ){
+                    dd($request->all());
                     DB::table('user_kyc')->where('user_id',$request->user_id)->delete();
 
                     for($key = 0 ; $key <= (count($request->name_document))-1; $key++) {
                         $filename = (isset($request->document_file_exist[$key])) ? $request->document_file_exist[$key] : ''; 
                         $j = 0;
-                        if($key==1){
-                            $filename;
-                            die;
-                        }
                         if($request->hasfile('document_file') &&  $filename == ''){
                             $file = $request->file('document_file')[$j];
                             $ext = $file->getClientOriginalExtension();
@@ -273,6 +270,7 @@ class UserController extends Controller
                         }
                             $valid_from = $request->valid_from[$key];
                             $valid_thru = $request->valid_thru[$key];
+                        
                         
                             DB::table('user_kyc')->insert([
                                 'user_id'=>$request->user_id,
