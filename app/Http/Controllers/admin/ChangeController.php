@@ -78,7 +78,7 @@ class ChangeController extends Controller
                         $willUpdate = ['password'=>bcrypt($req->password),'updated_at'=>dbDateFormat()];
                         $updateStatus = Admin::where('id',$sessionData['id'])->update($willUpdate);
                         }else{
-                            return redirect('changePassword')->with('Mymessage', flashMessage('danger','I have entered wrong old password'));  
+                            return redirect('changePassword')->with('Mymessage', flashMessage('danger','You have entered wrong old password'));  
                         }
                 }else{
                     $userData = User::where('id',$sessionData['id'])->get();
@@ -86,7 +86,7 @@ class ChangeController extends Controller
                             $willUpdate = ['password'=>bcrypt($req->password),'updated_at'=>dbDateFormat()];
                             $updateStatus = User::where('id',$sessionData['id'])->update($willUpdate);
                         }else{
-                            return redirect('changePassword')->with('Mymessage', flashMessage('danger','I have entered wrong old password'));  
+                            return redirect('changePassword')->with('Mymessage', flashMessage('danger','You have entered wrong old password'));  
                         }
                 }
                 if($updateStatus){
