@@ -252,4 +252,56 @@ class LoginController extends Controller
         }
         return response()->json($responce);
     }
+
+        public function changePassword(Request $req){
+            $validator = Validator::make($req->all(), [
+                'user_id'=>'required',
+                'role'=>'required',
+                'old_password'=>'required',
+                'new_password'=>'required',
+                'confirm_password' => 'required_with:new_password|same:new_password'
+            ]);
+            if ($validator->fails()) {
+                $responce = [
+                    'status'=>'0',
+                    'errors'=>$validator->errors()
+                ];
+                return response()->json($responce);
+            }
+            if($req->role != '2'){
+                $adminData = Admin::where('id',$req->user_id)->get();
+                if(Hash::check($req['old_password'], $adminData[0]->password) ){ 
+                    $willUpdate = ['password'=>bcrypt($req->password),'updated_at'=>dbDateFormat()];
+                    $updateStatus = Admin::where('id',$req->user_id)->update($willUpdate);
+                    }else{
+                        $responce = [
+                            'status'=>'0',
+                            'message'=>'You have entered wrong old password'
+                        ];
+                    }
+            }else{
+                $userData = User::where('id',$req->user_id)->get();
+                    if(Hash::check($req['old_password'], $userData[0]->password) ){ 
+                        $willUpdate = ['password'=>bcrypt($req->password),'updated_at'=>dbDateFormat()];
+                        $updateStatus = User::where('id',$req->user_id)->update($willUpdate);
+                    }else{
+                        $responce = [
+                            'status'=>'0',
+                            'message'=>'You have entered wrong old password'
+                        ];
+                    }
+            }
+                if($updateStatus){
+                    $responce = [
+                        'status'=>'1',
+                        'message'=>'Password Updated Successfully'
+                    ];
+                }else{
+                    $responce = [
+                        'status'=>'0',
+                        'message'=>'Somthing went wrong'
+                    ];
+                }
+            return response()->json($responce);
+        }
 }

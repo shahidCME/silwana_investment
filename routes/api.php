@@ -21,6 +21,7 @@ Route::get('/logout',[LoginController::class,'logout']);
 Route::post('/forgetPassword',[LoginController::class,'forgetPassword']);
 Route::post('/getProfile',[LoginController::class,'getProfile']);
 Route::post('/updateProfile',[LoginController::class,'updateProfile']);
+Route::post('/change_password',[LoginController::class,'changePassword']);
 
 
 
